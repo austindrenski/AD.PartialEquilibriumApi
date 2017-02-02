@@ -6,11 +6,11 @@
     <title>$title$</title>
     <authors>$author$</authors>
     <owners>$author$</owners>
-    <licenseUrl>https://github.com/austindrenski/AD.IO/blob/master/LICENSE</licenseUrl>
+    <licenseUrl>https://github.com/austindrenski/AD.PartialEquilibriumApi/blob/master/LICENSE</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <releaseNotes>Initial publication.</releaseNotes>
     <copyright>$copyright$</copyright>
-    <tags>IO filepath xml delimited read</tags>
+    <tags>partial equilibrium modeling economics</tags>
   </metadata>
 </package>
