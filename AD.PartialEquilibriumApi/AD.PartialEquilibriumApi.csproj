@@ -32,8 +32,16 @@
     <DocumentationFile>bin\Release\AD.PartialEquilibriumApi.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AD.Collections, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AD.Collections.1.1.0\lib\net461\AD.Collections.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="AD.IO, Version=1.1.0.8, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\AD.IO.1.1.0.8\lib\net461\AD.IO.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="AD.Xml, Version=1.1.0.7, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AD.Xml.1.1.0.7\lib\net461\AD.Xml.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="JetBrains.Annotations, Version=10.2.1.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
@@ -42,6 +50,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="src\Model.cs" />

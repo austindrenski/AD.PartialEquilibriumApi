@@ -1,4 +1,11 @@
-﻿using AD.IO;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Xml;
+using System.Xml.Linq;
+using AD.Collections;
+using AD.IO;
+using AD.Xml;
 using JetBrains.Annotations;
 
 namespace AD.PartialEquilibriumApi
@@ -20,6 +27,11 @@ namespace AD.PartialEquilibriumApi
         public int NumberOfVariables { get; set; }
 
         /// <summary>
+        /// The headers found in the data file.
+        /// </summary>
+        public IEnumerable<string> DataHeaders { get; }
+
+        /// <summary>
         /// The user-supplied data for the model.
         /// </summary>
         public double[][] Data { get; set; }
@@ -37,10 +49,29 @@ namespace AD.PartialEquilibriumApi
         /// <summary>
         /// Initializes the model.
         /// </summary>
-        /// <param name="delimitedFilePath"></param>
+        /// <param name="delimitedFilePath">The file from which data is read.</param>
         protected Model(DelimitedFilePath delimitedFilePath)
         {
-            Data = null;
+            DataHeaders = 
+                File.ReadLines(delimitedFilePath)
+                    .FirstOrDefault()
+                    .SplitDelimitedLine(delimitedFilePath.Delimiter);
+
+            string[] lines = 
+                File.ReadLines(delimitedFilePath)
+                    .Skip(1)
+                    .ToArray();
+
+            int count = lines.Length;
+
+            Data = new double[count][];
+
+            for (int i = 0; i < count; i++)
+            {
+                Data[i] = lines[i].SplitDelimitedLine(delimitedFilePath.Delimiter)
+                                  .Select(double.Parse)
+                                  .ToArray();
+            }
         }
     }
 }
