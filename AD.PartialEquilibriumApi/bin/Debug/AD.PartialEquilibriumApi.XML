@@ -4,6 +4,28 @@
         <name>AD.PartialEquilibriumApi</name>
     </assembly>
     <members>
+        <member name="T:AD.PartialEquilibriumApi.DefineAttributeDataExtensions">
+            <summary>
+            Extension methods to set attribute values using a data file.
+            </summary>
+        </member>
+        <member name="M:AD.PartialEquilibriumApi.DefineAttributeDataExtensions.DefineAttributeData(System.Xml.Linq.XElement,AD.IO.DelimitedFilePath)">
+            <summary>
+            Defines attributes on the root and descendants using a data file.
+            </summary>
+            <param name="root">The root element.</param>
+            <param name="dataFile">A <see cref="T:AD.IO.DelimitedFilePath"/> with headers and double values.</param>
+            <returns>A reference to the existing <see cref="T:System.Xml.Linq.XElement"/>. This is returned for use with fluent syntax calls.</returns>
+        </member>
+        <member name="M:AD.PartialEquilibriumApi.DefineAttributeDataExtensions.DefineAttributeData(System.Xml.Linq.XElement,AD.IO.DelimitedFilePath,System.Int32)">
+            <summary>
+            Defines attributes on the element using a data file.
+            </summary>
+            <param name="element">The element to which attributes are added.</param>
+            <param name="dataFile">A <see cref="T:AD.IO.DelimitedFilePath"/> with headers and double values.</param>
+            <param name="index">The row index of the data (where the header row == -1) for this element.</param>
+            <returns>A reference to the existing <see cref="T:System.Xml.Linq.XElement"/>. This is returned for use with fluent syntax calls.</returns>
+        </member>
         <member name="T:AD.PartialEquilibriumApi.ElasticityOfSubstitutionExtensions">
             <summary>
             Extension methods to access the Tariff attribute.
@@ -41,54 +63,6 @@
             </summary>
             <param name="market">An <see cref="T:System.Xml.Linq.XElement"/> describing a market.</param>
             <param name="value">The value to which the InitialPrice attribute is set.</param>
-        </member>
-        <member name="T:AD.PartialEquilibriumApi.Market">
-            <summary>
-            Describes a market.
-            </summary>
-        </member>
-        <member name="P:AD.PartialEquilibriumApi.Market.Name">
-            <summary>
-            The name of this market.
-            </summary>
-        </member>
-        <member name="P:AD.PartialEquilibriumApi.Market.InitialPrice">
-            <summary>
-            The initial price provided by the user.
-            </summary>
-        </member>
-        <member name="P:AD.PartialEquilibriumApi.Market.CalculatedPrice">
-            <summary>
-            The price index of sub-market prices or the initial price.
-            </summary>
-        </member>
-        <member name="P:AD.PartialEquilibriumApi.Market.HasSubMarkets">
-            <summary>
-            True if this market is composed of sub-markets.
-            </summary>
-        </member>
-        <member name="P:AD.PartialEquilibriumApi.Market.SubMarkets">
-            <summary>
-            A list of markets that compose this market.
-            </summary>
-        </member>
-        <member name="M:AD.PartialEquilibriumApi.Market.#ctor">
-            <summary>
-            Parameterless constructor for XML serialization.
-            </summary>
-        </member>
-        <member name="M:AD.PartialEquilibriumApi.Market.#ctor(System.String)">
-            <summary>
-            Creates a market with the specified name.
-            </summary>
-            <param name="name">The name of this market.</param>
-        </member>
-        <member name="M:AD.PartialEquilibriumApi.Market.#ctor(System.String,System.Double)">
-            <summary>
-            Creates a market with the specified name and initial price.
-            </summary>
-            <param name="name">The name of this market.</param>
-            <param name="initialPrice">The initial price of this market.</param>
         </member>
         <member name="T:AD.PartialEquilibriumApi.MarketShareExtensions">
             <summary>
@@ -157,6 +131,25 @@
             Initializes the model.
             </summary>
             <param name="delimitedFilePath">The file from which data is read.</param>
+        </member>
+        <member name="T:AD.PartialEquilibriumApi.ShockPriceExtensions">
+            <summary>
+            Extension methods to appy tariff shocks to initial prices.
+            </summary>
+        </member>
+        <member name="M:AD.PartialEquilibriumApi.ShockPriceExtensions.ShockPrice(System.Xml.Linq.XElement)">
+            <summary>
+            Sets the ShockedPrice attribute = initialPrice * (1 + tariff)
+            </summary>
+            <param name="element">The element to shock.</param>
+            <returns>A reference to the existing <see cref="T:System.Xml.Linq.XElement"/>. This is returned for use with fluent syntax calls.</returns>
+        </member>
+        <member name="M:AD.PartialEquilibriumApi.ShockPriceExtensions.ShockAllPrices(System.Xml.Linq.XElement)">
+            <summary>
+            Sets each ShockedPrice attribute in reverse document order = initialPrice * (1 + tariff)
+            </summary>
+            <param name="element">The root element.</param>
+            <returns>A reference to the existing <see cref="T:System.Xml.Linq.XElement"/>. This is returned for use with fluent syntax calls.</returns>
         </member>
         <member name="T:AD.PartialEquilibriumApi.TariffExtensions">
             <summary>

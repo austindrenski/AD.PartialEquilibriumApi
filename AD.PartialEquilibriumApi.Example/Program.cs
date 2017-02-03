@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Xml.Linq;
 using AD.IO;
 
@@ -39,8 +37,7 @@ namespace AD.PartialEquilibriumApi.Example
             XElement[] versions = new XElement[]
             {
                 ExampleFromFiles(structureFile, dataFile),
-                ExampleFromXElement(dataFile),
-                ExampleCompleteFromMarkup()
+                ExampleFromXElement(dataFile)
             };
 
             foreach (XElement usaBeef in versions)
@@ -92,65 +89,32 @@ namespace AD.PartialEquilibriumApi.Example
         private static XElement ExampleFromFiles(XmlFilePath structureFile, DelimitedFilePath dataFile)
         {
             return XElement.Load(structureFile)
-                           .DefineAttributeData(dataFile);
+                           .DefineAttributeData(dataFile)
+                           .ShockAllPrices();
         }
 
         private static XElement ExampleFromXElement(DelimitedFilePath dataFile)
         {
-            IDictionary<string, double[]> data = dataFile.ReadData();
-
             // Define the product market.
-            XElement usaBeef = new XElement("usaBeef",
-                    new XAttribute("ElasticityOfSubstitution", data["ElasticityOfSubstitution"][0]),
-                    new XAttribute("InitialPrice", data["InitialPrice"][0]),
-                    new XAttribute("MarketShare", data["MarketShare"][0]),
-                    new XAttribute("Tariff", data["Tariff"][0]));
+            XElement usaBeef = new XElement("usaBeef").DefineAttributeData(dataFile, 0);
 
             // Define the supplier markets and the initial prices of purchase from those markets.
-            XElement usa =
-                new XElement("usa",
-                    new XAttribute("ElasticityOfSubstitution", data["ElasticityOfSubstitution"][1]),
-                    new XAttribute("InitialPrice", data["InitialPrice"][1]),
-                    new XAttribute("MarketShare", data["MarketShare"][1]),
-                    new XAttribute("Tariff", data["Tariff"][1]));
+            XElement usa = new XElement("usa").DefineAttributeData(dataFile, 1);
 
-            XElement can =
-                new XElement("can",
-                    new XAttribute("ElasticityOfSubstitution", data["ElasticityOfSubstitution"][2]),
-                    new XAttribute("InitialPrice", data["InitialPrice"][2]),
-                    new XAttribute("MarketShare", data["MarketShare"][2]),
-                    new XAttribute("Tariff", data["Tariff"][2]));
+            XElement can = new XElement("can").DefineAttributeData(dataFile, 2);
 
-            XElement mex =
-                new XElement("mex",
-                    new XAttribute("ElasticityOfSubstitution", data["ElasticityOfSubstitution"][3]),
-                    new XAttribute("InitialPrice", data["InitialPrice"][3]),
-                    new XAttribute("MarketShare", data["MarketShare"][3]),
-                    new XAttribute("Tariff", data["Tariff"][3]));
+            XElement mex = new XElement("mex").DefineAttributeData(dataFile, 3);
 
-            XElement aus =
-                new XElement("aus",
-                    new XAttribute("ElasticityOfSubstitution", data["ElasticityOfSubstitution"][4]),
-                    new XAttribute("InitialPrice", data["InitialPrice"][4]),
-                    new XAttribute("MarketShare", data["MarketShare"][4]),
-                    new XAttribute("Tariff", data["Tariff"][4]));
+            XElement aus = new XElement("aus").DefineAttributeData(dataFile, 4);
 
             // Add the supplier markets to the product market.
             // This has the effect of splitting the product market into product supplied by the supplier markets.
             usaBeef.Add(usa, can, mex, aus);
 
-            return usaBeef;
-        }
+            // Apply the price shocks
+            usaBeef.ShockAllPrices();
 
-        private static XElement ExampleCompleteFromMarkup()
-        {
-            return XElement.Parse(
-                @"<usaBeef ElasticityOfSubstitution=""4"" InitialPrice=""1.0"" MarketShare=""0.0"" Tariff=""0.0"" >
-                    <usa ElasticityOfSubstitution=""4"" InitialPrice=""0.9764852913975930"" MarketShare=""0.0164876157540142"" Tariff=""0.0435080979193930"" />
-                    <can ElasticityOfSubstitution=""4"" InitialPrice=""1.0000000000000000"" MarketShare=""0.1826886798599640"" Tariff=""0.0000000000000000"" />
-                    <mex ElasticityOfSubstitution=""4"" InitialPrice=""1.0000000000000000"" MarketShare=""0.0747428059044746"" Tariff=""0.0000000000000000"" />
-                    <aus ElasticityOfSubstitution=""4"" InitialPrice=""1.0000000000000000"" MarketShare=""0.7260808984815470"" Tariff=""0.0000000000000000"" />
-                </usaBeef>");
+            return usaBeef;
         }
     }
 }
