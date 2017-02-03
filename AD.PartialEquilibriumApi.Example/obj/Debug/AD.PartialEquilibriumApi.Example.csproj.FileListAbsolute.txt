@@ -9,3 +9,7 @@ C:\Users\austin.drenski\Source\Repos\AD.PartialEquilibriumApi\AD.PartialEquilibr
 C:\Users\austin.drenski\Source\Repos\AD.PartialEquilibriumApi\AD.PartialEquilibriumApi.Example\obj\Debug\AD.PartialEquilibriumApi.Example.csprojResolveAssemblyReference.cache
 C:\Users\austin.drenski\Source\Repos\AD.PartialEquilibriumApi\AD.PartialEquilibriumApi.Example\obj\Debug\AD.PartialEquilibriumApi.Example.exe
 C:\Users\austin.drenski\Source\Repos\AD.PartialEquilibriumApi\AD.PartialEquilibriumApi.Example\obj\Debug\AD.PartialEquilibriumApi.Example.pdb
+C:\Users\austin.drenski\Source\Repos\AD.PartialEquilibriumApi\AD.PartialEquilibriumApi.Example\bin\Debug\AD.Collections.dll
+C:\Users\austin.drenski\Source\Repos\AD.PartialEquilibriumApi\AD.PartialEquilibriumApi.Example\bin\Debug\JetBrains.Annotations.dll
+C:\Users\austin.drenski\Source\Repos\AD.PartialEquilibriumApi\AD.PartialEquilibriumApi.Example\bin\Debug\AD.Collections.xml
+C:\Users\austin.drenski\Source\Repos\AD.PartialEquilibriumApi\AD.PartialEquilibriumApi.Example\bin\Debug\JetBrains.Annotations.xml
