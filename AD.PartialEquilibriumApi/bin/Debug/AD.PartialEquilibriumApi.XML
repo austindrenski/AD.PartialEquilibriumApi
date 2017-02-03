@@ -4,6 +4,23 @@
         <name>AD.PartialEquilibriumApi</name>
     </assembly>
     <members>
+        <member name="T:AD.PartialEquilibriumApi.CalculateMarketEquilibriumExtensions">
+            <summary>
+            Extension methods to calculate the market equilibrium condition.
+            </summary>
+        </member>
+        <member name="M:AD.PartialEquilibriumApi.CalculateMarketEquilibriumExtensions.CalculateRootMarketEquilibrium(System.Xml.Linq.XElement)">
+            <summary>
+            Sets the MarketEquilibrium attribute. 
+            </summary>
+            <returns>A reference to the existing <see cref="T:System.Xml.Linq.XElement"/>. This is returned for use with fluent syntax calls.</returns>
+        </member>
+        <member name="M:AD.PartialEquilibriumApi.CalculateMarketEquilibriumExtensions.CalculateMarketEquilibrium(System.Xml.Linq.XElement)">
+            <summary>
+            Sets the MarketEquilibrium attribute. 
+            </summary>
+            <returns>A reference to the existing <see cref="T:System.Xml.Linq.XElement"/>. This is returned for use with fluent syntax calls.</returns>
+        </member>
         <member name="T:AD.PartialEquilibriumApi.DefineAttributeDataExtensions">
             <summary>
             Extension methods to set attribute values using a data file.
@@ -83,18 +100,18 @@
             <param name="market">An <see cref="T:System.Xml.Linq.XElement"/> describing a market.</param>
             <param name="value">The value to which the MarketShare attribute is set.</param>
         </member>
-        <member name="T:AD.PartialEquilibriumApi.PriceExtensions">
+        <member name="T:AD.PartialEquilibriumApi.CalculatePriceIndexExtensions">
             <summary>
             Extension methods to calculate prices for markets described by XML trees.
             </summary>
         </member>
-        <member name="M:AD.PartialEquilibriumApi.PriceExtensions.CalculatePriceIndex(System.Xml.Linq.XElement)">
+        <member name="M:AD.PartialEquilibriumApi.CalculatePriceIndexExtensions.CalculatePriceIndex(System.Xml.Linq.XElement)">
             <summary>
-            Returns the calculated price of the node by aggregating the initial prices of itself or any sub-markets.
+            Sets the PriceIndex attribute by aggregating the price indices of itself or any sub-markets.
             Result = [Σ marketShare[i] * (price[i] ^ (1 - elasticityOfSubstitution[i])] ^ [1 / (1 - elasticityOfSubstitution)]
             </summary>
             <param name="market">An <see cref="T:System.Xml.Linq.XElement"/> describing a market.</param>
-            <returns>The price of this node</returns>
+            <returns>A reference to the existing <see cref="T:System.Xml.Linq.XElement"/>. This is returned for use with fluent syntax calls.</returns>
         </member>
         <member name="T:AD.PartialEquilibriumApi.Model">
             <summary>
