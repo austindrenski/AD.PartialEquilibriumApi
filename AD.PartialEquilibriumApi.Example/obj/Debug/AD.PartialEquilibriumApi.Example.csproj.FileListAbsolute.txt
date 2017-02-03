@@ -1,0 +1,11 @@
+C:\Users\austin.drenski\Source\Repos\AD.PartialEquilibriumApi\AD.PartialEquilibriumApi.Example\bin\Debug\AD.PartialEquilibriumApi.Example.exe.config
+C:\Users\austin.drenski\Source\Repos\AD.PartialEquilibriumApi\AD.PartialEquilibriumApi.Example\bin\Debug\AD.PartialEquilibriumApi.Example.exe
+C:\Users\austin.drenski\Source\Repos\AD.PartialEquilibriumApi\AD.PartialEquilibriumApi.Example\bin\Debug\AD.PartialEquilibriumApi.Example.pdb
+C:\Users\austin.drenski\Source\Repos\AD.PartialEquilibriumApi\AD.PartialEquilibriumApi.Example\bin\Debug\AD.PartialEquilibriumApi.dll
+C:\Users\austin.drenski\Source\Repos\AD.PartialEquilibriumApi\AD.PartialEquilibriumApi.Example\bin\Debug\AD.IO.dll
+C:\Users\austin.drenski\Source\Repos\AD.PartialEquilibriumApi\AD.PartialEquilibriumApi.Example\bin\Debug\AD.PartialEquilibriumApi.pdb
+C:\Users\austin.drenski\Source\Repos\AD.PartialEquilibriumApi\AD.PartialEquilibriumApi.Example\bin\Debug\AD.PartialEquilibriumApi.xml
+C:\Users\austin.drenski\Source\Repos\AD.PartialEquilibriumApi\AD.PartialEquilibriumApi.Example\bin\Debug\AD.IO.xml
+C:\Users\austin.drenski\Source\Repos\AD.PartialEquilibriumApi\AD.PartialEquilibriumApi.Example\obj\Debug\AD.PartialEquilibriumApi.Example.csprojResolveAssemblyReference.cache
+C:\Users\austin.drenski\Source\Repos\AD.PartialEquilibriumApi\AD.PartialEquilibriumApi.Example\obj\Debug\AD.PartialEquilibriumApi.Example.exe
+C:\Users\austin.drenski\Source\Repos\AD.PartialEquilibriumApi\AD.PartialEquilibriumApi.Example\obj\Debug\AD.PartialEquilibriumApi.Example.pdb

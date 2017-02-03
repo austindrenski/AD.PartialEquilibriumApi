@@ -1,0 +1,118 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>AD.PartialEquilibriumApi</name>
+    </assembly>
+    <members>
+        <member name="T:AD.PartialEquilibriumApi.Market">
+            <summary>
+            Describes a market.
+            </summary>
+        </member>
+        <member name="P:AD.PartialEquilibriumApi.Market.Name">
+            <summary>
+            The name of this market.
+            </summary>
+        </member>
+        <member name="P:AD.PartialEquilibriumApi.Market.InitialPrice">
+            <summary>
+            The initial price provided by the user.
+            </summary>
+        </member>
+        <member name="P:AD.PartialEquilibriumApi.Market.CalculatedPrice">
+            <summary>
+            The price index of sub-market prices or the initial price.
+            </summary>
+        </member>
+        <member name="P:AD.PartialEquilibriumApi.Market.HasSubMarkets">
+            <summary>
+            True if this market is composed of sub-markets.
+            </summary>
+        </member>
+        <member name="P:AD.PartialEquilibriumApi.Market.SubMarkets">
+            <summary>
+            A list of markets that compose this market.
+            </summary>
+        </member>
+        <member name="M:AD.PartialEquilibriumApi.Market.#ctor">
+            <summary>
+            Parameterless constructor for XML serialization.
+            </summary>
+        </member>
+        <member name="M:AD.PartialEquilibriumApi.Market.#ctor(System.String)">
+            <summary>
+            Creates a market with the specified name.
+            </summary>
+            <param name="name">The name of this market.</param>
+        </member>
+        <member name="M:AD.PartialEquilibriumApi.Market.#ctor(System.String,System.Double)">
+            <summary>
+            Creates a market with the specified name and initial price.
+            </summary>
+            <param name="name">The name of this market.</param>
+            <param name="initialPrice">The initial price of this market.</param>
+        </member>
+        <member name="T:AD.PartialEquilibriumApi.PriceExtensions">
+            <summary>
+            Extension methods to calculate prices for markets described by XML trees.
+            </summary>
+        </member>
+        <member name="M:AD.PartialEquilibriumApi.PriceExtensions.GetInitialPrice(System.Xml.Linq.XElement)">
+            <summary>
+            Returns the value of the InitialPrice attribute.
+            </summary>
+            <param name="market">An <see cref="T:System.Xml.Linq.XElement"/> describing a market.</param>
+            <returns>The value set by the user to the "InitialPrice" attribute.</returns>
+        </member>
+        <member name="M:AD.PartialEquilibriumApi.PriceExtensions.SetInitialPrice(System.Xml.Linq.XElement,System.Double)">
+            <summary>
+            Sets the value of the InitialPrice attribute.
+            </summary>
+            <param name="market">An <see cref="T:System.Xml.Linq.XElement"/> describing a market.</param>
+            <param name="value">The value to which the InitialPrice attribute is set.</param>
+        </member>
+        <member name="M:AD.PartialEquilibriumApi.PriceExtensions.CalculatePrice(System.Xml.Linq.XElement)">
+            <summary>
+            Returns the calculated price of the node by aggregating the initial prices of itself or any sub-markets.
+            </summary>
+            <param name="market">An <see cref="T:System.Xml.Linq.XElement"/> describing a market.</param>
+            <returns>The price of this node</returns>
+        </member>
+        <member name="T:AD.PartialEquilibriumApi.Model">
+            <summary>
+            An abstract base class for partial equilibrium models.
+            </summary>
+        </member>
+        <member name="P:AD.PartialEquilibriumApi.Model.NumberOfMarkets">
+            <summary>
+            The number of markets in the model.
+            </summary>
+        </member>
+        <member name="P:AD.PartialEquilibriumApi.Model.NumberOfVariables">
+            <summary>
+            The number of variables that change during the solution process.
+            </summary>
+        </member>
+        <member name="P:AD.PartialEquilibriumApi.Model.DataHeaders">
+            <summary>
+            The headers found in the data file.
+            </summary>
+        </member>
+        <member name="P:AD.PartialEquilibriumApi.Model.Data">
+            <summary>
+            The user-supplied data for the model.
+            </summary>
+        </member>
+        <member name="M:AD.PartialEquilibriumApi.Model.#ctor">
+            <summary>
+            Initializes the model.
+            </summary>
+        </member>
+        <member name="M:AD.PartialEquilibriumApi.Model.#ctor(AD.IO.DelimitedFilePath)">
+            <summary>
+            Initializes the model.
+            </summary>
+            <param name="delimitedFilePath">The file from which data is read.</param>
+        </member>
+    </members>
+</doc>

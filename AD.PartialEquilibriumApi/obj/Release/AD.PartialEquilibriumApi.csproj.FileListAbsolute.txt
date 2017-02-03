@@ -1,0 +1,13 @@
+C:\Users\austin.drenski\Source\Repos\AD.PartialEquilibriumApi\AD.PartialEquilibriumApi\bin\Release\AD.PartialEquilibriumApi.XML
+C:\Users\austin.drenski\Source\Repos\AD.PartialEquilibriumApi\AD.PartialEquilibriumApi\bin\Release\AD.PartialEquilibriumApi.dll
+C:\Users\austin.drenski\Source\Repos\AD.PartialEquilibriumApi\AD.PartialEquilibriumApi\bin\Release\AD.PartialEquilibriumApi.pdb
+C:\Users\austin.drenski\Source\Repos\AD.PartialEquilibriumApi\AD.PartialEquilibriumApi\bin\Release\AD.Collections.dll
+C:\Users\austin.drenski\Source\Repos\AD.PartialEquilibriumApi\AD.PartialEquilibriumApi\bin\Release\AD.IO.dll
+C:\Users\austin.drenski\Source\Repos\AD.PartialEquilibriumApi\AD.PartialEquilibriumApi\bin\Release\AD.Xml.dll
+C:\Users\austin.drenski\Source\Repos\AD.PartialEquilibriumApi\AD.PartialEquilibriumApi\bin\Release\JetBrains.Annotations.dll
+C:\Users\austin.drenski\Source\Repos\AD.PartialEquilibriumApi\AD.PartialEquilibriumApi\bin\Release\AD.Collections.xml
+C:\Users\austin.drenski\Source\Repos\AD.PartialEquilibriumApi\AD.PartialEquilibriumApi\bin\Release\AD.IO.xml
+C:\Users\austin.drenski\Source\Repos\AD.PartialEquilibriumApi\AD.PartialEquilibriumApi\bin\Release\AD.Xml.xml
+C:\Users\austin.drenski\Source\Repos\AD.PartialEquilibriumApi\AD.PartialEquilibriumApi\bin\Release\JetBrains.Annotations.xml
+C:\Users\austin.drenski\Source\Repos\AD.PartialEquilibriumApi\AD.PartialEquilibriumApi\obj\Release\AD.PartialEquilibriumApi.dll
+C:\Users\austin.drenski\Source\Repos\AD.PartialEquilibriumApi\AD.PartialEquilibriumApi\obj\Release\AD.PartialEquilibriumApi.pdb

@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Linq;
 using JetBrains.Annotations;
 
@@ -10,40 +12,29 @@ namespace AD.PartialEquilibriumApi
     [PublicAPI]
     public static class PriceExtensions
     {
-        private static readonly XName InitialPrice = "InitialPrice";
-
-        /// <summary>
-        /// Returns the value of the InitialPrice attribute.
-        /// </summary>
-        /// <param name="market">An <see cref="XElement"/> describing a market.</param>
-        /// <returns>The value set by the user to the "InitialPrice" attribute.</returns>
-        public static double GetInitialPrice([NotNull] this XElement market)
-        {
-            return double.Parse(market.Attribute(InitialPrice)?.Value ?? "0");
-        }
-
-        /// <summary>
-        /// Sets the value of the InitialPrice attribute.
-        /// </summary>
-        /// <param name="market">An <see cref="XElement"/> describing a market.</param>
-        /// <param name="value">The value to which the InitialPrice attribute is set.</param>
-        public static void SetInitialPrice([NotNull] this XElement market, double value)
-        {
-            market.SetAttributeValue(InitialPrice, value);
-        }
-
         /// <summary>
         /// Returns the calculated price of the node by aggregating the initial prices of itself or any sub-markets.
+        /// Result = [Σ marketShare[i] * (price[i] ^ (1 - elasticityOfSubstitution[i])] ^ [1 / (1 - elasticityOfSubstitution)]
         /// </summary>
         /// <param name="market">An <see cref="XElement"/> describing a market.</param>
         /// <returns>The price of this node</returns>
-        public static double CalculatePrice([NotNull] this XElement market)
+        public static double CalculatePriceIndex([NotNull] this XElement market)
         {
-            return market.HasElements ? market.Elements()
-                                              .Select(x => x.CalculatePrice())
-                                              .Aggregate((current, x) => current + x)
+            if (!market.HasElements)
+            {
+                double initialPrice = market.InitialPrice();
+                double si = market.MarketShare();
+                double s = market.ElasticityOfSubstitution();
+                return si * Math.Pow(initialPrice, 1 - s);
+            }
 
-                                      : market.GetInitialPrice();
+            IEnumerable<double> prices = 
+                market.Elements()
+                      .Select(x => x.CalculatePriceIndex());
+
+            double elasticityOfSubstitution = market.ElasticityOfSubstitution();
+
+            return Math.Pow(prices.Sum(), 1 / (1 - elasticityOfSubstitution));
         }
     }
 }
