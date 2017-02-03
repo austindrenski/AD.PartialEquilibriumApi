@@ -36,8 +36,8 @@
       <HintPath>..\packages\AD.Collections.1.1.0\lib\net461\AD.Collections.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="AD.IO, Version=1.1.0.9, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AD.IO.1.1.0.9\lib\net461\AD.IO.dll</HintPath>
+    <Reference Include="AD.IO, Version=1.1.0.10, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AD.IO.1.1.0.10\lib\net461\AD.IO.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="AD.Xml, Version=1.1.0.7, Culture=neutral, processorArchitecture=MSIL">
@@ -54,6 +54,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="src\DefineAttributeData.cs" />
     <Compile Include="src\ElasticityOfSubstitution.cs" />
     <Compile Include="src\InitialPrice.cs" />
     <Compile Include="src\Market.cs" />
