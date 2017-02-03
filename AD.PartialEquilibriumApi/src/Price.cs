@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Xml;
+﻿using System.Linq;
 using System.Xml.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AD.Xml;
 using JetBrains.Annotations;
 
 namespace AD.PartialEquilibriumApi
@@ -14,7 +8,7 @@ namespace AD.PartialEquilibriumApi
     /// Extension methods to calculate prices for markets described by XML trees.
     /// </summary>
     [PublicAPI]
-    public static class GetPriceExtensions
+    public static class PriceExtensions
     {
         private static readonly XName InitialPrice = "InitialPrice";
 
@@ -39,11 +33,11 @@ namespace AD.PartialEquilibriumApi
         }
 
         /// <summary>
-        /// Returns the calculated price or the value of the InitialPrice attribute.
+        /// Returns the calculated price of the node by aggregating the initial prices of itself or any sub-markets.
         /// </summary>
         /// <param name="market">An <see cref="XElement"/> describing a market.</param>
-        /// <returns></returns>
-        public static double CalculatePrice(this XElement market)
+        /// <returns>The price of this node</returns>
+        public static double CalculatePrice([NotNull] this XElement market)
         {
             return market.HasElements ? market.Elements()
                                               .Select(x => x.CalculatePrice())
