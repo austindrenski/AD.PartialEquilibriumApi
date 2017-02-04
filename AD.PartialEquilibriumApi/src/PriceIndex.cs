@@ -11,6 +11,18 @@ namespace AD.PartialEquilibriumApi
     [PublicAPI]
     public static class CalculatePriceIndexExtensions
     {
+        private static readonly XName XPriceIndex = "PriceIndex";
+
+        /// <summary>
+        /// Returns the value of the PriceIndex attribute.
+        /// </summary>
+        /// <param name="market">An <see cref="XElement"/> describing a market.</param>
+        /// <returns>The value set by the user to the "PriceIndex" attribute.</returns>
+        public static double PriceIndex([NotNull] this XElement market)
+        {
+            return (double)market.Attribute(XPriceIndex);
+        }
+
         /// <summary>
         /// Sets the PriceIndex attribute by aggregating the price indices of itself or any sub-markets.
         /// Result = [Σ marketShare[i] * (price[i] ^ (1 - elasticityOfSubstitution[i])] ^ [1 / (1 - elasticityOfSubstitution)]
@@ -33,7 +45,7 @@ namespace AD.PartialEquilibriumApi
                 {
                     price = market.Elements()
                                   .Select(x => x.CalculatePriceIndex())
-                                  .Select(x => (double)x.Attribute("PriceIndex"))
+                                  .Select(x => x.PriceIndex())
                                   .Sum();
 
                     priceIndex = Math.Pow(price, 1 / (1 - elasticityOfSubstitution));
@@ -53,11 +65,11 @@ namespace AD.PartialEquilibriumApi
             {
                 foreach (XElement item in market.DescendantsAndSelf())
                 {
-                    item.SetAttributeValue("PriceIndex", priceIndex);
+                    item.SetAttributeValue(XPriceIndex, priceIndex);
                 }
             }
 
-            market.SetAttributeValue("PriceIndex", priceIndex);
+            market.SetAttributeValue(XPriceIndex, priceIndex);
             return market;
         }
     }

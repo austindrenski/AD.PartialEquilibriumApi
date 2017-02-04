@@ -9,7 +9,7 @@ namespace AD.PartialEquilibriumApi
     [PublicAPI]
     public static class TariffExtensions
     {
-        private static readonly XName TariffXName = "Tariff";
+        private static readonly XName XTariff = "Tariff";
 
         /// <summary>
         /// Returns the value of the Tariff attribute.
@@ -18,7 +18,7 @@ namespace AD.PartialEquilibriumApi
         /// <returns>The value set by the user to the Tariff attribute.</returns>
         public static double Tariff([NotNull] this XElement market)
         {
-            return (double)market.Attribute(TariffXName);
+            return (double)market.Attribute(XTariff);
         }
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace AD.PartialEquilibriumApi
         /// <param name="value">The value to which the Tariff attribute is set.</param>
         public static void Tariff([NotNull] this XElement market, double value)
         {
-            market.SetAttributeValue(TariffXName, value);
+            market.SetAttributeValue(XTariff, value);
         }
     }
 }

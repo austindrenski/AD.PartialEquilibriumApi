@@ -10,30 +10,8 @@ namespace AD.PartialEquilibriumApi.Example
     {
         public static void Main()
         {
-            string xml = Path.ChangeExtension(Path.GetTempFileName(), ".xml");
-            using (StreamWriter writer = new StreamWriter(xml))
-            {
-                writer.WriteLine(
-                    @"<usaBeef >
-                        <usa />
-                        <can />
-                        <mex />
-                        <aus />
-                    </usaBeef>");
-            }
-            XmlFilePath structureFile = new XmlFilePath(xml);
-            
-            string csv = Path.ChangeExtension(Path.GetTempFileName(), ".csv");
-            using (StreamWriter writer = new StreamWriter(csv))
-            {
-                writer.WriteLine("ElasticityOfSubstitution,ElasticityOfSupply,ElasticityOfDemand,InitialPrice,MarketShare,Tariff");
-                writer.WriteLine("4,1,-1,1.0000000000000000,0.0000000000000000,0.0000000000000000");
-                writer.WriteLine("4,5,-1,0.9764852913975930,0.0164876157540142,0.0435080979193930");
-                writer.WriteLine("4,1,-1,1.0000000000000000,0.1826886798599640,0.0000000000000000");
-                writer.WriteLine("4,1,-1,1.0000000000000000,0.0747428059044746,0.0000000000000000");
-                writer.WriteLine("4,1,-1,1.0000000000000000,0.7260808984815470,0.0000000000000000");
-            }
-            DelimitedFilePath dataFile = new DelimitedFilePath(csv, ',');
+            XmlFilePath structureFile = CreateTempXmlFile();
+            DelimitedFilePath dataFile = CreateTempCsvFile();
 
             XElement[] versions = new XElement[]
             {
@@ -94,6 +72,31 @@ namespace AD.PartialEquilibriumApi.Example
             usaBeef.CalculateRootMarketEquilibrium();
 
             return usaBeef;
+        }
+
+        private static XmlFilePath CreateTempXmlFile()
+        {
+            string xml = Path.ChangeExtension(Path.GetTempFileName(), ".xml");
+            using (StreamWriter writer = new StreamWriter(xml))
+            {
+                writer.WriteLine(@"<usaBeef><usa/><can/><mex/><aus/></usaBeef>");
+            }
+            return new XmlFilePath(xml);
+        }
+
+        private static DelimitedFilePath CreateTempCsvFile()
+        {
+            string csv = Path.ChangeExtension(Path.GetTempFileName(), ".csv");
+            using (StreamWriter writer = new StreamWriter(csv))
+            {
+                writer.WriteLine("ElasticityOfSubstitution,ElasticityOfSupply,ElasticityOfDemand,InitialPrice,MarketShare,Tariff");
+                writer.WriteLine("4,1,-1,1.0000000000000000,0.0000000000000000,0.0000000000000000");
+                writer.WriteLine("4,5,-1,0.9764852913975930,0.0164876157540142,0.0435080979193930");
+                writer.WriteLine("4,1,-1,1.0000000000000000,0.1826886798599640,0.0000000000000000");
+                writer.WriteLine("4,1,-1,1.0000000000000000,0.0747428059044746,0.0000000000000000");
+                writer.WriteLine("4,1,-1,1.0000000000000000,0.7260808984815470,0.0000000000000000");
+            }
+            return new DelimitedFilePath(csv, ',');
         }
     }
 }

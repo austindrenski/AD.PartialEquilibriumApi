@@ -10,6 +10,18 @@ namespace AD.PartialEquilibriumApi
     [PublicAPI]
     public static class ShockPriceExtensions
     {
+        private static readonly XName XShockedPrice = "ShockedPrice";
+
+        /// <summary>
+        /// Gets the ShockedPrice attribute.
+        /// </summary>
+        /// <param name="element">The source element.</param>
+        /// <returns>The shocked price.</returns>
+        public static double ShockedPrice(this XElement element)
+        {
+            return (double) element.Attribute(XShockedPrice);
+        }
+
         /// <summary>
         /// Sets the ShockedPrice attribute = initialPrice * (1 + tariff)
         /// </summary>
@@ -20,7 +32,7 @@ namespace AD.PartialEquilibriumApi
             double initialPrice = element.InitialPrice();
             double tariff = element.Tariff();
             double shockedPrice = initialPrice * (1 + tariff);
-            element.SetAttributeValue("ShockedPrice", shockedPrice);
+            element.SetAttributeValue(XShockedPrice, shockedPrice);
             return element;
         }
 

@@ -9,7 +9,7 @@ namespace AD.PartialEquilibriumApi
     [PublicAPI]
     public static class ElasticityOfSubstitutionExtensions
     {
-        private static readonly XName ElasticityOfSubstitutionXName = "ElasticityOfSubstitution";
+        private static readonly XName XElasticityOfSubstitution = "ElasticityOfSubstitution";
 
         /// <summary>
         /// Returns the value of the ElasticityOfSubstitution attribute.
@@ -18,7 +18,7 @@ namespace AD.PartialEquilibriumApi
         /// <returns>The value set by the user to the ElasticityOfSubstitution attribute.</returns>
         public static double ElasticityOfSubstitution([NotNull] this XElement market)
         {
-            return (double)market.Attribute(ElasticityOfSubstitutionXName);
+            return (double)market.Attribute(XElasticityOfSubstitution);
         }
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace AD.PartialEquilibriumApi
         /// <param name="value">The value to which the ElasticityOfSubstitution attribute is set.</param>
         public static void ElasticityOfSubstitution([NotNull] this XElement market, double value)
         {
-            market.SetAttributeValue(ElasticityOfSubstitutionXName, value);
+            market.SetAttributeValue(XElasticityOfSubstitution, value);
         }
     }
 }

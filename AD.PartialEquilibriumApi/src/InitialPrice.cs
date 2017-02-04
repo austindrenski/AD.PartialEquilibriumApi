@@ -9,7 +9,7 @@ namespace AD.PartialEquilibriumApi
     [PublicAPI]
     public static class InitialPriceExtensions
     {
-        private static readonly XName InitialPriceXName = "InitialPrice";
+        private static readonly XName XInitialPrice = "InitialPrice";
 
         /// <summary>
         /// Returns the value of the InitialPrice attribute.
@@ -18,7 +18,7 @@ namespace AD.PartialEquilibriumApi
         /// <returns>The value set by the user to the "InitialPrice" attribute.</returns>
         public static double InitialPrice([NotNull] this XElement market)
         {
-            return (double)market.Attribute(InitialPriceXName);
+            return (double)market.Attribute(XInitialPrice);
         }
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace AD.PartialEquilibriumApi
         /// <param name="value">The value to which the InitialPrice attribute is set.</param>
         public static void InitialPrice([NotNull] this XElement market, double value)
         {
-            market.SetAttributeValue(InitialPriceXName, value);
+            market.SetAttributeValue(XInitialPrice, value);
         }
     }
 }

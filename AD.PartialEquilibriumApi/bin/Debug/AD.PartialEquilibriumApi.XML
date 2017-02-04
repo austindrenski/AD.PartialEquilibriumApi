@@ -4,10 +4,55 @@
         <name>AD.PartialEquilibriumApi</name>
     </assembly>
     <members>
+        <member name="T:AD.PartialEquilibriumApi.ElasticityOfDemandExtensions">
+            <summary>
+            Extension methods to get the elasticity of demand attribute.
+            </summary>
+        </member>
+        <member name="M:AD.PartialEquilibriumApi.ElasticityOfDemandExtensions.ElasticityOfDemand(System.Xml.Linq.XElement)">
+            <summary>
+            Returns the ElasticityOfDemand attribute.
+            </summary>
+            <param name="element">The source element.</param>
+            <returns>The value of the "ElasticityOfDemand" attribute.</returns>
+        </member>
+        <member name="M:AD.PartialEquilibriumApi.ElasticityOfDemandExtensions.ElasticityOfDemand(System.Xml.Linq.XElement,System.Double)">
+            <summary>
+            Sets the value of the ElasticityOfDemand attribute.
+            </summary>
+            <param name="element">The source element.</param>
+            <param name="value">The value to which the ElasticityOfDemand attribute is set.</param>
+        </member>
+        <member name="T:AD.PartialEquilibriumApi.ElasticityOfSupplyExtensions">
+            <summary>
+            Extension methods to get the elasticity of supply attribute.
+            </summary>
+        </member>
+        <member name="M:AD.PartialEquilibriumApi.ElasticityOfSupplyExtensions.ElasticityOfSupply(System.Xml.Linq.XElement)">
+            <summary>
+            Returns the ElasticityOfSupply attribute.
+            </summary>
+            <param name="element">The source element.</param>
+            <returns>The value of the "ElasticityOfSupply" attribute.</returns>
+        </member>
+        <member name="M:AD.PartialEquilibriumApi.ElasticityOfSupplyExtensions.ElasticityOfSupply(System.Xml.Linq.XElement,System.Double)">
+            <summary>
+            Sets the value of the ElasticityOfSupply attribute.
+            </summary>
+            <param name="element">The source element.</param>
+            <param name="value">The value to which the ElasticityOfSupply attribute is set.</param>
+        </member>
         <member name="T:AD.PartialEquilibriumApi.CalculateMarketEquilibriumExtensions">
             <summary>
             Extension methods to calculate the market equilibrium condition.
             </summary>
+        </member>
+        <member name="M:AD.PartialEquilibriumApi.CalculateMarketEquilibriumExtensions.MarketEquilibrium(System.Xml.Linq.XElement)">
+            <summary>
+            Returns the value of the MarketEquilibrium attribute.
+            </summary>
+            <param name="element">An <see cref="T:System.Xml.Linq.XElement"/> describing a market.</param>
+            <returns>The value of the MarketEquilibrium attribute.</returns>
         </member>
         <member name="M:AD.PartialEquilibriumApi.CalculateMarketEquilibriumExtensions.CalculateRootMarketEquilibrium(System.Xml.Linq.XElement)">
             <summary>
@@ -18,6 +63,7 @@
         <member name="M:AD.PartialEquilibriumApi.CalculateMarketEquilibriumExtensions.CalculateMarketEquilibrium(System.Xml.Linq.XElement)">
             <summary>
             Sets the MarketEquilibrium attribute. 
+            Result = (shockedPrice ^ elasticityOfSupply) - [(priceIndex ^ (elasticityOfSubstitution + elasticityOfDemand)) / (initialPrice ^ elasticityOfSubstitution)]
             </summary>
             <returns>A reference to the existing <see cref="T:System.Xml.Linq.XElement"/>. This is returned for use with fluent syntax calls.</returns>
         </member>
@@ -105,6 +151,13 @@
             Extension methods to calculate prices for markets described by XML trees.
             </summary>
         </member>
+        <member name="M:AD.PartialEquilibriumApi.CalculatePriceIndexExtensions.PriceIndex(System.Xml.Linq.XElement)">
+            <summary>
+            Returns the value of the PriceIndex attribute.
+            </summary>
+            <param name="market">An <see cref="T:System.Xml.Linq.XElement"/> describing a market.</param>
+            <returns>The value set by the user to the "PriceIndex" attribute.</returns>
+        </member>
         <member name="M:AD.PartialEquilibriumApi.CalculatePriceIndexExtensions.CalculatePriceIndex(System.Xml.Linq.XElement)">
             <summary>
             Sets the PriceIndex attribute by aggregating the price indices of itself or any sub-markets.
@@ -153,6 +206,13 @@
             <summary>
             Extension methods to appy tariff shocks to initial prices.
             </summary>
+        </member>
+        <member name="M:AD.PartialEquilibriumApi.ShockPriceExtensions.ShockedPrice(System.Xml.Linq.XElement)">
+            <summary>
+            Gets the ShockedPrice attribute.
+            </summary>
+            <param name="element">The source element.</param>
+            <returns>The shocked price.</returns>
         </member>
         <member name="M:AD.PartialEquilibriumApi.ShockPriceExtensions.ShockPrice(System.Xml.Linq.XElement)">
             <summary>

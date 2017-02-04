@@ -9,7 +9,7 @@ namespace AD.PartialEquilibriumApi
     [PublicAPI]
     public static class MarketShareExtensions
     {
-        private static readonly XName MarketShareXName = "MarketShare";
+        private static readonly XName XMarketShare = "MarketShare";
 
         /// <summary>
         /// Returns the value of the MarketShare attribute.
@@ -18,7 +18,7 @@ namespace AD.PartialEquilibriumApi
         /// <returns>The value set by the user to the MarketShare attribute.</returns>
         public static double MarketShare([NotNull] this XElement market)
         {
-            return (double)market.Attribute(MarketShareXName);
+            return (double)market.Attribute(XMarketShare);
         }
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace AD.PartialEquilibriumApi
         /// <param name="value">The value to which the MarketShare attribute is set.</param>
         public static void MarketShare([NotNull] this XElement market, double value)
         {
-            market.SetAttributeValue(MarketShareXName, value);
+            market.SetAttributeValue(XMarketShare, value);
         }
     }
 }
