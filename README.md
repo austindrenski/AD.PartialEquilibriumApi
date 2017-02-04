@@ -56,9 +56,15 @@ downstream.Add(upstream1, upstream2);
 upstream1.Add(upstream3, upstream4);
 upstream2.Add(upstream5)'
 
-double a = downstream.Select(x => x * 3).Sum();
+double a = downstream.Select(x => (double) x.Attribute("Price")
+                     .Select(x => x * 3)
+                     .Sum();
 // a == 6
 
-double b = downstream.Element("Upstream2").Select(x => x * 2).Select(x => x + 2).Sum();
+double b = downstream.Element("Upstream2")
+                     .Select(x => (double) x.Attribute("Price"))
+                     .Select(x => x * 2)
+                     .Select(x => x + 2)
+                     .Sum();
 // b == 8
 ```
