@@ -166,42 +166,6 @@
             <param name="market">An <see cref="T:System.Xml.Linq.XElement"/> describing a market.</param>
             <returns>A reference to the existing <see cref="T:System.Xml.Linq.XElement"/>. This is returned for use with fluent syntax calls.</returns>
         </member>
-        <member name="T:AD.PartialEquilibriumApi.Model">
-            <summary>
-            An abstract base class for partial equilibrium models.
-            </summary>
-        </member>
-        <member name="P:AD.PartialEquilibriumApi.Model.NumberOfMarkets">
-            <summary>
-            The number of markets in the model.
-            </summary>
-        </member>
-        <member name="P:AD.PartialEquilibriumApi.Model.NumberOfVariables">
-            <summary>
-            The number of variables that change during the solution process.
-            </summary>
-        </member>
-        <member name="P:AD.PartialEquilibriumApi.Model.DataHeaders">
-            <summary>
-            The headers found in the data file.
-            </summary>
-        </member>
-        <member name="P:AD.PartialEquilibriumApi.Model.Data">
-            <summary>
-            The user-supplied data for the model.
-            </summary>
-        </member>
-        <member name="M:AD.PartialEquilibriumApi.Model.#ctor">
-            <summary>
-            Initializes the model.
-            </summary>
-        </member>
-        <member name="M:AD.PartialEquilibriumApi.Model.#ctor(AD.IO.DelimitedFilePath)">
-            <summary>
-            Initializes the model.
-            </summary>
-            <param name="delimitedFilePath">The file from which data is read.</param>
-        </member>
         <member name="T:AD.PartialEquilibriumApi.ShockPriceExtensions">
             <summary>
             Extension methods to appy tariff shocks to initial prices.

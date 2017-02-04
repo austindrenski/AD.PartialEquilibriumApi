@@ -35,7 +35,7 @@ namespace AD.PartialEquilibriumApi
             }
             double sumOfSquares =
                 element.Elements()
-                       .Select(x => (double)x.Attribute(XMarketEquilibrium))
+                       .Select(x => x.MarketEquilibrium())
                        .Select(x => x * x)
                        .Sum();
 
