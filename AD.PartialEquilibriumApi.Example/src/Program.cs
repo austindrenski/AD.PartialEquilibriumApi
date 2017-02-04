@@ -65,7 +65,7 @@ namespace AD.PartialEquilibriumApi.Example
             // Apply the price shocks
             usaBeef.ShockAllPrices();
 
-            // Calculate the price indices
+            // Calculate the price indices 
             usaBeef.CalculatePriceIndex();
 
             // Calculate the market equilibrium
