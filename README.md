@@ -45,6 +45,20 @@ The primary goal of this library is to help write code that mirrors the graphica
 </Downstream>
 ```
 ```C#
-XElement downstream = new XElement(...);
-double sumOfSquaresOfChildren = downstream.Select(x => x * x).Sum();
+XElement downstream = new XElement("Downstream");
+XElement upstream1 = new XElement("Upstream1", new XAttribute("Price", 1));
+XElement upstream2 = new XElement("Upstream2", new XAttribute("Price", 1));
+XElement upstream3 = new XElement("Upstream3", new XAttribute("Price", 1));
+XElement upstream4 = new XElement("Upstream4", new XAttribute("Price", 1));
+XElement upstream5 = new XElement("Upstream5", new XAttribute("Price", 1));
+
+downstream.Add(upstream1, upstream2);
+upstream1.Add(upstream3, upstream4);
+upstream2.Add(upstream5)'
+
+double a = downstream.Select(x => x * 3).Sum();
+// a == 6
+
+double b = downstream.Element("Upstream2").Select(x => x * 2).Select(x => x + 2).Sum();
+// b == 8
 ```
