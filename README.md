@@ -19,21 +19,21 @@ XML is designed to represent relational data. This works well for PE models char
 The primary goal of this library is to help write code that mirrors the graphical representation of a model.
 
 ```
-                                                -----------------
-                                                |  Downstream   | 
-                                                -----------------
-                                               /                 \   
-                                              /                   \   
-                                             /                     \         
-                            -----------------                       -----------------
-                            | Upstream 1    |                       | Upstream 2    |
-                            -----------------                       -----------------
-                           /                 \                                       \
-                          /                   \                                       \
-                         /                     \                                       \
-        -----------------                       -----------------                       -----------------    
-        | Upstream 3    |                       | Upstream 4    |                       | Upstream 5    |
-        -----------------                       -----------------                       -----------------
+                                  -----------------
+                                  |  Downstream   | 
+                                  -----------------
+                                 /                 \   
+                                /                   \   
+                               /                     \         
+                 --------------                       --------------
+                 | Upstream 1 |                       | Upstream 2 |
+                 --------------                       --------------
+                /              \                                    \
+               /                \                                    \
+              /                  \                                    \
+--------------                    --------------                       --------------    
+| Upstream 3 |                    | Upstream 4 |                       | Upstream 5 |
+--------------                    --------------                       --------------
 ```
 ```XML
 <Downstream>
