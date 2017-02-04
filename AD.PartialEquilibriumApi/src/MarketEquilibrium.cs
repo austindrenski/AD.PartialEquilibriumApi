@@ -37,7 +37,7 @@ namespace AD.PartialEquilibriumApi
                 element.Elements()
                        .Select(x => x.MarketEquilibrium())
                        .Select(x => x * x)
-                       .Sum();
+                       .Sum(); 
 
             element.SetAttributeValue(XMarketEquilibrium, sumOfSquares);
             return element;
