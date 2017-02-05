@@ -33,8 +33,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AD.Collections, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AD.Collections.1.1.0\lib\net461\AD.Collections.dll</HintPath>
+    <Reference Include="AD.Collections, Version=1.1.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AD.Collections.1.1.0.1\lib\net461\AD.Collections.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="AD.IO, Version=1.1.0.10, Culture=neutral, processorArchitecture=MSIL">
@@ -43,6 +43,10 @@
     </Reference>
     <Reference Include="JetBrains.Annotations, Version=10.2.1.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
       <HintPath>..\packages\JetBrains.Annotations.10.2.1\lib\net\JetBrains.Annotations.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NLoptNet, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLoptNet.1.0.2.0\lib\net45\NLoptNet.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -61,12 +65,28 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <None Include="x32\COPYING" />
+    <None Include="x32\COPYRIGHT" />
+    <None Include="x32\libnlopt-0.def" />
+    <None Include="x32\nlopt.h" />
+    <None Include="x64\COPYING" />
+    <None Include="x64\COPYRIGHT" />
+    <None Include="x64\libnlopt-0.def" />
+    <None Include="x64\nlopt.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AD.PartialEquilibriumApi\AD.PartialEquilibriumApi.csproj">
       <Project>{34eea466-f70d-468d-916b-534ac8abc225}</Project>
       <Name>AD.PartialEquilibriumApi</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="x32\libnlopt-0.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="x64\libnlopt-0.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

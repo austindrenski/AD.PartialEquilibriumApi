@@ -54,7 +54,7 @@ namespace AD.PartialEquilibriumApi
                 case false:
                 {
                     double share = market.MarketShare();
-                    price = market.InitialPrice();
+                    price = market.CurrentPrice();
 
                     priceIndex = share * Math.Pow(price, 1 - elasticityOfSubstitution);
                     break;

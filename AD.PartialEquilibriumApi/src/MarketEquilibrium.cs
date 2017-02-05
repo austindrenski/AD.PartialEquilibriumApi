@@ -53,7 +53,7 @@ namespace AD.PartialEquilibriumApi
             double elasticityOfDemand = element.ElasticityOfDemand();
             double elasticityOfSubstitution = element.ElasticityOfSubstitution();
             double elasticityOfSupply = element.ElasticityOfSupply();
-            double initialPrice = element.InitialPrice();
+            double currentPrice = element.CurrentPrice();
             double priceIndex = element.PriceIndex();
             double shockedPrice = element.ShockedPrice();
 
@@ -62,7 +62,7 @@ namespace AD.PartialEquilibriumApi
                 -
                 Math.Pow(priceIndex, elasticityOfSubstitution + elasticityOfDemand) 
                 / 
-                Math.Pow(initialPrice, elasticityOfSubstitution);
+                Math.Pow(currentPrice, elasticityOfSubstitution);
 
             element.SetAttributeValue(XMarketEquilibrium, marketEquilibrium);
             return element;

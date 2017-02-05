@@ -29,9 +29,9 @@ namespace AD.PartialEquilibriumApi
         /// <returns>A reference to the existing <see cref="XElement"/>. This is returned for use with fluent syntax calls.</returns>
         public static XElement ShockPrice(this XElement element)
         {
-            double initialPrice = element.InitialPrice();
+            double currentPrice = element.CurrentPrice();
             double tariff = element.Tariff();
-            double shockedPrice = initialPrice * (1 + tariff);
+            double shockedPrice = currentPrice * (1 + tariff);
             element.SetAttributeValue(XShockedPrice, shockedPrice);
             return element;
         }
