@@ -109,23 +109,23 @@ namespace AD.PartialEquilibriumApi.Optimization
                 Solution centroid = this.Centroid();
                 Solution reflected = this.Reflected(centroid);
 
-                if (reflected.Value < Solutions[0].Value)
+                if (reflected < Solutions[0])
                 {
                     Solution expanded = this.Expanded(centroid, reflected);
-                    this.ReplaceWorst(expanded.Value < Solutions[0].Value ? expanded : reflected);
+                    this.ReplaceWorst(expanded < Solutions[0] ? expanded : reflected);
                     continue;
                 }
 
                 if (this.IsSecondWorst(reflected))
                 {
-                    if (reflected.Value <= Solutions[NumberOfSolutions - 1].Value)
+                    if (reflected <= Solutions[NumberOfSolutions - 1])
                     {
                         this.ReplaceWorst(reflected);
                     }
 
                     Solution contracted = this.Contracted(centroid);
 
-                    if (contracted.Value > Solutions[NumberOfSolutions - 1].Value)
+                    if (contracted > Solutions[NumberOfSolutions - 1])
                     {
                         this.Shrink();
                     }

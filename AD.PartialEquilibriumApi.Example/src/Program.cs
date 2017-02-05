@@ -126,7 +126,7 @@ namespace AD.PartialEquilibriumApi.Example
             //    usaBeef.CalculateRootMarketEquilibrium();
             //}
 
-            Simplex simplex = new Simplex(3, 5, 0, 2, 1000, x => function(x));
+            Simplex simplex = new Simplex(3, 5, 0, 2, 10000, x => function(x));
 
             simplex.Solve();
             

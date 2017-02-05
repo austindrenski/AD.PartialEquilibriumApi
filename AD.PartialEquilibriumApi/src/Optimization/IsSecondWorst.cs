@@ -18,7 +18,7 @@ namespace AD.PartialEquilibriumApi.Optimization
         {
             for (int i = 0; i < simplex.NumberOfSolutions - 1; i++)
             {
-                if (reflected.Value <= simplex.Solutions[i].Value)
+                if (reflected <= simplex.Solutions[i])
                 {
                     return false;
                 }

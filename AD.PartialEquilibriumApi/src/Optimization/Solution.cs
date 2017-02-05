@@ -44,6 +44,26 @@ namespace AD.PartialEquilibriumApi.Optimization
             return Value.CompareTo(other.Value);
         }
 
+        public static bool operator <(Solution left, Solution right)
+        {
+            return left.Value < right.Value;
+        }
+
+        public static bool operator >(Solution left, Solution right)
+        {
+            return left.Value > right.Value;
+        }
+
+        public static bool operator <=(Solution left, Solution right)
+        {
+            return left.Value <= right.Value;
+        }
+
+        public static bool operator >=(Solution left, Solution right)
+        {
+            return left.Value >= right.Value;
+        }
+
         /// <summary>
         /// Returns a string representation of the <see cref="Solution"/>.
         /// </summary>
