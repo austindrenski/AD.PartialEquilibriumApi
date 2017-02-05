@@ -5,6 +5,8 @@ C# framework for programming Partial Equilibrium models.
 ```Powershell
 PM> Install-Package AD.PartialEquilibriumApi
 ```
+## Description
+For a detailed description of the structure of an ExPEM-type model, see [Model Description](https://github.com/austindrenski/AD.PartialEquilibriumApi/wiki/Model-Description)
 
 ## Purpose
 This library aims to provide the tools necessary to construct partial equilibrium models that are object-oriented, simple to create, and extensible.
