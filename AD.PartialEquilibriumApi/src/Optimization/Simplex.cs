@@ -47,6 +47,18 @@ namespace AD.PartialEquilibriumApi.Optimization
         public Solution[] Solutions { get; }
 
         /// <summary>
+        /// Indexed access to the vector of <see cref="Solution"/> objects..
+        /// </summary>
+        /// <param name="index">The solution index.</param>
+        public Solution this[int index]
+        {
+            get
+            {
+                return Solutions[index];
+            }
+        }
+
+        /// <summary>
         /// The alpha constant.
         /// </summary>
         public const double Reflection = 1.0;
@@ -60,6 +72,11 @@ namespace AD.PartialEquilibriumApi.Optimization
         /// The gamma constant.
         /// </summary>
         public const double Expansion = 2.0;
+
+        /// <summary>
+        /// Random number generator.
+        /// </summary>
+        public static readonly Random Random = new Random(0);
 
         /// <summary>
         /// Creates a simplex with the given parameters.
@@ -80,13 +97,12 @@ namespace AD.PartialEquilibriumApi.Optimization
             UpperBound = upperBound;
             Solutions = new Solution[numberOfSolutions];
 
-            Random random = new Random(0);
             for (int i = 0; i < Solutions.Length; i++)
             {
                 double[] vector = new double[dimensions];
                 for (int j = 0; j < dimensions; j++)
                 {
-                    vector[j] = (upperBound - lowerBound) * random.NextDouble() + lowerBound;
+                    vector[j] = (upperBound - lowerBound) * Random.NextDouble() + lowerBound;
                 }
                 Solutions[i] = new Solution(objectiveFunction(vector), vector);
             }
@@ -103,42 +119,45 @@ namespace AD.PartialEquilibriumApi.Optimization
             {
                 if (i % 10 == 0)
                 {
-                    Console.WriteLine($"At t = {i} current best solution = {Solutions[0]}");
+                    Console.WriteLine($"> i = {i}: {Solutions[0]}");
                 }
 
                 Solution centroid = this.Centroid();
-                Solution reflected = this.Reflected(centroid);
+                Solution reflected = this.Reflect(centroid);
 
                 if (reflected < Solutions[0])
                 {
-                    Solution expanded = this.Expanded(centroid, reflected);
-                    this.ReplaceWorst(expanded < Solutions[0] ? expanded : reflected);
+                    Solution expanded = this.Expand(centroid, reflected);
+                    this.Swap(expanded < Solutions[0] ? expanded : reflected, NumberOfSolutions - 1);
+                    Array.Sort(Solutions);
                     continue;
                 }
 
-                if (this.IsSecondWorst(reflected))
+                if (reflected < this)
                 {
                     if (reflected <= Solutions[NumberOfSolutions - 1])
                     {
-                        this.ReplaceWorst(reflected);
+                        this.Swap(reflected, NumberOfSolutions - 1);
+                        Array.Sort(Solutions);
                     }
 
-                    Solution contracted = this.Contracted(centroid);
+                    Solution contracted = this.Contract(centroid);
 
-                    if (contracted > Solutions[NumberOfSolutions - 1])
+                    if (Solutions[NumberOfSolutions - 1] < contracted)
                     {
                         this.Shrink();
+                        Array.Sort(Solutions);
                     }
                     else
                     {
-                        this.ReplaceWorst(contracted);
+                        this.Swap(contracted, NumberOfSolutions - 1);
+                        Array.Sort(Solutions);
                     }
                     continue;
                 }
-
-                this.ReplaceWorst(reflected);
+                this.Swap(reflected, NumberOfSolutions - 1);
+                Array.Sort(Solutions);
             }
-
             return Solutions[0];
         }
     }

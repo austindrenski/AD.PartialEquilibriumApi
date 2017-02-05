@@ -22,11 +22,12 @@ namespace AD.PartialEquilibriumApi.Optimization
             {
                 for (int j = 0; j < simplex.NumberOfSolutions - 1; j++)
                 {
-                    centroid[i] += simplex.Solutions[j].Vector[i];
+                    centroid[i] += simplex[j][i];
                 }
                 centroid[i] /= simplex.NumberOfSolutions - 1;
-            }
 
+                centroid = centroid.EnforceStrictBounds(simplex);
+            }
             return new Solution(simplex.ObjectiveFunction(centroid), centroid);
         }
     }

@@ -6,20 +6,24 @@ namespace AD.PartialEquilibriumApi.Optimization
     /// Extension methods to calculate the expanded solution for a <see cref="Simplex"/>.
     /// </summary>
     [PublicAPI]
-    public static class ExpandedExtensions
+    public static class ExpandExtensions
     {
         /// <summary>
         /// Calculates the expanded solution.
         /// </summary>
         /// <param name="simplex">The source <see cref="Simplex"/>.</param>
+        /// <param name="centroid">The centroid solution calculated on the <see cref="Simplex"/>.</param>
+        /// <param name="reflected">The reflected solution calculated on the <see cref="Simplex"/>.</param>
         /// <returns>The expanded solution.</returns>
-        public static Solution Expanded(this Simplex simplex, Solution centroid, Solution reflected)
+        public static Solution Expand(this Simplex simplex, Solution centroid, Solution reflected)
         {
             double[] expanded = new double[simplex.Dimensions];
 
             for (int i = 0; i < simplex.Dimensions; i++)
             {
-                expanded[i] = (1 - Simplex.Expansion) * centroid.Vector[i] + Simplex.Expansion * reflected.Vector[i];
+                expanded[i] = (1 - Simplex.Expansion) * centroid[i] + Simplex.Expansion * reflected[i];
+
+                expanded = expanded.EnforceStrictBounds(simplex);
             }
 
             return new Solution(simplex.ObjectiveFunction(expanded), expanded);

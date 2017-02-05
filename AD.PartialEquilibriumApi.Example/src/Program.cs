@@ -4,7 +4,6 @@ using System.Linq;
 using System.Xml.Linq;
 using AD.IO;
 using AD.PartialEquilibriumApi.Optimization;
-using NLoptNet;
 
 namespace AD.PartialEquilibriumApi.Example
 {
@@ -64,6 +63,9 @@ namespace AD.PartialEquilibriumApi.Example
             // Add the supplier markets to the product market. This has the effect of splitting the product market into product supplied by the supplier markets.
             usaBeef.Add(usa, can, mex, aus);
 
+            // Set the current prices
+            usaBeef.SetCurrentPrices(usaBeef.DescendantsAndSelf().Select(x => x.InitialPrice()).ToArray());
+
             // Apply the price shocks
             usaBeef.ShockAllPrices();
 
@@ -77,9 +79,9 @@ namespace AD.PartialEquilibriumApi.Example
             {
                 false,
                 true,
-                false,
-                false,
-                false
+                true,
+                true,
+                true
             };
 
             // Optimize
@@ -93,43 +95,11 @@ namespace AD.PartialEquilibriumApi.Example
                     return usaBeef.MarketEquilibrium();
                 };
 
-            //Swarm swarm = new Swarm(seed: 0,
-            //                        count: 10,
-            //                        variableCount: usaBeef.DescendantNodesAndSelf().Count(),
-            //                        lowerBound: 0,
-            //                        upperBound: 2,
-            //                        objectiveFunction: function) { MaximumIterations = 1000 };
-            
-            //swarm.Optimize(objectiveVariableCount: usaBeef.DescendantNodesAndSelf().Count(),
-            //               lowerBound: 0, 
-            //               upperBound: 2);
+            Simplex simplex = new Simplex(5, 5, 0, 100, 1000, x => function(x));
 
-            //usaBeef.SetCurrentPrices(swarm.BestPosition.ToArray(), variables);
-            //usaBeef.ShockAllPrices();
-            //usaBeef.CalculatePriceIndex();
-            //usaBeef.CalculateRootMarketEquilibrium();
+            double[] result = simplex.Solve().Vector;
 
-            //using (var solver = new NLoptSolver(NLoptAlgorithm.LN_NELDERMEAD, 5, 1e-15, 1000))
-            //{
-            //    solver.SetLowerBounds(0.0);
-            //    solver.SetUpperBounds(2.0);
-
-            //    solver.SetMinObjective(x => function(x));
-
-            //    double? finalScore;
-            //    double[] initialValue = new[] { 1.0, 1.0, 1.0, 1.0, 1.0 };
-
-            //    solver.Optimize(initialValue, out finalScore);
-
-            //    usaBeef.ShockAllPrices();
-            //    usaBeef.CalculatePriceIndex();
-            //    usaBeef.CalculateRootMarketEquilibrium();
-            //}
-
-            Simplex simplex = new Simplex(3, 5, 0, 2, 10000, x => function(x));
-
-            simplex.Solve();
-            
+            usaBeef.SetCurrentPrices(result, variables);
             usaBeef.ShockAllPrices();
             usaBeef.CalculatePriceIndex();
             usaBeef.CalculateRootMarketEquilibrium();
@@ -153,11 +123,11 @@ namespace AD.PartialEquilibriumApi.Example
             using (StreamWriter writer = new StreamWriter(csv))
             {
                 writer.WriteLine("ElasticityOfSubstitution,ElasticityOfSupply,ElasticityOfDemand,InitialPrice,CurrentPrice,MarketShare,Tariff");
-                writer.WriteLine("4,1,-1,1.0000000000000000,1.0000000000000000,0.0000000000000000,0.0000000000000000");
+                writer.WriteLine("4,5,-1,1.0000000000000000,1.0000000000000000,1.0000000000000000,0.0000000000000000");
                 writer.WriteLine("4,5,-1,1.0000000000000000,0.9764852913975930,0.0164876157540142,0.0435080979193930");
-                writer.WriteLine("4,1,-1,1.0000000000000000,1.0000000000000000,0.1826886798599640,0.0000000000000000");
-                writer.WriteLine("4,1,-1,1.0000000000000000,1.0000000000000000,0.0747428059044746,0.0000000000000000");
-                writer.WriteLine("4,1,-1,1.0000000000000000,1.0000000000000000,0.7260808984815470,0.0000000000000000");
+                writer.WriteLine("4,5,-1,1.0000000000000000,1.0000000000000000,0.1826886798599640,0.0000000000000000");
+                writer.WriteLine("4,5,-1,1.0000000000000000,1.0000000000000000,0.0747428059044746,0.0000000000000000");
+                writer.WriteLine("4,5,-1,1.0000000000000000,1.0000000000000000,0.7260808984815470,0.0000000000000000");
             }
             return new DelimitedFilePath(csv, ',');
         }

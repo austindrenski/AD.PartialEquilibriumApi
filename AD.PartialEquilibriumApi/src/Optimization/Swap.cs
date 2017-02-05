@@ -1,28 +1,27 @@
-﻿using System;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 
 namespace AD.PartialEquilibriumApi.Optimization
 {
     /// <summary>
-    /// 
+    /// Extension methods to swap solutions in a <see cref="Simplex"/>.
     /// </summary>
     [PublicAPI]
-    public static class ReplaceWorstExtensions
+    public static class SwapExtensions
     {
         /// <summary>
         /// Replaces the worst solution with the specified solution.
         /// </summary>
         /// <param name="simplex">The source <see cref="Simplex"/>.</param>
         /// <param name="solution">The replacement solution.</param>
-        public static void ReplaceWorst(this Simplex simplex, Solution solution)
+        /// <param name="index">The index of the current solution to be replaced.</param>
+        public static void Swap(this Simplex simplex, Solution solution, int index)
         {
             for (int i = 0; i < simplex.Dimensions; i++)
             {
-                simplex.Solutions[simplex.NumberOfSolutions - 1].Vector[i] = solution.Vector[i];
+                simplex.Solutions[index][i] = solution[i];
             }
 
-            simplex.Solutions[simplex.NumberOfSolutions - 1].Value = solution.Value;
-            Array.Sort(simplex.Solutions);
+            simplex.Solutions[index].Value = solution.Value;
         }
     }
 }
