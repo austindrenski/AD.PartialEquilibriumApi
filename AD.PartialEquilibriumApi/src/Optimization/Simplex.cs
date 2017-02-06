@@ -94,7 +94,7 @@ namespace AD.PartialEquilibriumApi
         /// <param name="lowerBound">The lower bound of the search space. Must be less than or equal to the upper bound.</param>
         /// <param name="upperBound">The upper bound of the search space. Must be greater than or equal to the lower bound.</param>
         /// <param name="dimensions">The length of the argument vector.</param>
-        /// <param name="numberOfSolutions">The number of <see cref="Solution"/> objects to use in the <see cref="Simplex"/>.</param>
+        /// <param name="numberOfSolutions">The number of <see cref="Solution"/> objects to use in the <see cref="Simplex"/>. Must be greater than or equal to the dimensions.</param>
         /// <param name="iterations">The number of iterations to attempt. Must be greater than zero.</param>
         /// <param name="textWriter">Set this property to the standard output for progress reporting.</param>
         /// <exception cref="ArgumentOutOfRangeException"/>
@@ -107,6 +107,10 @@ namespace AD.PartialEquilibriumApi
             if (iterations < 1)
             {
                 throw new ArgumentOutOfRangeException("The iteration count must be greater than zero.");
+            }
+            if (dimensions < numberOfSolutions)
+            {
+                throw new ArgumentOutOfRangeException("The problem dimensions must be greater than or equal to the number of solutions.");
             }
             TextWriter = textWriter ?? new StringWriter();
             Dimensions = dimensions;
@@ -137,7 +141,7 @@ namespace AD.PartialEquilibriumApi
         /// <param name="lowerBound">The lower bound of the search space. Must be less than or equal to the upper bound.</param>
         /// <param name="upperBound">The upper bound of the search space. Must be greater than or equal to the lower bound.</param>
         /// <param name="dimensions">The length of the argument vector.</param>
-        /// <param name="textWriter">Set this property to the standard output for progress reporting.</param>
+        /// <param name="textWriter">Set this property to the standard output for progress reporting. If null, a <see cref="StringWriter"/> is initialized.</param>
         /// <exception cref="ArgumentOutOfRangeException"/>
         public Simplex(Func<double[], double> objectiveFunction, double lowerBound, double upperBound, int dimensions, TextWriter textWriter = null)
             : this(objectiveFunction, lowerBound, upperBound, dimensions, dimensions, dimensions < 5 ? 1000 : dimensions * 200, textWriter)
