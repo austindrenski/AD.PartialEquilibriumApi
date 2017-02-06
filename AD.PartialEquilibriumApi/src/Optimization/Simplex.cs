@@ -4,9 +4,7 @@ using JetBrains.Annotations;
 namespace AD.PartialEquilibriumApi.Optimization
 {
     /// <summary>
-    /// This class represents an implementation of the Nelder-Mead Simplex algorithm. 
-    /// Based on an algorithm demonstrated by Dr. James McCaffrey, June 2013.
-    /// https://msdn.microsoft.com/en-us/magazine/dn201752.aspx
+    /// This class implements a Nelder-Mead style simplex algorithm to minimize an objective function.
     /// </summary>
     [PublicAPI]
     public class Simplex
