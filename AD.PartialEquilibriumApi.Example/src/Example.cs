@@ -5,6 +5,7 @@ using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 using AD.IO;
+using JetBrains.Annotations;
 
 namespace AD.PartialEquilibriumApi.Example
 {
@@ -106,6 +107,7 @@ namespace AD.PartialEquilibriumApi.Example
             Console.ReadLine();
         }
 
+        [UsedImplicitly]
         private static XElement CreateModelFromInteractive(DelimitedFilePath dataFile)
         {
             // Define the product market.
@@ -150,12 +152,12 @@ namespace AD.PartialEquilibriumApi.Example
             string csv = Path.ChangeExtension(Path.GetTempFileName(), ".csv");
             using (StreamWriter writer = new StreamWriter(csv))
             {
-                writer.WriteLine("ElasticityOfSubstitution,ElasticityOfSupply,ElasticityOfDemand,InitialPrice,ConsumerPrice,InitialMarketShare,Shock");
-                writer.WriteLine("4,5,-1,1.0,1.0,1.00,0.00");
-                writer.WriteLine("4,5,-1,1.0,1.0,0.25,0.00");
-                writer.WriteLine("4,5,-1,1.0,1.0,0.25,0.00");
-                writer.WriteLine("4,5,-1,1.0,1.0,0.25,0.05");
-                writer.WriteLine("4,5,-1,1.0,1.0,0.25,0.00");
+                writer.WriteLine("ElasticityOfSubstitution,ElasticityOfSupply,ElasticityOfDemand,InitialPrice,InitialMarketShare,Shock");
+                writer.WriteLine("4,5,-1,1.0,1.00,0.00");
+                writer.WriteLine("4,5,-1,1.0,0.25,0.00");
+                writer.WriteLine("4,5,-1,1.0,0.25,0.00");
+                writer.WriteLine("4,5,-1,1.0,0.25,0.05");
+                writer.WriteLine("4,5,-1,1.0,0.25,0.00");
             }
             return new DelimitedFilePath(csv, ',');
         }
