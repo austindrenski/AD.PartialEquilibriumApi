@@ -8,7 +8,7 @@ namespace AD.PartialEquilibriumApi.Optimization
     /// Represents the solution to an objective function.
     /// </summary>
     [PublicAPI]
-    public struct Solution : IComparable<Solution>
+    public struct Solution : IEquatable<Solution>, IComparable<Solution>
     {
         /// <summary>
         /// Returns the argument vector. An indexer is provided for set operations.
@@ -162,6 +162,51 @@ namespace AD.PartialEquilibriumApi.Optimization
         public override string ToString()
         {
             return $"[ {string.Join(", ", Vector.Select(x => $"{x:0e00}"))} ] = {Value:0e00}";
+        }
+
+        /// <summary>
+        /// True if two solutions have the same Vector and Value.
+        /// </summary>
+        public bool Equals(Solution other)
+        {
+            if (Vector.Length != other.Vector.Length)
+            {
+                return false;
+            }
+            bool vectorsEqual = true;
+            for (int i = 0; i < Vector.Length; i++)
+            {
+                if (Math.Abs(Vector[i] - other.Vector[i]) > double.Epsilon)
+                {
+                    vectorsEqual = false;
+                }
+            }
+            return vectorsEqual && Value.Equals(other.Value);
+        }
+
+        /// <summary>
+        /// True if two solutions have the same Vector and Value.
+        /// </summary>
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+            return obj is Solution && Equals((Solution)obj);
+        }
+
+
+        /// <summary>
+        /// Returns the hash code for this instance.
+        /// </summary>
+        /// <returns>A 32-bit signed integer that is the hash code for this instance.</returns>
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((Vector?.GetHashCode() ?? 0) * 397) ^ Value.GetHashCode();
+            }
         }
     }
 }
