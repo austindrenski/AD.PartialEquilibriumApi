@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 using AD.IO;
@@ -38,10 +39,10 @@ namespace AD.PartialEquilibriumApi.Example
                 new bool[]
                 {
                     false,
-                    false,
-                    false,
                     true,
-                    false
+                    true,
+                    true,
+                    true
                 };
 
             // Create the objective function.
@@ -88,6 +89,7 @@ namespace AD.PartialEquilibriumApi.Example
             Console.WriteLine("-----------------------------------------------------------------------------------------");
             XmlWriterSettings settings = new XmlWriterSettings
             {
+                Encoding = Encoding.UTF8,
                 Indent = true,
                 NewLineOnAttributes = true
             };
