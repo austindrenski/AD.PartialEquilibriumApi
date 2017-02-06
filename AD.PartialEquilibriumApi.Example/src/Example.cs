@@ -67,15 +67,16 @@ namespace AD.PartialEquilibriumApi.Example
             // Set up the simplex solver.
             Simplex simplex =
                 new Simplex(
-                    numberOfSolutions: 5,
-                    dimensions: 5,
+                    objectiveFunction: x => objectiveFunction(x),
                     lowerBound: 0,
                     upperBound: 100,
+                    dimensions: 5,
+                    numberOfSolutions: 5,
                     iterations: 1000,
-                    objectiveFunction: x => objectiveFunction(x));
+                    textWriter: Console.Out);
 
             // Find the minimum solution.
-            Solution solution = simplex.Minimize();
+            Solution solution = simplex.Minimize(true);
 
             // Update the XML tree one more time with the optimal result.
             double[] result = solution.Vector;
@@ -90,7 +91,8 @@ namespace AD.PartialEquilibriumApi.Example
             {
                 Encoding = Encoding.UTF8,
                 Indent = true,
-                NewLineOnAttributes = true
+                NewLineOnAttributes = true,
+                IndentChars = "    "
             };
             using (XmlWriter writer = XmlWriter.Create(Console.Out, settings))
             {

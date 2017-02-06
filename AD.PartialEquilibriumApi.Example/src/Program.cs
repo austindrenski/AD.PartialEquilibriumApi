@@ -99,7 +99,7 @@ namespace AD.PartialEquilibriumApi.Example
                     return usaBeef.MarketEquilibrium();
                 };
 
-            Simplex simplex = new Simplex(5, 5, 0, 100, 1000, x => function(x));
+            Simplex simplex = new Simplex(x => function(x), 0, 100, 5, Console.Out);
 
             double[] result = simplex.Minimize().Vector;
 

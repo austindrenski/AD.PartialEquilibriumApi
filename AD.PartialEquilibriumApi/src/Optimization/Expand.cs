@@ -23,7 +23,7 @@ namespace AD.PartialEquilibriumApi
             {
                 expanded[i] = (1 - Simplex.Expansion) * centroid[i] + Simplex.Expansion * reflected[i];
 
-                expanded = expanded.EnforceStrictBounds(simplex);
+                expanded = expanded.EnforceBounds(simplex);
             }
 
             return new Solution(simplex.ObjectiveFunction(expanded), expanded);

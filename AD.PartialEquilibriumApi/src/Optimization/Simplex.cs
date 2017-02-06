@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using JetBrains.Annotations;
 
 namespace AD.PartialEquilibriumApi
@@ -82,16 +83,32 @@ namespace AD.PartialEquilibriumApi
         public static readonly Random Random = new Random(0);
 
         /// <summary>
+        /// Set this property to the standard output for progress reporting.
+        /// </summary>
+        public TextWriter TextWriter { get; set; }
+
+        /// <summary>
         /// Creates a simplex with the given parameters.
         /// </summary>
-        /// <param name="numberOfSolutions">The number of <see cref="Solution"/> objects to use in the <see cref="Simplex"/>.</param>
-        /// <param name="dimensions">The length of the argument vector.</param>
-        /// <param name="lowerBound">The lower bound of the search space.</param>
-        /// <param name="upperBound">The upper bound of the search space.</param>
-        /// <param name="iterations">The number of iterations to attempt.</param>
         /// <param name="objectiveFunction">The function to minimize.</param>
-        public Simplex(int numberOfSolutions, int dimensions, double lowerBound, double upperBound, int iterations, Func<double[], double> objectiveFunction)
+        /// <param name="lowerBound">The lower bound of the search space. Must be less than or equal to the upper bound.</param>
+        /// <param name="upperBound">The upper bound of the search space. Must be greater than or equal to the lower bound.</param>
+        /// <param name="dimensions">The length of the argument vector.</param>
+        /// <param name="numberOfSolutions">The number of <see cref="Solution"/> objects to use in the <see cref="Simplex"/>.</param>
+        /// <param name="iterations">The number of iterations to attempt. Must be greater than zero.</param>
+        /// <param name="textWriter">Set this property to the standard output for progress reporting.</param>
+        /// <exception cref="ArgumentOutOfRangeException"/>
+        public Simplex(Func<double[], double> objectiveFunction, double lowerBound, double upperBound, int dimensions, int numberOfSolutions, int iterations, TextWriter textWriter = null)
         {
+            if (lowerBound > upperBound)
+            {
+                throw new ArgumentOutOfRangeException("The lower bound must be less than or equal to the upper bound.");
+            }
+            if (iterations < 1)
+            {
+                throw new ArgumentOutOfRangeException("The iteration count must be greater than zero.");
+            }
+            TextWriter = textWriter ?? new StringWriter();
             Dimensions = dimensions;
             Iterations = iterations;
             NumberOfSolutions = numberOfSolutions;
@@ -112,18 +129,32 @@ namespace AD.PartialEquilibriumApi
             }
             Array.Sort(Solutions);
         }
-        
+
+        /// <summary>
+        /// Creates a simplex with the given parameters.
+        /// </summary>
+        /// <param name="objectiveFunction">The function to minimize.</param>
+        /// <param name="lowerBound">The lower bound of the search space. Must be less than or equal to the upper bound.</param>
+        /// <param name="upperBound">The upper bound of the search space. Must be greater than or equal to the lower bound.</param>
+        /// <param name="dimensions">The length of the argument vector.</param>
+        /// <param name="textWriter">Set this property to the standard output for progress reporting.</param>
+        /// <exception cref="ArgumentOutOfRangeException"/>
+        public Simplex(Func<double[], double> objectiveFunction, double lowerBound, double upperBound, int dimensions, TextWriter textWriter = null)
+            : this(objectiveFunction, lowerBound, upperBound, dimensions, dimensions, dimensions < 5 ? 1000 : dimensions * 200, textWriter)
+        {
+        }
+
         /// <summary>
         /// Solves for the minimum value solution.
         /// </summary>
         /// <returns>The solution that produces the minimum value.</returns>
-        public Solution Minimize()
+        public Solution Minimize(bool local)
         {
             for (int i = 0; i < Iterations; i++)
             {
                 if (i % 10 == 0)
                 {
-                    Console.WriteLine($"> i = {i}: {Solutions[0]}");
+                    //TextWriter.WriteLineAsync($"> i = {i}: {Solutions[0]}");
                 }
 
                 Solution centroid = this.Centroid();

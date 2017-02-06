@@ -54,6 +54,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="src\Optimization\Minimize.cs" />
     <Compile Include="src\Xml\CurrentPrice.cs" />
     <Compile Include="src\Xml\ElasticityOfDemand.cs" />
     <Compile Include="src\Xml\ElasticityOfSupply.cs" />

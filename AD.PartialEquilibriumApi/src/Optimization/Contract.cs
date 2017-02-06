@@ -24,7 +24,7 @@ namespace AD.PartialEquilibriumApi
                 contracted[i] = (1 - Simplex.Contraction) * centroid[i] + Simplex.Contraction * simplex[simplex.LastIndex][i];
             }
 
-            contracted = contracted.EnforceStrictBounds(simplex);
+            contracted = contracted.EnforceBounds(simplex);
 
             return new Solution(simplex.ObjectiveFunction(contracted), contracted);
         }

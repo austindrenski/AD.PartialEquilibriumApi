@@ -26,7 +26,7 @@ namespace AD.PartialEquilibriumApi
                 }
                 centroid[i] /= simplex.LastIndex;
 
-                centroid = centroid.EnforceStrictBounds(simplex);
+                centroid = centroid.EnforceBounds(simplex);
             }
             return new Solution(simplex.ObjectiveFunction(centroid), centroid);
         }
