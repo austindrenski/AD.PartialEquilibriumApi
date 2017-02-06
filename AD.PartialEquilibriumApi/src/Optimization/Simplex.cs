@@ -22,14 +22,19 @@ namespace AD.PartialEquilibriumApi.Optimization
         public Func<double[], double> ObjectiveFunction { get; }
 
         /// <summary>
-        /// The maximum number of iterations to attempt.
+        /// The number of iterations to attempt.
         /// </summary>
-        public int MaximumIterations { get; }
+        public int Iterations { get; }
 
         /// <summary>
         /// The number of solutions to employ. Equal to the number of vertices.
         /// </summary>
         public int NumberOfSolutions { get; }
+
+        /// <summary>
+        /// Equal to NumberOfSolutions - 1.
+        /// </summary>
+        public int LastIndex { get; }
 
         /// <summary>
         /// The lower bound of the search space.
@@ -85,13 +90,14 @@ namespace AD.PartialEquilibriumApi.Optimization
         /// <param name="dimensions">The length of the argument vector.</param>
         /// <param name="lowerBound">The lower bound of the search space.</param>
         /// <param name="upperBound">The upper bound of the search space.</param>
-        /// <param name="maximumIterations">The maximum number of iterations to attempt.</param>
+        /// <param name="iterations">The number of iterations to attempt.</param>
         /// <param name="objectiveFunction">The function to minimize.</param>
-        public Simplex(int numberOfSolutions, int dimensions, double lowerBound, double upperBound, int maximumIterations, Func<double[], double> objectiveFunction)
+        public Simplex(int numberOfSolutions, int dimensions, double lowerBound, double upperBound, int iterations, Func<double[], double> objectiveFunction)
         {
             Dimensions = dimensions;
-            MaximumIterations = maximumIterations;
+            Iterations = iterations;
             NumberOfSolutions = numberOfSolutions;
+            LastIndex = numberOfSolutions - 1;
             ObjectiveFunction = objectiveFunction;
             LowerBound = lowerBound;
             UpperBound = upperBound;
@@ -113,9 +119,9 @@ namespace AD.PartialEquilibriumApi.Optimization
         /// Solves for the minimum value solution.
         /// </summary>
         /// <returns>The solution that produces the minimum value.</returns>
-        public Solution Solve()
+        public Solution Minimize()
         {
-            for (int i = 0; i < MaximumIterations; i++)
+            for (int i = 0; i < Iterations; i++)
             {
                 if (i % 10 == 0)
                 {
@@ -128,34 +134,34 @@ namespace AD.PartialEquilibriumApi.Optimization
                 if (reflected < Solutions[0])
                 {
                     Solution expanded = this.Expand(centroid, reflected);
-                    this.Swap(expanded < Solutions[0] ? expanded : reflected, NumberOfSolutions - 1);
+                    this.Swap(expanded < Solutions[0] ? expanded : reflected, LastIndex);
                     Array.Sort(Solutions);
                     continue;
                 }
 
                 if (reflected < this)
                 {
-                    if (reflected <= Solutions[NumberOfSolutions - 1])
+                    if (reflected <= Solutions[LastIndex])
                     {
-                        this.Swap(reflected, NumberOfSolutions - 1);
+                        this.Swap(reflected, LastIndex);
                         Array.Sort(Solutions);
                     }
 
                     Solution contracted = this.Contract(centroid);
 
-                    if (Solutions[NumberOfSolutions - 1] < contracted)
+                    if (Solutions[LastIndex] < contracted)
                     {
                         this.Shrink();
                         Array.Sort(Solutions);
                     }
                     else
                     {
-                        this.Swap(contracted, NumberOfSolutions - 1);
+                        this.Swap(contracted, LastIndex);
                         Array.Sort(Solutions);
                     }
                     continue;
                 }
-                this.Swap(reflected, NumberOfSolutions - 1);
+                this.Swap(reflected, LastIndex);
                 Array.Sort(Solutions);
             }
             return Solutions[0];

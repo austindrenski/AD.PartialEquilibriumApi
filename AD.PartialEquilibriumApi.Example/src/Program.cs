@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Xml;
 using System.Xml.Linq;
 using AD.IO;
 using AD.PartialEquilibriumApi.Optimization;
@@ -11,6 +12,9 @@ namespace AD.PartialEquilibriumApi.Example
     {
         public static void Main()
         {
+            Example.Example1();
+            return;
+
             XmlFilePath structureFile = CreateTempXmlFile();
             DelimitedFilePath dataFile = CreateTempCsvFile();
 
@@ -20,22 +24,22 @@ namespace AD.PartialEquilibriumApi.Example
                 ExampleFromXElement(dataFile)
             };
 
-            foreach (XElement usaBeef in versions)
+            foreach (XElement model in versions)
             {
-                Console.WriteLine();
-                foreach (XElement market in usaBeef.DescendantsAndSelf().Reverse())
+                // Print the results.
+                Console.WriteLine("-----------------------------------------------------------------------------------------");
+                XmlWriterSettings settings = new XmlWriterSettings
                 {
-                    Console.WriteLine();
-                    Console.WriteLine($"Name: {market.Name}");
-                    foreach (XAttribute attribute in market.Attributes())
-                    {
-                        Console.WriteLine(attribute);
-                    }
+                    Indent = true,
+                    NewLineOnAttributes = true
+                };
+                using (XmlWriter writer = XmlWriter.Create(Console.Out, settings))
+                {
+                    model.WriteTo(writer);
                 }
-
                 Console.WriteLine();
-                Console.WriteLine(usaBeef);
-                Console.WriteLine("-------------------------");
+                Console.WriteLine("-----------------------------------------------------------------------------------------");
+                Console.ReadLine();
             }
             Console.ReadLine();
         }
@@ -75,14 +79,15 @@ namespace AD.PartialEquilibriumApi.Example
             // Calculate the market equilibrium
             usaBeef.CalculateRootMarketEquilibrium();
 
-            bool[] variables = new bool[]
-            {
-                false,
-                true,
-                true,
-                true,
-                true
-            };
+            bool[] variables = 
+                new bool[]
+                {
+                    false,
+                    true,
+                    true,
+                    true,
+                    true
+                };
 
             // Optimize
             Func<double[], double> function =
@@ -97,7 +102,7 @@ namespace AD.PartialEquilibriumApi.Example
 
             Simplex simplex = new Simplex(5, 5, 0, 100, 1000, x => function(x));
 
-            double[] result = simplex.Solve().Vector;
+            double[] result = simplex.Minimize().Vector;
 
             usaBeef.SetCurrentPrices(result, variables);
             usaBeef.ShockAllPrices();
@@ -112,7 +117,13 @@ namespace AD.PartialEquilibriumApi.Example
             string xml = Path.ChangeExtension(Path.GetTempFileName(), ".xml");
             using (StreamWriter writer = new StreamWriter(xml))
             {
-                writer.WriteLine(@"<usaBeef><usa/><can/><mex/><aus/></usaBeef>");
+                writer.WriteLine(
+                    @"<usaBeef>
+                        <usa/>
+                        <can/>
+                        <mex/>
+                        <aus/>
+                      </usaBeef>");
             }
             return new XmlFilePath(xml);
         }
@@ -122,7 +133,7 @@ namespace AD.PartialEquilibriumApi.Example
             string csv = Path.ChangeExtension(Path.GetTempFileName(), ".csv");
             using (StreamWriter writer = new StreamWriter(csv))
             {
-                writer.WriteLine("ElasticityOfSubstitution,ElasticityOfSupply,ElasticityOfDemand,InitialPrice,CurrentPrice,MarketShare,Tariff");
+                writer.WriteLine("ElasticityOfSubstitution,ElasticityOfSupply,ElasticityOfDemand,InitialPrice,CurrentPrice,MarketShare,Shock");
                 writer.WriteLine("4,5,-1,1.0000000000000000,1.0000000000000000,1.0000000000000000,0.0000000000000000");
                 writer.WriteLine("4,5,-1,1.0000000000000000,0.9764852913975930,0.0164876157540142,0.0435080979193930");
                 writer.WriteLine("4,5,-1,1.0000000000000000,1.0000000000000000,0.1826886798599640,0.0000000000000000");

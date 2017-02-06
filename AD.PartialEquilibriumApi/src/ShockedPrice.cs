@@ -30,7 +30,7 @@ namespace AD.PartialEquilibriumApi
         public static XElement ShockPrice(this XElement element)
         {
             double currentPrice = element.CurrentPrice();
-            double tariff = element.Tariff();
+            double tariff = element.Shock();
             double shockedPrice = currentPrice * (1 + tariff);
             element.SetAttributeValue(XShockedPrice, shockedPrice);
             return element;

@@ -21,7 +21,7 @@ namespace AD.PartialEquilibriumApi.Optimization
 
             for (int i = 0; i < simplex.Dimensions; i++)
             {
-                contracted[i] = (1 - Simplex.Contraction) * centroid[i] + Simplex.Contraction * simplex[simplex.NumberOfSolutions - 1][i];
+                contracted[i] = (1 - Simplex.Contraction) * centroid[i] + Simplex.Contraction * simplex[simplex.LastIndex][i];
             }
 
             contracted = contracted.EnforceStrictBounds(simplex);

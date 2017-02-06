@@ -74,7 +74,7 @@
     <Compile Include="src\PriceIndex.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="src\ShockedPrice.cs" />
-    <Compile Include="src\Tariff.cs" />
+    <Compile Include="src\Shock.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

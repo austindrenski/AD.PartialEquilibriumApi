@@ -21,7 +21,7 @@ namespace AD.PartialEquilibriumApi.Optimization
 
             for (int i = 0; i < simplex.Dimensions; i++)
             {
-                reflected[i] = (1 + Simplex.Reflection) * centroid[i] - Simplex.Reflection * simplex[simplex.NumberOfSolutions - 1][i];
+                reflected[i] = (1 + Simplex.Reflection) * centroid[i] - Simplex.Reflection * simplex[simplex.LastIndex][i];
 
                 reflected = reflected.EnforceStrictBounds(simplex);
             }

@@ -20,11 +20,11 @@ namespace AD.PartialEquilibriumApi.Optimization
 
             for (int i = 0; i < simplex.Dimensions; i++)
             {
-                for (int j = 0; j < simplex.NumberOfSolutions - 1; j++)
+                for (int j = 0; j < simplex.LastIndex; j++)
                 {
                     centroid[i] += simplex[j][i];
                 }
-                centroid[i] /= simplex.NumberOfSolutions - 1;
+                centroid[i] /= simplex.LastIndex;
 
                 centroid = centroid.EnforceStrictBounds(simplex);
             }

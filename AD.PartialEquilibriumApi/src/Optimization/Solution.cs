@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using JetBrains.Annotations;
 
 namespace AD.PartialEquilibriumApi.Optimization
@@ -160,7 +161,7 @@ namespace AD.PartialEquilibriumApi.Optimization
         /// </summary>
         public override string ToString()
         {
-            return $"[ {string.Join(", ", Vector)} ] = {Value}";
+            return $"[ {string.Join(", ", Vector.Select(x => $"{x:0e00}"))} ] = {Value:0e00}";
         }
     }
 }
