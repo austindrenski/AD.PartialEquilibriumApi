@@ -1,6 +1,6 @@
 ﻿using JetBrains.Annotations;
 
-namespace AD.PartialEquilibriumApi.Optimization
+namespace AD.PartialEquilibriumApi
 {
     /// <summary>
     /// Extension methods to swap solutions in a <see cref="Simplex"/>.

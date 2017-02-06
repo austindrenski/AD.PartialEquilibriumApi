@@ -2,7 +2,7 @@
 using System.Linq;
 using JetBrains.Annotations;
 
-namespace AD.PartialEquilibriumApi.Optimization
+namespace AD.PartialEquilibriumApi
 {
     /// <summary>
     /// Represents the solution to an objective function.

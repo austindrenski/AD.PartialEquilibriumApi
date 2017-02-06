@@ -1,6 +1,6 @@
 ﻿using JetBrains.Annotations;
 
-namespace AD.PartialEquilibriumApi.Optimization
+namespace AD.PartialEquilibriumApi
 {
     /// <summary>
     /// Extension methods to shrink the solutions of a <see cref="Simplex"/>.

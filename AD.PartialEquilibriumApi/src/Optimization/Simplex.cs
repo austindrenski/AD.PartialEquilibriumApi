@@ -1,7 +1,7 @@
 ﻿using System;
 using JetBrains.Annotations;
 
-namespace AD.PartialEquilibriumApi.Optimization
+namespace AD.PartialEquilibriumApi
 {
     /// <summary>
     /// This class implements a Nelder-Mead style simplex algorithm to minimize an objective function.

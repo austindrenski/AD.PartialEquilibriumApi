@@ -1,6 +1,6 @@
 ﻿using JetBrains.Annotations;
 
-namespace AD.PartialEquilibriumApi.Optimization
+namespace AD.PartialEquilibriumApi
 {
     /// <summary>
     /// Extension method to calculate the centroid solution for a <see cref="Simplex"/>.
