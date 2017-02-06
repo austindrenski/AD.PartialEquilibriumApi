@@ -10,42 +10,42 @@ namespace AD.PartialEquilibriumApi
     [PublicAPI]
     public static class ShockPriceExtensions
     {
-        private static readonly XName XShockedPrice = "ShockedPrice";
+        private static readonly XName XProducerPrice = "ProducerPrice";
 
         /// <summary>
-        /// Gets the ShockedPrice attribute.
+        /// Gets the ProducerPrice attribute.
         /// </summary>
         /// <param name="element">The source element.</param>
-        /// <returns>The shocked price.</returns>
-        public static double ShockedPrice(this XElement element)
+        /// <returns>The ConsumerPrice modified by the shock.</returns>
+        public static double ProducerPrice(this XElement element)
         {
-            return (double) element.Attribute(XShockedPrice);
+            return (double) element.Attribute(XProducerPrice);
         }
 
         /// <summary>
-        /// Sets the ShockedPrice attribute = initialPrice * (1 + tariff)
+        /// Sets the ProducerPrice attribute = ConsumerPrice / (1 + Shock)
         /// </summary>
         /// <param name="element">The element to shock.</param>
         /// <returns>A reference to the existing <see cref="XElement"/>. This is returned for use with fluent syntax calls.</returns>
-        public static XElement ShockPrice(this XElement element)
+        public static XElement ShockProducerPrice(this XElement element)
         {
-            double currentPrice = element.CurrentPrice();
-            double tariff = element.Shock();
-            double shockedPrice = currentPrice * (1 + tariff);
-            element.SetAttributeValue(XShockedPrice, shockedPrice);
+            double currentPrice = element.ConsumerPrice();
+            double shock = element.Shock();
+            double shockedPrice = currentPrice / (1 + shock);
+            element.SetAttributeValue(XProducerPrice, shockedPrice);
             return element;
         }
 
         /// <summary>
-        /// Sets each ShockedPrice attribute in reverse document order = initialPrice * (1 + tariff)
+        /// Sets each ProducerPrice attribute in reverse document order = ConsumerPrice / (1 + Shock)
         /// </summary>
         /// <param name="element">The root element.</param>
         /// <returns>A reference to the existing <see cref="XElement"/>. This is returned for use with fluent syntax calls.</returns>
-        public static XElement ShockAllPrices(this XElement element)
+        public static XElement ShockAllProducerPrices(this XElement element)
         {
             foreach (XElement item in element.DescendantsAndSelf().Reverse())
             {
-                item.ShockPrice();
+                item.ShockProducerPrice();
             }
             return element;
         }

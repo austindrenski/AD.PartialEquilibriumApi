@@ -56,7 +56,7 @@ namespace AD.PartialEquilibriumApi
         /// </summary>
         public override string ToString()
         {
-            return $"[ {string.Join(", ", Vector.Select(x => $"{x:e2}"))} ] = {Value:e2}";
+            return $"[ {string.Join(", ", Vector.Select(x => $"{x:0.0000e00}"))} ] = {Value:0.0000e00}";
         }
 
         /// <summary>

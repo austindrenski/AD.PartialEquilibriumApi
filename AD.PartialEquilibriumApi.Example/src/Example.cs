@@ -19,16 +19,16 @@ namespace AD.PartialEquilibriumApi.Example
             XElement model = CreateModelFromFile(structureFile, dataFile);
             //XElement model = CreateModelFromInteractive(dataFile);
 
-            // Set the current prices.
-            model.SetCurrentPrices(model.DescendantsAndSelf()
+            // Set the consumer prices.
+            model.SetConsumerPrices(model.DescendantsAndSelf()
                                         .Select(x => x.InitialPrice())
                                         .ToArray());
 
             // Apply the price shocks.
-            model.ShockAllPrices();
+            model.ShockAllProducerPrices();
 
             // Calculate the price indices.
-            model.CalculatePriceIndex();
+            model.CalculateConsumerPriceIndex();
 
             // Calculate the market equilibrium starting on the root.
             model.CalculateRootMarketEquilibrium();
@@ -48,15 +48,15 @@ namespace AD.PartialEquilibriumApi.Example
             Func<double[], double> objectiveFunction =
                 x =>
                 {
-                    // Update current prices to the argument vector.
+                    // Update consumer prices to the argument vector.
                     // Result: x[i] if variables[i] is true
-                    model.SetCurrentPrices(x, variables);
+                    model.SetConsumerPrices(x, variables);
                     // Shock the current prices:
                     // Result: currentPrice * (1 + shock)
-                    model.ShockAllPrices();
+                    model.ShockAllProducerPrices();
                     // Calculate a price index for the sector:
                     // Result: [Σ marketShare[i] * (price[i] ^ (1 - elasticityOfSubstitution[i])] ^ [1 / (1 - elasticityOfSubstitution)]
-                    model.CalculatePriceIndex();
+                    model.CalculateConsumerPriceIndex();
                     // Caclulate the market equilibrium. Zero means equilibrium.
                     // [shockedPrice ^ elasticityOfSupply] - [(priceIndex ^ (elasticityOfSubstitution + elasticityOfDemand)) / (initialPrice ^ elasticityOfSubstitution)]
                     model.CalculateRootMarketEquilibrium();
@@ -80,10 +80,13 @@ namespace AD.PartialEquilibriumApi.Example
 
             // Update the XML tree one more time with the optimal result.
             double[] result = solution.Vector;
-            model.SetCurrentPrices(result, variables);
-            model.ShockAllPrices();
-            model.CalculatePriceIndex();
+            model.SetConsumerPrices(result, variables);
+            model.ShockAllProducerPrices();
+            model.CalculateConsumerPriceIndex();
             model.CalculateRootMarketEquilibrium();
+
+            // Calculate new market shares
+            model.CalculateAllFinalMarketShares();
 
             // Print the results.
             Console.WriteLine("-----------------------------------------------------------------------------------------");
@@ -147,7 +150,7 @@ namespace AD.PartialEquilibriumApi.Example
             string csv = Path.ChangeExtension(Path.GetTempFileName(), ".csv");
             using (StreamWriter writer = new StreamWriter(csv))
             {
-                writer.WriteLine("ElasticityOfSubstitution,ElasticityOfSupply,ElasticityOfDemand,InitialPrice,CurrentPrice,MarketShare,Shock");
+                writer.WriteLine("ElasticityOfSubstitution,ElasticityOfSupply,ElasticityOfDemand,InitialPrice,ConsumerPrice,InitialMarketShare,Shock");
                 writer.WriteLine("4,5,-1,1.0,1.0,1.00,0.00");
                 writer.WriteLine("4,5,-1,1.0,1.0,0.25,0.00");
                 writer.WriteLine("4,5,-1,1.0,1.0,0.25,0.00");
