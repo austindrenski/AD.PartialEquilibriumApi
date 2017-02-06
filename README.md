@@ -12,7 +12,7 @@ For a detailed description of the structure of an ExPEM-type model, see [Model D
 ## Purpose
 This library aims to provide the tools necessary to construct partial equilibrium models that are object-oriented, simple to create, and extensible.
 
-Implementations of this library are known as Extensible Partial Equilibrium Modeling (ExPEM) type models. An official implementation of this library is currently under development and can be previewed under: [AD.PartialEquilibriumApi.Example](https://github.com/austindrenski/AD.PartialEquilibriumApi/tree/master/AD.PartialEquilibriumApi.Example). 
+Implementations of this library are known as Extensible Partial Equilibrium Modeling (ExPEM) type models. An official implementation of this library is currently under development and can be previewed under: [AD.PartialEquilibriumApi.Example](https://github.com/austindrenski/AD.PartialEquilibriumApi/tree/master/AD.PartialEquilibriumApi.Example). The production-ready implementations will be released under: [ExPEM](https://github.com/austindrenski/ExPEM).
 
 ## Motivation
 Partial equilibrium (PE) models are simple and lightweight, but programming one can be complicated by the hierarchical nature of the linkages. This library proposes the use of the Extensible Markup Language (XML) to represent the model in an intuitive and object-oriented manner.
