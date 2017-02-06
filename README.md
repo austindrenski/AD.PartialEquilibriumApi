@@ -1,6 +1,8 @@
 # AD.PartialEquilibriumApi
 C# framework for programming Partial Equilibrium models.
 
+[![DOI](https://zenodo.org/badge/80772157.svg)](https://zenodo.org/badge/latestdoi/80772157)
+
 ## Install from NuGet:
 ```Powershell
 PM> Install-Package AD.PartialEquilibriumApi
