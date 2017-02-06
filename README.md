@@ -77,6 +77,6 @@ double b = downstream.Element("Upstream2")
 ***
 <img src="Logos/ExPEM_logo_transparent.png" width="200">
 
-The AD.PartialEquilibriumApi library is part of the ExPEM project. For more information, please visit [ExPEM](https://github.com/austindrenski/ExPEM").
+The AD.PartialEquilibriumApi library is part of the ExPEM project. For more information, please visit [ExPEM](https://github.com/austindrenski/ExPEM).
 
 
