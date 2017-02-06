@@ -5,6 +5,7 @@ C# framework for programming Partial Equilibrium models.
 ```Powershell
 PM> Install-Package AD.PartialEquilibriumApi
 ```
+
 ## Description
 For a detailed description of the structure of an ExPEM-type model, see [Model Description](https://github.com/austindrenski/AD.PartialEquilibriumApi/wiki/Model-Description)
 
@@ -37,6 +38,7 @@ The primary goal of this library is to help write code that mirrors the graphica
 | Upstream 3 |                    | Upstream 4 |                       | Upstream 5 |
 --------------                    --------------                       --------------
 ```
+
 ```XML
 <Downstream>
   <Upstream1 />
@@ -46,6 +48,7 @@ The primary goal of this library is to help write code that mirrors the graphica
     <Upstream5 />
 </Downstream>
 ```
+
 ```C#
 XElement downstream = new XElement("Downstream");
 XElement upstream1 = new XElement("Upstream1", new XAttribute("Price", 1));
