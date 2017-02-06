@@ -143,57 +143,5 @@ namespace AD.PartialEquilibriumApi
             : this(objectiveFunction, lowerBound, upperBound, dimensions, dimensions, dimensions < 5 ? 1000 : dimensions * 200, textWriter)
         {
         }
-
-        /// <summary>
-        /// Solves for the minimum value solution.
-        /// </summary>
-        /// <returns>The solution that produces the minimum value.</returns>
-        public Solution Minimize(bool local)
-        {
-            for (int i = 0; i < Iterations; i++)
-            {
-                if (i % 10 == 0)
-                {
-                    //TextWriter.WriteLineAsync($"> i = {i}: {Solutions[0]}");
-                }
-
-                Solution centroid = this.Centroid();
-                Solution reflected = this.Reflect(centroid);
-
-                if (reflected < Solutions[0])
-                {
-                    Solution expanded = this.Expand(centroid, reflected);
-                    this.Swap(expanded < Solutions[0] ? expanded : reflected, LastIndex);
-                    Array.Sort(Solutions);
-                    continue;
-                }
-
-                if (reflected < this)
-                {
-                    if (reflected <= Solutions[LastIndex])
-                    {
-                        this.Swap(reflected, LastIndex);
-                        Array.Sort(Solutions);
-                    }
-
-                    Solution contracted = this.Contract(centroid);
-
-                    if (Solutions[LastIndex] < contracted)
-                    {
-                        this.Shrink();
-                        Array.Sort(Solutions);
-                    }
-                    else
-                    {
-                        this.Swap(contracted, LastIndex);
-                        Array.Sort(Solutions);
-                    }
-                    continue;
-                }
-                this.Swap(reflected, LastIndex);
-                Array.Sort(Solutions);
-            }
-            return Solutions[0];
-        }
     }
 }

@@ -76,7 +76,7 @@ namespace AD.PartialEquilibriumApi.Example
                     textWriter: Console.Out);
 
             // Find the minimum solution.
-            Solution solution = simplex.Minimize(true);
+            Solution solution = simplex.Minimize();
 
             // Update the XML tree one more time with the optimal result.
             double[] result = solution.Vector;

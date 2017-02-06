@@ -52,6 +52,14 @@ namespace AD.PartialEquilibriumApi
         }
 
         /// <summary>
+        /// Returns a string representation of the <see cref="Solution"/>.
+        /// </summary>
+        public override string ToString()
+        {
+            return $"[ {string.Join(", ", Vector.Select(x => $"{x:e2}"))} ] = {Value:e2}";
+        }
+
+        /// <summary>
         /// Compares <see cref="Solution"/> objects based on the values.
         /// </summary>
         /// <param name="other">The solution to which the comparison is made.</param>
@@ -154,14 +162,6 @@ namespace AD.PartialEquilibriumApi
                 }
             }
             return betterThan > 0;
-        }
-
-        /// <summary>
-        /// Returns a string representation of the <see cref="Solution"/>.
-        /// </summary>
-        public override string ToString()
-        {
-            return $"[ {string.Join(", ", Vector.Select(x => $"{x:0e00}"))} ] = {Value:0e00}";
         }
 
         /// <summary>

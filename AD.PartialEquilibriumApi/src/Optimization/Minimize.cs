@@ -19,7 +19,7 @@ namespace AD.PartialEquilibriumApi
             {
                 if (i % 10 == 0)
                 {
-                    simplex.TextWriter.WriteLineAsync($"> i = {i}: {simplex.Solutions[0]}");
+                    simplex.TextWriter.WriteLineAsync($"> i = {$"{i}".PadLeft(simplex.Iterations.ToString().Length)}: {simplex.Solutions[0]}");
                 }
 
                 Solution centroid = simplex.Centroid();
