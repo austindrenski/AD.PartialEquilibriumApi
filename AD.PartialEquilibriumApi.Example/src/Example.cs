@@ -16,8 +16,8 @@ namespace AD.PartialEquilibriumApi.Example
             DelimitedFilePath dataFile = CreateTempCsvFile();
 
             // Read in the model and the data.
-            XElement model = XElement.Load(structureFile)
-                                     .DefineAttributeData(dataFile);
+            XElement model = CreateModelFromFile(structureFile, dataFile);
+            //XElement model = CreateModelFromInteractive(dataFile);
 
             // Set the current prices.
             model.SetCurrentPrices(model.DescendantsAndSelf()
@@ -101,6 +101,29 @@ namespace AD.PartialEquilibriumApi.Example
             Console.WriteLine();
             Console.WriteLine("-----------------------------------------------------------------------------------------");
             Console.ReadLine();
+        }
+
+        private static XElement CreateModelFromInteractive(DelimitedFilePath dataFile)
+        {
+            // Define the product market.
+            XElement model = new XElement("Retail").DefineAttributeData(dataFile, 0);
+
+            // Define the supplier markets and the initial prices of purchase from those markets.
+            XElement supplier1 = new XElement("Supplier1").DefineAttributeData(dataFile, 1);
+            XElement supplier2 = new XElement("Supplier2").DefineAttributeData(dataFile, 2);
+            XElement supplier3 = new XElement("Supplier3").DefineAttributeData(dataFile, 3);
+            XElement supplier4 = new XElement("Supplier4").DefineAttributeData(dataFile, 4);
+
+            // Add the supplier markets to the product market. This has the effect of splitting the product market into product supplied by the supplier markets.
+            model.Add(supplier1, supplier2, supplier3, supplier4);
+
+            return model;
+        }
+
+        private static XElement CreateModelFromFile(XmlFilePath structureFile, DelimitedFilePath dataFile)
+        {
+            return XElement.Load(structureFile)
+                           .DefineAttributeData(dataFile);
         }
 
         private static XmlFilePath CreateTempXmlFile()
