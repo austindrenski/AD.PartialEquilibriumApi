@@ -108,7 +108,7 @@ namespace AD.PartialEquilibriumApi.Example
         }
 
         [UsedImplicitly]
-        private static XElement CreateModelFromInteractive(DelimitedFilePath dataFile)
+        public static XElement CreateModelFromInteractive(DelimitedFilePath dataFile)
         {
             // Define the product market.
             XElement model = new XElement("Retail").DefineAttributeData(dataFile, 0);
@@ -125,13 +125,15 @@ namespace AD.PartialEquilibriumApi.Example
             return model;
         }
 
-        private static XElement CreateModelFromFile(XmlFilePath structureFile, DelimitedFilePath dataFile)
+        [UsedImplicitly]
+        public static XElement CreateModelFromFile(XmlFilePath structureFile, DelimitedFilePath dataFile)
         {
             return XElement.Load(structureFile)
                            .DefineAttributeData(dataFile);
         }
 
-        private static XmlFilePath CreateTempXmlFile()
+        [UsedImplicitly]
+        public static XmlFilePath CreateTempXmlFile()
         {
             string xml = Path.ChangeExtension(Path.GetTempFileName(), ".xml");
             using (StreamWriter writer = new StreamWriter(xml))
@@ -147,7 +149,8 @@ namespace AD.PartialEquilibriumApi.Example
             return new XmlFilePath(xml);
         }
 
-        private static DelimitedFilePath CreateTempCsvFile()
+        [UsedImplicitly]
+        public static DelimitedFilePath CreateTempCsvFile()
         {
             string csv = Path.ChangeExtension(Path.GetTempFileName(), ".csv");
             using (StreamWriter writer = new StreamWriter(csv))
