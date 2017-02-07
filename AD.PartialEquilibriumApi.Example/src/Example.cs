@@ -22,14 +22,14 @@ namespace AD.PartialEquilibriumApi.Example
 
             // Set the consumer prices.
             model.SetConsumerPrices(model.DescendantsAndSelf()
-                                        .Select(x => x.InitialPrice())
-                                        .ToArray());
+                                         .Select(x => x.InitialPrice())
+                                         .ToArray());
 
             // Apply the price shocks.
             model.ShockAllProducerPrices();
 
             // Calculate the price indices.
-            model.CalculateConsumerPriceIndex();
+            model.CalculateRootConsumerPriceIndex();
 
             // Calculate the market equilibrium starting on the root.
             model.CalculateRootMarketEquilibrium();
@@ -39,10 +39,26 @@ namespace AD.PartialEquilibriumApi.Example
                 new bool[]
                 {
                     false,
-                    true,
-                    true,
-                    true,
-                    true
+                        true,
+                            false,
+                            false,
+                            false,
+                            false,
+                        true,
+                            false,
+                            false,
+                            false,
+                            false,
+                        true,
+                            false,
+                            false,
+                            false,
+                            false,
+                        true,
+                            false,
+                            false,
+                            false,
+                            false
                 };
 
             // Create the objective function.
@@ -57,7 +73,7 @@ namespace AD.PartialEquilibriumApi.Example
                     model.ShockAllProducerPrices();
                     // Calculate a price index for the sector:
                     // Result: [Σ marketShare[i] * (price[i] ^ (1 - elasticityOfSubstitution[i])] ^ [1 / (1 - elasticityOfSubstitution)]
-                    model.CalculateConsumerPriceIndex();
+                    model.CalculateRootConsumerPriceIndex();
                     // Caclulate the market equilibrium. Zero means equilibrium.
                     // [shockedPrice ^ elasticityOfSupply] - [(priceIndex ^ (elasticityOfSubstitution + elasticityOfDemand)) / (initialPrice ^ elasticityOfSubstitution)]
                     model.CalculateRootMarketEquilibrium();
@@ -83,7 +99,7 @@ namespace AD.PartialEquilibriumApi.Example
             double[] result = solution.Vector;
             model.SetConsumerPrices(result, variables);
             model.ShockAllProducerPrices();
-            model.CalculateConsumerPriceIndex();
+            model.CalculateRootConsumerPriceIndex();
             model.CalculateRootMarketEquilibrium();
 
             // Calculate new market shares
@@ -132,6 +148,39 @@ namespace AD.PartialEquilibriumApi.Example
                            .DefineAttributeData(dataFile);
         }
 
+        //[UsedImplicitly]
+        //public static XmlFilePath CreateTempXmlFile()
+        //{
+        //    string xml = Path.ChangeExtension(Path.GetTempFileName(), ".xml");
+        //    using (StreamWriter writer = new StreamWriter(xml))
+        //    {
+        //        writer.WriteLine(
+        //            @"<Retail>
+        //                <Supplier1 />
+        //                <Supplier2 />
+        //                <Supplier3 />
+        //                <Supplier4 />
+        //              </Retail>");
+        //    }
+        //    return new XmlFilePath(xml);
+        //}
+
+        //[UsedImplicitly]
+        //public static DelimitedFilePath CreateTempCsvFile()
+        //{
+        //    string csv = Path.ChangeExtension(Path.GetTempFileName(), ".csv");
+        //    using (StreamWriter writer = new StreamWriter(csv))
+        //    {
+        //        writer.WriteLine("ElasticityOfSubstitution,ElasticityOfSupply,ElasticityOfDemand,InitialPrice,InitialMarketShare,Shock");
+        //        writer.WriteLine("4,5,-1,1.0,1.00,0.00");
+        //        writer.WriteLine("4,5,-1,1.0,0.25,0.00");
+        //        writer.WriteLine("4,5,-1,1.0,0.25,0.00");
+        //        writer.WriteLine("4,5,-1,1.0,0.25,0.05");
+        //        writer.WriteLine("4,5,-1,1.0,0.25,0.00");
+        //    }
+        //    return new DelimitedFilePath(csv, ',');
+        //}
+
         [UsedImplicitly]
         public static XmlFilePath CreateTempXmlFile()
         {
@@ -140,10 +189,30 @@ namespace AD.PartialEquilibriumApi.Example
             {
                 writer.WriteLine(
                     @"<Retail>
-                        <Supplier1 />
-                        <Supplier2 />
-                        <Supplier3 />
-                        <Supplier4 />
+                        <Supplier1>
+                            <Input1 />
+                            <Input2 />
+                            <Input3 />
+                            <Input4 />
+                        </Supplier1>
+                        <Supplier2>
+                            <Input5 />
+                            <Input6 />
+                            <Input7 />
+                            <Input8 />
+                        </Supplier2>
+                        <Supplier3>
+                            <Input9 />
+                            <Input10 />
+                            <Input11 />
+                            <Input12 />
+                        </Supplier3>
+                        <Supplier4>
+                            <Input13 />
+                            <Input14 />
+                            <Input15 />
+                            <Input16 />
+                        </Supplier4>
                       </Retail>");
             }
             return new XmlFilePath(xml);
@@ -156,11 +225,48 @@ namespace AD.PartialEquilibriumApi.Example
             using (StreamWriter writer = new StreamWriter(csv))
             {
                 writer.WriteLine("ElasticityOfSubstitution,ElasticityOfSupply,ElasticityOfDemand,InitialPrice,InitialMarketShare,Shock");
+                // Root
                 writer.WriteLine("4,5,-1,1.0,1.00,0.00");
-                writer.WriteLine("4,5,-1,1.0,0.25,0.00");
-                writer.WriteLine("4,5,-1,1.0,0.25,0.00");
-                writer.WriteLine("4,5,-1,1.0,0.25,0.05");
-                writer.WriteLine("4,5,-1,1.0,0.25,0.00");
+                    // Supplier1
+                    writer.WriteLine("4,5,-1,1.0,0.25,0.00");
+                        // Input1
+                        writer.WriteLine("4,5,-1,1.0,0.25,0.00");
+                        // Input2
+                        writer.WriteLine("4,5,-1,1.0,0.25,0.00");
+                        // Input3
+                        writer.WriteLine("4,5,-1,1.0,0.25,0.00");
+                        // Input4
+                        writer.WriteLine("4,5,-1,1.0,0.25,0.00");
+                    // Supplier2
+                    writer.WriteLine("4,5,-1,1.0,0.25,0.00");
+                        // Input5
+                        writer.WriteLine("4,5,-1,1.0,0.25,0.00");
+                        // Input6
+                        writer.WriteLine("4,5,-1,1.0,0.25,0.00");
+                        // Input7
+                        writer.WriteLine("4,5,-1,1.0,0.25,0.00");
+                        // Input8
+                        writer.WriteLine("4,5,-1,1.0,0.25,0.00");
+                    // Supplier3
+                    writer.WriteLine("4,5,-1,1.0,0.25,0.05");
+                        // Input9
+                        writer.WriteLine("4,5,-1,1.0,0.25,0.00");
+                        // Input10
+                        writer.WriteLine("4,5,-1,1.0,0.25,0.00");
+                        // Input11
+                        writer.WriteLine("4,5,-1,1.0,0.25,0.00");
+                        // Input12
+                        writer.WriteLine("4,5,-1,1.0,0.25,0.00");
+                    // Supplier4
+                    writer.WriteLine("4,5,-1,1.0,0.25,0.00");
+                        // Input13
+                        writer.WriteLine("4,5,-1,1.0,0.25,0.00");
+                        // Input14
+                        writer.WriteLine("4,5,-1,1.0,0.25,0.00");
+                        // Input15
+                        writer.WriteLine("4,5,-1,1.0,0.25,0.00");
+                        // Input16
+                        writer.WriteLine("4,5,-1,1.0,0.25,0.00");
             }
             return new DelimitedFilePath(csv, ',');
         }
