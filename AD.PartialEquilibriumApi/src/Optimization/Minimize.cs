@@ -15,7 +15,7 @@ namespace AD.PartialEquilibriumApi
         /// <returns>The solution that produces the minimum value.</returns>
         public static Solution Minimize(this Simplex simplex)
         {
-            if (simplex.NumberOfSolutions < simplex.Dimensions + 1)
+            if (simplex.Solutions.Length < simplex.Dimensions + 1)
             {
                 throw new ArgumentOutOfRangeException("The number of solutions in the simplex must be greater than or equal to the dimensions + 1");
             }
@@ -34,47 +34,47 @@ namespace AD.PartialEquilibriumApi
                 
                 if (random < simplex)
                 {
-                    simplex.Swap(random, simplex.LastIndex);
+                    simplex.Swap(random, simplex.Dimensions);
                     Array.Sort(simplex.Solutions);
                 }
 
                 if (reflectedRandom < simplex)
                 {
-                    simplex.Swap(reflectedRandom, simplex.LastIndex);
+                    simplex.Swap(reflectedRandom, simplex.Dimensions);
                     Array.Sort(simplex.Solutions);
                 }
 
                 if (reflected < simplex.Solutions[0])
                 {
                     Solution expanded = simplex.Expand(centroid, reflected);
-                    simplex.Swap(expanded < simplex.Solutions[0] ? expanded : reflected, simplex.LastIndex);
+                    simplex.Swap(expanded < simplex.Solutions[0] ? expanded : reflected, simplex.Dimensions);
                     Array.Sort(simplex.Solutions);
                     continue;
                 }
 
                 if (reflected < simplex)
                 {
-                    if (reflected <= simplex.Solutions[simplex.LastIndex])
+                    if (reflected <= simplex.Solutions[simplex.Dimensions])
                     {
-                        simplex.Swap(reflected, simplex.LastIndex);
+                        simplex.Swap(reflected, simplex.Dimensions);
                         Array.Sort(simplex.Solutions);
                     }
 
                     Solution contracted = simplex.Contract(centroid);
 
-                    if (simplex.Solutions[simplex.LastIndex] < contracted)
+                    if (simplex.Solutions[simplex.Dimensions] < contracted)
                     {
                         simplex.Shrink();
                         Array.Sort(simplex.Solutions);
                     }
                     else
                     {
-                        simplex.Swap(contracted, simplex.LastIndex);
+                        simplex.Swap(contracted, simplex.Dimensions);
                         Array.Sort(simplex.Solutions);
                     }
                     continue;
                 }
-                simplex.Swap(reflected, simplex.LastIndex);
+                simplex.Swap(reflected, simplex.Dimensions);
                 Array.Sort(simplex.Solutions);
             }
             return simplex.Solutions[0];

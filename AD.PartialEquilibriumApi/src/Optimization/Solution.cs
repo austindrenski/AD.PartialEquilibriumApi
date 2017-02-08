@@ -106,7 +106,7 @@ namespace AD.PartialEquilibriumApi
         public static bool operator <(Solution solution, Simplex simplex)
         {
             int betterThan = 0;
-            for (int i = 0; i < simplex.NumberOfSolutions; i++)
+            for (int i = 0; i < simplex.Solutions.Length; i++)
             {
                 if (solution < simplex.Solutions[i])
                 {
@@ -122,7 +122,7 @@ namespace AD.PartialEquilibriumApi
         public static bool operator >(Solution solution, Simplex simplex)
         {
             int betterThan = 0;
-            for (int i = 0; i < simplex.NumberOfSolutions; i++)
+            for (int i = 0; i < simplex.Solutions.Length; i++)
             {
                 if (solution > simplex.Solutions[i])
                 {
@@ -138,7 +138,7 @@ namespace AD.PartialEquilibriumApi
         public static bool operator <=(Solution solution, Simplex simplex)
         {
             int betterThan = 0;
-            for (int i = 0; i < simplex.NumberOfSolutions; i++)
+            for (int i = 0; i < simplex.Solutions.Length; i++)
             {
                 if (solution <= simplex.Solutions[i])
                 {
@@ -154,7 +154,7 @@ namespace AD.PartialEquilibriumApi
         public static bool operator >=(Solution solution, Simplex simplex)
         {
             int betterThan = 0;
-            for (int i = 0; i < simplex.NumberOfSolutions; i++)
+            for (int i = 0; i < simplex.Solutions.Length; i++)
             {
                 if (solution >= simplex.Solutions[i])
                 {

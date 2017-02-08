@@ -26,23 +26,6 @@ namespace AD.PartialEquilibriumApi
         public int Iterations { get; }
 
         /// <summary>
-        /// The number of solutions (vertices) of the simplex. Initially set equal to Simplex.Dimensions + 1.
-        /// Increasing the number of solutions may help when search space is complex.
-        /// </summary>
-        public int NumberOfSolutions { get; }
-
-        /// <summary>
-        /// Equal to NumberOfSolutions - 1.
-        /// </summary>
-        public int LastIndex
-        {
-            get
-            {
-                return NumberOfSolutions - 1;
-            }
-        }
-
-        /// <summary>
         /// The lower bound of the search space.
         /// </summary>
         public double LowerBound { get; }
@@ -123,11 +106,10 @@ namespace AD.PartialEquilibriumApi
             TextWriter = textWriter ?? new StringWriter();
             Dimensions = dimensions;
             Iterations = iterations;
-            NumberOfSolutions = dimensions + 1;
             ObjectiveFunction = objectiveFunction;
             LowerBound = lowerBound;
             UpperBound = upperBound;
-            Solutions = new Solution[NumberOfSolutions];
+            Solutions = new Solution[dimensions + 1];
 
             for (int i = 0; i < Solutions.Length; i++)
             {

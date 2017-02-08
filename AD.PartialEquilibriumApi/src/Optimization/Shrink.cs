@@ -14,7 +14,7 @@ namespace AD.PartialEquilibriumApi
         /// <param name="simplex">The source <see cref="Simplex"/>.</param>
         public static void Shrink(this Simplex simplex)
         {
-            for (int i = 1; i < simplex.NumberOfSolutions; i++)
+            for (int i = 1; i < simplex.Solutions.Length; i++)
             {
                 for (int j = 0; j < simplex.Dimensions; j++)
                 {

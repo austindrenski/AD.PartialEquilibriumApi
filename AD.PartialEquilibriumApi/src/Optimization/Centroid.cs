@@ -20,11 +20,11 @@ namespace AD.PartialEquilibriumApi
 
             for (int i = 0; i < simplex.Dimensions; i++)
             {
-                for (int j = 0; j < simplex.LastIndex; j++)
+                for (int j = 0; j < simplex.Dimensions; j++)
                 {
                     centroid[i] += simplex[j][i];
                 }
-                centroid[i] /= simplex.LastIndex;
+                centroid[i] /= simplex.Dimensions;
             }
 
             centroid = centroid.EnforceBounds(simplex);
