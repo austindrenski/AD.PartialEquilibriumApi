@@ -26,14 +26,21 @@ namespace AD.PartialEquilibriumApi
         public int Iterations { get; }
 
         /// <summary>
-        /// The number of solutions to employ. Equal to the number of vertices.
+        /// The number of solutions (vertices) of the simplex. Initially set equal to Simplex.Dimensions + 1.
+        /// Increasing the number of solutions may help when search space is complex.
         /// </summary>
         public int NumberOfSolutions { get; }
 
         /// <summary>
         /// Equal to NumberOfSolutions - 1.
         /// </summary>
-        public int LastIndex { get; }
+        public int LastIndex
+        {
+            get
+            {
+                return NumberOfSolutions - 1;
+            }
+        }
 
         /// <summary>
         /// The lower bound of the search space.
@@ -48,7 +55,7 @@ namespace AD.PartialEquilibriumApi
         /// <summary>
         /// The solutions that currently define the <see cref="Simplex"/>.
         /// </summary>
-        public Solution[] Solutions { get; }
+        public Solution[] Solutions { get; set; }
 
         /// <summary>
         /// Indexed access to the vector of <see cref="Solution"/> objects..
@@ -78,7 +85,8 @@ namespace AD.PartialEquilibriumApi
         public const double Expansion = 2.0;
 
         /// <summary>
-        /// The numerical precision used for floating poing comparisons.
+        /// The numerical precision used for floating poing comparisons. Initially set equal to 1e-15.
+        /// Increasing the numerical precision may help when the search space is complex, or corner solutions may exist.
         /// </summary>
         public double Precision { get; set; } = 1e-15;
 
@@ -116,7 +124,6 @@ namespace AD.PartialEquilibriumApi
             Dimensions = dimensions;
             Iterations = iterations;
             NumberOfSolutions = dimensions + 1;
-            LastIndex = dimensions;
             ObjectiveFunction = objectiveFunction;
             LowerBound = lowerBound;
             UpperBound = upperBound;
