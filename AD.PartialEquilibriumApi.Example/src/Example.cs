@@ -172,7 +172,7 @@ namespace AD.PartialEquilibriumApi.Example
                 writer.WriteLine("ElasticityOfSubstitution,ElasticityOfSupply,ElasticityOfDemand,InitialPrice,InitialMarketShare,Shock");
                 writer.WriteLine("4,5,-1,1.0,1.00,0.00");
                     writer.WriteLine("4,5,-1,1.0,0.50,0.00");
-                    writer.WriteLine("4,5,-1,1.0,0.50,0.00");
+                    writer.WriteLine("4,5,-1,1.0,0.50,0.05");
                         writer.WriteLine("4,5,-1,1.0,0.50,0.05");
                         writer.WriteLine("4,5,-1,1.0,0.50,0.05");
 

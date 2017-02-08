@@ -64,14 +64,20 @@ namespace AD.PartialEquilibriumApi
                 else
                 {
                     double elasticityOfSubstitution = item.ElasticityOfSubstitution();
+                    double consumerPriceIndex;
 
-                    double consumerPriceIndexComponents = 
-                        item.Elements()
-                            .Select(x => x.InitialMarketShare() * Math.Pow(x.ConsumerPrice(), 1 - elasticityOfSubstitution))
-                            .Sum();
-
-                    double consumerPriceIndex = Math.Pow(consumerPriceIndexComponents, 1 / (1 - elasticityOfSubstitution));
-
+                    if (item.HasElements)
+                    {
+                        double consumerPriceIndexComponents = 
+                            item.Elements()
+                                .Select(x => x.InitialMarketShare() * Math.Pow(x.ConsumerPrice(), 1 - elasticityOfSubstitution))
+                                .Sum();
+                        consumerPriceIndex = Math.Pow(consumerPriceIndexComponents, 1 / (1 - elasticityOfSubstitution));
+                    }
+                    else
+                    {
+                        consumerPriceIndex = item.ConsumerPrice();
+                    }
                     item.ConsumerPrice(consumerPriceIndex);
                 }
             }
