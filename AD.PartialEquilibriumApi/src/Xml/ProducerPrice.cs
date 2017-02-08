@@ -27,35 +27,25 @@ namespace AD.PartialEquilibriumApi
         }
 
         /// <summary>
-        /// Sets the ProducerPrice attribute = ConsumerPrice / (1 + Shock)
+        /// Sets each ProducerPrice attribute on descendant <see cref="XElement"/> objects in reverse document order.
+        /// Result = ConsumerPrice / (1 + Shock)
         /// </summary>
         /// <param name="element">The element to shock.</param>
         /// <returns>A reference to the existing <see cref="XElement"/>. This is returned for use with fluent syntax calls.</returns>
-        public static XElement ShockProducerPrice(this XElement element)
-        {
-            if (element.Parent == null)
-            {
-                return element;
-            }
-
-            double consumerPrice = element.ConsumerPrice();
-            double shock = element.Shock();
-            double shockedPrice = consumerPrice / (1 + shock);
-            element.SetAttributeValue(XProducerPrice, shockedPrice);
-            return element;
-        }
-
-        /// <summary>
-        /// Sets each ProducerPrice attribute in reverse document order = ConsumerPrice / (1 + Shock)
-        /// </summary>
-        /// <param name="element">The root element.</param>
-        /// <returns>A reference to the existing <see cref="XElement"/>. This is returned for use with fluent syntax calls.</returns>
-        public static XElement ShockAllProducerPrices(this XElement element)
+        public static XElement ShockProducerPrices(this XElement element)
         {
             foreach (XElement item in element.DescendantsAndSelf().Reverse())
             {
-                item.ShockProducerPrice();
+                if (item.Parent == null)
+                {
+                    continue;
+                }
+                double consumerPrice = item.ConsumerPrice();
+                double shock = item.Shock();
+                double shockedPrice = consumerPrice / (1 + shock);
+                item.SetAttributeValue(XProducerPrice, shockedPrice);
             }
+
             return element;
         }
     }

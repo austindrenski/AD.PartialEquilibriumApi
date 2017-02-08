@@ -94,11 +94,10 @@ namespace AD.PartialEquilibriumApi
         /// <param name="lowerBound">The lower bound of the search space. Must be less than or equal to the upper bound.</param>
         /// <param name="upperBound">The upper bound of the search space. Must be greater than or equal to the lower bound.</param>
         /// <param name="dimensions">The length of the argument vector.</param>
-        /// <param name="numberOfSolutions">The number of <see cref="Solution"/> objects to use in the <see cref="Simplex"/>. Must be greater than or equal to the dimensions.</param>
         /// <param name="iterations">The number of iterations to attempt. Must be greater than zero.</param>
         /// <param name="textWriter">Set this property to the standard output for progress reporting.</param>
         /// <exception cref="ArgumentOutOfRangeException"/>
-        public Simplex(Func<double[], double> objectiveFunction, double lowerBound, double upperBound, int dimensions, int numberOfSolutions, int iterations, TextWriter textWriter = null)
+        public Simplex(Func<double[], double> objectiveFunction, double lowerBound, double upperBound, int dimensions, int iterations, TextWriter textWriter = null)
         {
             if (lowerBound > upperBound)
             {
@@ -108,24 +107,21 @@ namespace AD.PartialEquilibriumApi
             {
                 throw new ArgumentOutOfRangeException("The iteration count must be greater than zero.");
             }
-            if (numberOfSolutions < dimensions)
-            {
-                throw new ArgumentOutOfRangeException("The number of solutions must be greater than or equal to the problem dimensions .");
-            }
             TextWriter = textWriter ?? new StringWriter();
             Dimensions = dimensions;
             Iterations = iterations;
-            NumberOfSolutions = numberOfSolutions;
-            LastIndex = numberOfSolutions - 1;
+            NumberOfSolutions = dimensions + 1;
+            LastIndex = dimensions;
             ObjectiveFunction = objectiveFunction;
             LowerBound = lowerBound;
             UpperBound = upperBound;
-            Solutions = new Solution[numberOfSolutions];
+            Solutions = new Solution[NumberOfSolutions];
 
             for (int i = 0; i < Solutions.Length; i++)
             {
                 Solutions[i] = this.Random();
             }
+
             Array.Sort(Solutions);
         }
 
@@ -139,7 +135,7 @@ namespace AD.PartialEquilibriumApi
         /// <param name="textWriter">Set this property to the standard output for progress reporting. If null, a <see cref="StringWriter"/> is initialized.</param>
         /// <exception cref="ArgumentOutOfRangeException"/>
         public Simplex(Func<double[], double> objectiveFunction, double lowerBound, double upperBound, int dimensions, TextWriter textWriter = null)
-            : this(objectiveFunction, lowerBound, upperBound, dimensions, dimensions, dimensions < 5 ? 1000 : dimensions * 200, textWriter)
+            : this(objectiveFunction, lowerBound, upperBound, dimensions, dimensions < 5 ? 1000 : dimensions * 200, textWriter)
         {
         }
     }

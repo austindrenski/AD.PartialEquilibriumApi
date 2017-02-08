@@ -15,34 +15,31 @@ namespace AD.PartialEquilibriumApi.Example
         {
             //XmlFilePath structureFile = CreateTempXmlFile();
             //DelimitedFilePath dataFile = CreateTempCsvFile();
-            //// Create boolean vector indicating which nodes (in document-order) are variable.
             //XName[] variables =
             //    new XName[]
             //    {
-            //        "Supplier1",
-            //        "Supplier2",
+            //        //"Retail",
+            //            "Supplier1",
+            //            "Supplier2",
             //    };
 
             XmlFilePath structureFile = CreateTempXmlFile2();
             DelimitedFilePath dataFile = CreateTempCsvFile2();
-            // Create boolean vector indicating which nodes (in document-order) are variable.
             XName[] variables =
                 new XName[]
                 {
-                    "Supplier1",
-                    //"Supplier2",
-                        "Input1",
-                        "Input2"
+                    //"Retail",
+                        "Supplier1",
+                        //"Supplier2",
+                            "Input1",
+                            "Input2"
                 };
 
             // Read in the model and the data.
             XElement model = CreateModelFromFile(structureFile, dataFile);
 
             // Apply the price shocks.
-            model.ShockAllProducerPrices();
-
-            // Calculate the price indices.
-            //model.CalculateConsumerPriceIndex();
+            model.ShockProducerPrices();
 
             // Calculate the market equilibrium starting on the root.
             model.CalculateRootMarketEquilibrium();
@@ -51,15 +48,11 @@ namespace AD.PartialEquilibriumApi.Example
             Func<double[], double> objectiveFunction =
                 x =>
                 {
-                    // Update consumer prices to the argument vector.
-                    // Result: x[i] if variables[i] is true
+                    // Update consumer prices to the argument vector or calculate a price index.
                     model.SetConsumerPrices(x, variables);
                     // Shock the current prices:
                     // Result: currentPrice * (1 + shock)
-                    model.ShockAllProducerPrices();
-                    // Calculate a price index for the sector:
-                    // Result: [Σ marketShare[i] * (price[i] ^ (1 - elasticityOfSubstitution[i])] ^ [1 / (1 - elasticityOfSubstitution)]
-                    //model.CalculateConsumerPriceIndex();
+                    model.ShockProducerPrices();
                     // Caclulate the market equilibrium. Zero means equilibrium.
                     // [shockedPrice ^ elasticityOfSupply] - [(priceIndex ^ (elasticityOfSubstitution + elasticityOfDemand)) / (initialPrice ^ elasticityOfSubstitution)]
                     model.CalculateRootMarketEquilibrium();
@@ -74,8 +67,7 @@ namespace AD.PartialEquilibriumApi.Example
                     lowerBound: 0,
                     upperBound: 100,
                     dimensions: variables.Length,
-                    numberOfSolutions: 3 * variables.Length,
-                    iterations: 10000 * variables.Length,
+                    iterations: 10000,
                     textWriter: Console.Out);
 
             // Find the minimum solution.
@@ -84,8 +76,7 @@ namespace AD.PartialEquilibriumApi.Example
             // Update the XML tree one more time with the optimal result.
             double[] result = solution.Vector;
             model.SetConsumerPrices(result, variables);
-            model.ShockAllProducerPrices();
-            //model.CalculateConsumerPriceIndex();
+            model.ShockProducerPrices();
             model.CalculateRootMarketEquilibrium();
 
             // Calculate new market shares

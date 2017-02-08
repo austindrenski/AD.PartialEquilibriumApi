@@ -24,40 +24,35 @@ namespace AD.PartialEquilibriumApi
         }
 
         /// <summary>
-        /// Sets the MarketEquilibrium attribute. 
+        /// Sets the MarketEquilibrium attribute on descendant <see cref="XElement"/> objects in reverse document order.
+        /// Result = (producerPrice ^ elasticityOfSupply) - [(consumerConsumerPriceIndex ^ (elasticityOfSubstitution + elasticityOfDemand)) / (consumerPrice ^ elasticityOfSubstitution)]
         /// </summary>
         /// <returns>A reference to the existing <see cref="XElement"/>. This is returned for use with fluent syntax calls.</returns>
         public static XElement CalculateRootMarketEquilibrium([NotNull] this XElement element)
         {
-            foreach (XElement item in element.Descendants().Reverse())
+            foreach (XElement item in element.DescendantsAndSelf().Reverse())
             {
-                item.CalculateMarketEquilibrium();
+                if (item.Parent == null)
+                {
+                    continue;
+                }
+                double consumerConsumerPriceIndex = item.Parent.ConsumerPrice();
+                double consumerPrice = item.ConsumerPrice();
+                double elasticityOfDemand = item.ElasticityOfDemand();
+                double elasticityOfSubstitution = item.ElasticityOfSubstitution();
+                double elasticityOfSupply = item.ElasticityOfSupply();
+                double producerPrice = item.ProducerPrice();
+
+                double marketEquilibrium =
+                    Math.Pow(producerPrice, elasticityOfSupply)
+                    -
+                    Math.Pow(consumerConsumerPriceIndex, elasticityOfSubstitution + elasticityOfDemand)
+                    /
+                    Math.Pow(consumerPrice, elasticityOfSubstitution);
+
+                item.SetAttributeValue(XMarketEquilibrium, marketEquilibrium);
             }
-            return element;
-        }
 
-        /// <summary>
-        /// Sets the MarketEquilibrium attribute. 
-        /// Result = (producerPrice ^ elasticityOfSupply) - [(consumerConsumerPriceIndex ^ (elasticityOfSubstitution + elasticityOfDemand)) / (consumerPrice ^ elasticityOfSubstitution)]
-        /// </summary>
-        /// <returns>A reference to the existing <see cref="XElement"/>. This is returned for use with fluent syntax calls.</returns>
-        public static XElement CalculateMarketEquilibrium([NotNull] this XElement element)
-        {
-            double elasticityOfDemand = element.ElasticityOfDemand();
-            double elasticityOfSubstitution = element.ElasticityOfSubstitution();
-            double elasticityOfSupply = element.ElasticityOfSupply();
-            double consumerPrice = element.ConsumerPrice();
-            double consumerConsumerPriceIndex = element.Parent?.ConsumerPrice() ?? 0;
-            double producerPrice = element.ProducerPrice();
-
-            double marketEquilibrium =
-                Math.Pow(producerPrice, elasticityOfSupply)
-                -
-                Math.Pow(consumerConsumerPriceIndex, elasticityOfSubstitution + elasticityOfDemand) 
-                / 
-                Math.Pow(consumerPrice, elasticityOfSubstitution);
-
-            element.SetAttributeValue(XMarketEquilibrium, marketEquilibrium);
             return element;
         }
     }

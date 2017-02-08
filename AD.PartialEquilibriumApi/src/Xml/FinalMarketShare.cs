@@ -34,35 +34,33 @@ namespace AD.PartialEquilibriumApi
         }
 
         /// <summary>
-        /// Calculates the market share based on current information.
+        /// Calculates the market share on this and descendant <see cref="XElement"/> objects in reverse document order.
         /// </summary>
-        /// <param name="market">An <see cref="XElement"/> describing a market.</param>
-        public static void CalculateFinalMarketShare([NotNull] this XElement market)
+        /// <param name="model">An <see cref="XElement"/> describing the model.</param>
+        /// <returns>A reference to the existing <see cref="XElement"/>. This is returned for use with fluent syntax calls.</returns>
+        public static XElement CalculateFinalMarketShares([NotNull] this XElement model)
         {
-            double marketShare = market.InitialMarketShare();
-
-            double expenditure = Math.Pow(market.ConsumerPrice(), 1 - market.ElasticityOfSubstitution());
-
-            double totalExpenditure = market.Parent?
-                                            .Elements()
-                                            .Select(x => x.Parent?.ConsumerPrice() * x.InitialMarketShare())
-                                            .Sum() ?? 1;
-
-            double substitutionAdjustedTotalExpenditure = Math.Pow(totalExpenditure, 1 - market.ElasticityOfSubstitution());
-
-            market.FinalMarketShare(marketShare * expenditure / substitutionAdjustedTotalExpenditure);
-        }
-
-        /// <summary>
-        /// Calculates the market share based on current information.
-        /// </summary>
-        /// <param name="market">An <see cref="XElement"/> describing a market.</param>
-        public static void CalculateAllFinalMarketShares([NotNull] this XElement market)
-        {
-            foreach (XElement item in market.DescendantsAndSelf().Reverse())
+            foreach (XElement market in model.DescendantsAndSelf().Reverse())
             {
-                item.CalculateFinalMarketShare();
+                double initialMarketShare = market.InitialMarketShare();
+
+                double expenditure = 
+                    Math.Pow(market.ConsumerPrice(), 1 - market.ElasticityOfSubstitution());
+
+                double totalExpenditure = 
+                    market.Parent?
+                          .Elements()
+                          .Sum(x => x.Parent?.ConsumerPrice() * x.InitialMarketShare()) ?? 1;
+
+                double substitutionAdjustedTotalExpenditure = 
+                    Math.Pow(totalExpenditure, 1 - market.ElasticityOfSubstitution());
+
+                double finalMarketShare = initialMarketShare * expenditure / substitutionAdjustedTotalExpenditure;
+
+                market.FinalMarketShare(finalMarketShare);
             }
+
+            return model;
         }
     }
 }

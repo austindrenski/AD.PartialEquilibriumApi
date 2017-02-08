@@ -15,7 +15,7 @@ namespace AD.PartialEquilibriumApi.Tests
             double[] expected = new double[] { 1.0, 1 / 1.05 };
 
             // Act
-            model.ShockAllProducerPrices();
+            model.ShockProducerPrices();
             double[] producerPrices = model.Descendants().Select(x => x.ProducerPrice()).ToArray();
 
             // Assert
@@ -30,7 +30,7 @@ namespace AD.PartialEquilibriumApi.Tests
             double[] expected = new double[] { 1.0, 1.0, 1 / 1.05, 1 / 1.05 };
 
             // Act
-            model.ShockAllProducerPrices();
+            model.ShockProducerPrices();
             double[] producerPrices = model.Descendants().Select(x => x.ProducerPrice()).ToArray();
 
             // Assert
