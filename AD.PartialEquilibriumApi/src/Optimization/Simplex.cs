@@ -108,9 +108,9 @@ namespace AD.PartialEquilibriumApi
             {
                 throw new ArgumentOutOfRangeException("The iteration count must be greater than zero.");
             }
-            if (dimensions < numberOfSolutions)
+            if (numberOfSolutions < dimensions)
             {
-                throw new ArgumentOutOfRangeException("The problem dimensions must be greater than or equal to the number of solutions.");
+                throw new ArgumentOutOfRangeException("The number of solutions must be greater than or equal to the problem dimensions .");
             }
             TextWriter = textWriter ?? new StringWriter();
             Dimensions = dimensions;

@@ -20,10 +20,6 @@ namespace AD.PartialEquilibriumApi
         /// <returns>The value set by the user to the "ConsumerPrice" attribute.</returns>
         public static double ConsumerPrice([NotNull] this XElement market)
         {
-            if (market.Parent == null)
-            {
-                return market.ConsumerPriceIndex();
-            }
             if (market.Attribute(XConsumerPrice) == null)
             {
                 market.SetAttributeValue(XConsumerPrice, market.InitialPrice());
@@ -59,12 +55,25 @@ namespace AD.PartialEquilibriumApi
         /// <param name="variable">True if the price at this index is variable.</param>
         public static void SetConsumerPrices([NotNull] this XElement market, double[] values, XName[] variable)
         {
-            for (int i = 0; i < variable.Length; i++)
+            foreach (XElement item in market.DescendantsAndSelf().Reverse())
             {
-                int index = i;
-                market.DescendantsAndSelf(variable[index])
-                      .Single()
-                      .ConsumerPrice(x => values[index]);
+                if (variable.Contains(item.Name))
+                {
+                    item.ConsumerPrice(values[Array.IndexOf(variable, item.Name)]);
+                }
+                else
+                {
+                    double elasticityOfSubstitution = item.ElasticityOfSubstitution();
+
+                    double consumerPriceIndexComponents = 
+                        item.Elements()
+                            .Select(x => x.InitialMarketShare() * Math.Pow(x.ConsumerPrice(), 1 - elasticityOfSubstitution))
+                            .Sum();
+
+                    double consumerPriceIndex = Math.Pow(consumerPriceIndexComponents, 1 / (1 - elasticityOfSubstitution));
+
+                    item.ConsumerPrice(consumerPriceIndex);
+                }
             }
         }
     }

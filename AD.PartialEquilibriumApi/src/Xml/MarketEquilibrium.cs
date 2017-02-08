@@ -29,17 +29,24 @@ namespace AD.PartialEquilibriumApi
         /// <returns>A reference to the existing <see cref="XElement"/>. This is returned for use with fluent syntax calls.</returns>
         public static XElement CalculateRootMarketEquilibrium([NotNull] this XElement element)
         {
-            foreach (XElement item in element.Descendants().Reverse())
+            foreach (XElement item in element.DescendantsAndSelf().Reverse())
             {
-                item.CalculateMarketEquilibrium();
-            }
-            double sumOfSquares =
-                element.Elements()
-                       .Select(x => x.MarketEquilibrium())
-                       .Select(x => x * x)
-                       .Sum(); 
+                if (item.HasElements)
+                {
+                    double sumOfSquares =
+                            item.Elements()
+                                .Select(x => x.CalculateMarketEquilibrium())
+                                .Select(x => x.MarketEquilibrium())
+                                .Select(x => x * x)
+                                .Sum();
 
-            element.SetAttributeValue(XMarketEquilibrium, sumOfSquares);
+                    item.SetAttributeValue(XMarketEquilibrium, sumOfSquares);
+                }
+                else
+                {
+                    item.CalculateMarketEquilibrium();
+                }
+            }
             return element;
         }
 
@@ -54,7 +61,7 @@ namespace AD.PartialEquilibriumApi
             double elasticityOfSubstitution = element.ElasticityOfSubstitution();
             double elasticityOfSupply = element.ElasticityOfSupply();
             double consumerPrice = element.ConsumerPrice();
-            double consumerConsumerPriceIndex = element.Parent?.ConsumerPriceIndex() ?? 1;
+            double consumerConsumerPriceIndex = element.Parent?.ConsumerPrice() ?? 1;
             double producerPrice = element.ProducerPrice();
 
             double marketEquilibrium =

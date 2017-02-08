@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using System.Xml.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -16,11 +12,25 @@ namespace AD.PartialEquilibriumApi.Tests
         {
             // Arrange
             XElement model = Definitions.CreateModel0();
+            XName[] variables =
+                new XName[]
+                {
+                    "Supplier1",
+                    "Supplier2",
+                };
+            double[] values =
+                new double[]
+                {
+                    2.5,
+                    3.0
+                };
 
             // Act
-
+            model.SetConsumerPrices(values, variables);
 
             // Assert
+            Assert.IsTrue((double)model.Descendants("Supplier1").Single().Attribute("ConsumerPrice") == 2.5);
+            Assert.IsTrue((double)model.Descendants("Supplier2").Single().Attribute("ConsumerPrice") == 3.0);
         }
 
         [TestMethod]
@@ -28,12 +38,25 @@ namespace AD.PartialEquilibriumApi.Tests
         {
             // Arrange
             XElement model = Definitions.CreateModel1();
-
+            XName[] variables =
+                new XName[]
+                {
+                    "Supplier1",
+                    "Supplier2",
+                };
+            double[] values =
+                new double[]
+                {
+                    2.5,
+                    3.0
+                };
 
             // Act
-
+            model.SetConsumerPrices(values, variables);
 
             // Assert
+            Assert.IsTrue((double)model.Descendants("Supplier1").Single().Attribute("ConsumerPrice") == 2.5);
+            Assert.IsTrue((double)model.Descendants("Supplier2").Single().Attribute("ConsumerPrice") == 3.0);
         }
     }
 }

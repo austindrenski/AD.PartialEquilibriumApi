@@ -12,27 +12,27 @@ namespace AD.PartialEquilibriumApi.Example
     {
         public static void Example1()
         {
-            XmlFilePath structureFile = CreateTempXmlFile();
-            DelimitedFilePath dataFile = CreateTempCsvFile();
-            // Create boolean vector indicating which nodes (in document-order) are variable.
-            XName[] variables =
-                new XName[]
-                {
-                    "Supplier1",
-                    "Supplier2",
-                };
-
-            //XmlFilePath structureFile = CreateTempXmlFile2();
-            //DelimitedFilePath dataFile = CreateTempCsvFile2();
+            //XmlFilePath structureFile = CreateTempXmlFile();
+            //DelimitedFilePath dataFile = CreateTempCsvFile();
             //// Create boolean vector indicating which nodes (in document-order) are variable.
             //XName[] variables =
             //    new XName[]
             //    {
             //        "Supplier1",
-            //        //"Supplier2",
-            //            "Input1",
-            //            "Input2"
+            //        "Supplier2",
             //    };
+
+            XmlFilePath structureFile = CreateTempXmlFile2();
+            DelimitedFilePath dataFile = CreateTempCsvFile2();
+            // Create boolean vector indicating which nodes (in document-order) are variable.
+            XName[] variables =
+                new XName[]
+                {
+                    "Supplier1",
+                    //"Supplier2",
+                        "Input1",
+                        "Input2"
+                };
 
             // Read in the model and the data.
             XElement model = CreateModelFromFile(structureFile, dataFile);
@@ -41,7 +41,7 @@ namespace AD.PartialEquilibriumApi.Example
             model.ShockAllProducerPrices();
 
             // Calculate the price indices.
-            model.CalculateConsumerPriceIndex();
+            //model.CalculateConsumerPriceIndex();
 
             // Calculate the market equilibrium starting on the root.
             model.CalculateRootMarketEquilibrium();
@@ -58,7 +58,7 @@ namespace AD.PartialEquilibriumApi.Example
                     model.ShockAllProducerPrices();
                     // Calculate a price index for the sector:
                     // Result: [Σ marketShare[i] * (price[i] ^ (1 - elasticityOfSubstitution[i])] ^ [1 / (1 - elasticityOfSubstitution)]
-                    model.CalculateConsumerPriceIndex();
+                    //model.CalculateConsumerPriceIndex();
                     // Caclulate the market equilibrium. Zero means equilibrium.
                     // [shockedPrice ^ elasticityOfSupply] - [(priceIndex ^ (elasticityOfSubstitution + elasticityOfDemand)) / (initialPrice ^ elasticityOfSubstitution)]
                     model.CalculateRootMarketEquilibrium();
@@ -73,8 +73,8 @@ namespace AD.PartialEquilibriumApi.Example
                     lowerBound: 0,
                     upperBound: 100,
                     dimensions: variables.Length,
-                    numberOfSolutions: variables.Length,
-                    iterations: 500 * variables.Length,
+                    numberOfSolutions: 3 * variables.Length,
+                    iterations: 10000 * variables.Length,
                     textWriter: Console.Out);
 
             // Find the minimum solution.
@@ -84,7 +84,7 @@ namespace AD.PartialEquilibriumApi.Example
             double[] result = solution.Vector;
             model.SetConsumerPrices(result, variables);
             model.ShockAllProducerPrices();
-            model.CalculateConsumerPriceIndex();
+            //model.CalculateConsumerPriceIndex();
             model.CalculateRootMarketEquilibrium();
 
             // Calculate new market shares
