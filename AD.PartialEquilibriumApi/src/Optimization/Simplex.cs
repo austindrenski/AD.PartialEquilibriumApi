@@ -74,9 +74,14 @@ namespace AD.PartialEquilibriumApi
         public double Precision { get; set; } = 1e-15;
 
         /// <summary>
+        /// The current step length. Initially set equal to 1e+00.
+        /// </summary>
+        public double StepLength { get; set; } = 1e+00;
+
+        /// <summary>
         /// Random number generator.
         /// </summary>
-        public static readonly Random RandomGenerator = new Random(0);
+        public Random RandomGenerator { get; }
 
         /// <summary>
         /// Set this property to the standard output for progress reporting.
@@ -91,9 +96,10 @@ namespace AD.PartialEquilibriumApi
         /// <param name="upperBound">The upper bound of the search space. Must be greater than or equal to the lower bound.</param>
         /// <param name="dimensions">The length of the argument vector.</param>
         /// <param name="iterations">The number of iterations to attempt. Must be greater than zero.</param>
+        /// <param name="seed">A seed value for the internal random number generator.</param>
         /// <param name="textWriter">Set this property to the standard output for progress reporting.</param>
         /// <exception cref="ArgumentOutOfRangeException"/>
-        public Simplex(Func<double[], double> objectiveFunction, double lowerBound, double upperBound, int dimensions, int iterations, TextWriter textWriter = null)
+        public Simplex(Func<double[], double> objectiveFunction, double lowerBound, double upperBound, int dimensions, int iterations, int? seed = null, TextWriter textWriter = null)
         {
             if (lowerBound > upperBound)
             {
@@ -104,6 +110,7 @@ namespace AD.PartialEquilibriumApi
                 throw new ArgumentOutOfRangeException("The iteration count must be greater than zero.");
             }
             TextWriter = textWriter ?? new StringWriter();
+            RandomGenerator = seed == null ? new Random() : new Random((int)seed);
             Dimensions = dimensions;
             Iterations = iterations;
             ObjectiveFunction = objectiveFunction;
@@ -126,10 +133,11 @@ namespace AD.PartialEquilibriumApi
         /// <param name="lowerBound">The lower bound of the search space. Must be less than or equal to the upper bound.</param>
         /// <param name="upperBound">The upper bound of the search space. Must be greater than or equal to the lower bound.</param>
         /// <param name="dimensions">The length of the argument vector.</param>
+        /// <param name="seed">A seed value for the internal random number generator.</param>
         /// <param name="textWriter">Set this property to the standard output for progress reporting. If null, a <see cref="StringWriter"/> is initialized.</param>
         /// <exception cref="ArgumentOutOfRangeException"/>
-        public Simplex(Func<double[], double> objectiveFunction, double lowerBound, double upperBound, int dimensions, TextWriter textWriter = null)
-            : this(objectiveFunction, lowerBound, upperBound, dimensions, dimensions < 5 ? 1000 : dimensions * 200, textWriter)
+        public Simplex(Func<double[], double> objectiveFunction, double lowerBound, double upperBound, int dimensions, int? seed = null, TextWriter textWriter = null)
+            : this(objectiveFunction, lowerBound, upperBound, dimensions, dimensions < 5 ? 1000 : dimensions * 200, seed, textWriter)
         {
         }
     }

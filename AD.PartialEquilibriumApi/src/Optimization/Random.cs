@@ -19,7 +19,7 @@ namespace AD.PartialEquilibriumApi
 
             for (int i = 0; i < simplex.Dimensions; i++)
             {
-                random[i] = (simplex.UpperBound - simplex.LowerBound) * Simplex.RandomGenerator.NextDouble() + simplex.LowerBound;
+                random[i] = (simplex.UpperBound - simplex.LowerBound) * simplex.RandomGenerator.NextDouble() + simplex.LowerBound;
             }
             return new Solution(simplex.ObjectiveFunction(random), random);
         }

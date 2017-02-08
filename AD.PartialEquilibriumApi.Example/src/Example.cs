@@ -13,6 +13,9 @@ namespace AD.PartialEquilibriumApi.Example
     {
         public static void Example1()
         {
+            //Simplex rosenbrock = new Simplex(x => 2 * (100 * Math.Pow(x[1] - Math.Pow(x[1], 2), 2) + Math.Pow(x[0] - 1, 2)), -5, 5, 2, 10000, Console.Out);
+            //rosenbrock.Minimize();
+
             //XmlFilePath structureFile = CreateTempXmlFile();
             //DelimitedFilePath dataFile = CreateTempCsvFile();
             //XName[] variables =
@@ -48,16 +51,10 @@ namespace AD.PartialEquilibriumApi.Example
             Func<double[], double> objectiveFunction =
                 x =>
                 {
-                    // Update consumer prices to the argument vector or calculate a price index.
                     model.SetConsumerPrices(x, variables);
-                    // Shock the current prices:
-                    // Result: currentPrice * (1 + shock)
                     model.ShockProducerPrices();
-                    // Caclulate the market equilibrium. Zero means equilibrium.
-                    // [shockedPrice ^ elasticityOfSupply] - [(priceIndex ^ (elasticityOfSubstitution + elasticityOfDemand)) / (initialPrice ^ elasticityOfSubstitution)]
                     model.CalculateRootMarketEquilibrium();
-                    // Return the sector's equilibrium value to the caller.
-                    return model.Descendants().Select(y => y.MarketEquilibrium()).Sum(y => y * y);
+                    return model.Descendants().Sum(y => Math.Abs(y.MarketEquilibrium()));
                 };
 
             // Set up the simplex solver.

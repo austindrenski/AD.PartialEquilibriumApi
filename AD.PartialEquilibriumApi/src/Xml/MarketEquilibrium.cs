@@ -36,6 +36,7 @@ namespace AD.PartialEquilibriumApi
                 {
                     continue;
                 }
+
                 double consumerConsumerPriceIndex = item.Parent.ConsumerPrice();
                 double consumerPrice = item.ConsumerPrice();
                 double elasticityOfDemand = item.ElasticityOfDemand();
