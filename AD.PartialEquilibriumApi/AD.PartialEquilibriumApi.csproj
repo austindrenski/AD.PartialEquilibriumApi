@@ -59,6 +59,7 @@
   <ItemGroup>
     <Compile Include="src\Optimization\Minimize.cs" />
     <Compile Include="src\Optimization\Random.cs" />
+    <Compile Include="src\Visualization\OrganizationalChart.cs" />
     <Compile Include="src\Xml\ConsumerPrice.cs" />
     <Compile Include="src\Xml\ElasticityOfDemand.cs" />
     <Compile Include="src\Xml\ElasticityOfSupply.cs" />

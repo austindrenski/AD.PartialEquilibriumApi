@@ -41,6 +41,13 @@ namespace AD.PartialEquilibriumApi.Example
             // Read in the model and the data.
             XElement model = CreateModelFromFile(structureFile, dataFile);
 
+            // Create chart depicting the model
+            XElement html0 = ChartFactory.CreateOrganizationalChart(model);
+            using (StreamWriter writer = new StreamWriter(@"g:\data\austin d\pe modeling\chart.html"))
+            {
+                writer.WriteLine(html0.ToString());
+            }
+
             // Apply the price shocks.
             model.ShockProducerPrices();
 
