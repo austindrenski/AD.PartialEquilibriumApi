@@ -54,7 +54,7 @@ namespace AD.PartialEquilibriumApi
             double elasticityOfSubstitution = element.ElasticityOfSubstitution();
             double elasticityOfSupply = element.ElasticityOfSupply();
             double consumerPrice = element.ConsumerPrice();
-            double consumerConsumerPriceIndex = element.Parent.ConsumerPriceIndex();
+            double consumerConsumerPriceIndex = element.Parent?.ConsumerPriceIndex() ?? 1;
             double producerPrice = element.ProducerPrice();
 
             double marketEquilibrium =

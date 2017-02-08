@@ -32,7 +32,7 @@
     <DocumentationFile>bin\Release\AD.PartialEquilibriumApi.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
-    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
+    <RunPostBuildEvent>Always</RunPostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AD.Collections, Version=1.1.0.1, Culture=neutral, processorArchitecture=MSIL">
@@ -86,7 +86,9 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>"$(ProjectDir)..\nuget.exe" pack "$(ProjectDir)$(ProjectFileName)" -Properties Configuration=Release -OutputDirectory "$(ProjectDir).."</PostBuildEvent>
+    <PostBuildEvent>if $(ConfigurationName) == Release (
+      "$(ProjectDir)..\nuget.exe" pack "$(ProjectDir)$(ProjectFileName)" -Properties Configuration=Release -OutputDirectory "$(ProjectDir).."
+)</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

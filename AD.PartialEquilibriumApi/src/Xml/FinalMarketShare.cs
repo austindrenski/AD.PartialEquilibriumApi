@@ -39,21 +39,18 @@ namespace AD.PartialEquilibriumApi
         /// <param name="market">An <see cref="XElement"/> describing a market.</param>
         public static void CalculateFinalMarketShare([NotNull] this XElement market)
         {
-            if (market.Parent == null)
-            {
-                market.FinalMarketShare(market.Elements().Select(x => x.FinalMarketShare()).Sum());
-                return;
-            }
-
             double marketShare = market.InitialMarketShare();
+
             double expenditure = Math.Pow(market.ConsumerPrice(), 1 - market.ElasticityOfSubstitution());
-            //market.CalculateRootConsumerPriceIndex();
+
             double totalExpenditure = market.Parent?
                                             .Elements()
-                                            .Select(x => x.ConsumerPrice() * x.InitialMarketShare())
-                                            .Sum() ?? 0;
+                                            .Select(x => x.ConsumerPriceIndex() * x.InitialMarketShare())
+                                            .Sum() ?? 1;
 
-            market.FinalMarketShare(marketShare * expenditure / totalExpenditure);
+            double substitutionAdjustedTotalExpenditure = Math.Pow(totalExpenditure, 1 - market.ElasticityOfSubstitution());
+
+            market.FinalMarketShare(marketShare * expenditure / substitutionAdjustedTotalExpenditure);
         }
 
         /// <summary>
