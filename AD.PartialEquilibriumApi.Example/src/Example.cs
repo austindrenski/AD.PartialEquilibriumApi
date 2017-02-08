@@ -65,6 +65,7 @@ namespace AD.PartialEquilibriumApi.Example
                     upperBound: 100,
                     dimensions: variables.Length,
                     iterations: 10000,
+                    seed: 0,
                     textWriter: Console.Out);
 
             // Find the minimum solution.
