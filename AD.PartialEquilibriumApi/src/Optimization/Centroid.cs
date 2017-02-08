@@ -9,8 +9,8 @@ namespace AD.PartialEquilibriumApi
     public static class CentroidExtension
     {
         /// <summary>
-        /// Calculates the centroid solution. For a simplex with three vertices, the centroid solution is found where 
-        /// the line from the worst vertex to its mirror passes through the line formed by the remaining vertices.
+        /// Calculates the centroid solution. For a simplex with three vertices, the centroid solution is found along
+        /// the line from the worst vertex to its mirror across the plane of the remaining vertices.
         /// </summary>
         /// <param name="simplex">The source <see cref="Simplex"/>.</param>
         /// <returns>The centroid solution.</returns>
@@ -25,9 +25,10 @@ namespace AD.PartialEquilibriumApi
                     centroid[i] += simplex[j][i];
                 }
                 centroid[i] /= simplex.LastIndex;
-
-                centroid = centroid.EnforceBounds(simplex);
             }
+
+            centroid = centroid.EnforceBounds(simplex);
+
             return new Solution(simplex.ObjectiveFunction(centroid), centroid);
         }
     }

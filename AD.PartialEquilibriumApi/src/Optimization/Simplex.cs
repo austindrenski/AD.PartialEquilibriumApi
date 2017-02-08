@@ -78,6 +78,11 @@ namespace AD.PartialEquilibriumApi
         public const double Expansion = 2.0;
 
         /// <summary>
+        /// The numerical precision used for floating poing comparisons.
+        /// </summary>
+        public double Precision { get; set; } = 1e-15;
+
+        /// <summary>
         /// Random number generator.
         /// </summary>
         public static readonly Random RandomGenerator = new Random(0);
