@@ -80,7 +80,7 @@ namespace AD.PartialEquilibriumApi
         /// <summary>
         /// Random number generator.
         /// </summary>
-        public static readonly Random Random = new Random(0);
+        public static readonly Random RandomGenerator = new Random(0);
 
         /// <summary>
         /// Set this property to the standard output for progress reporting.
@@ -124,12 +124,7 @@ namespace AD.PartialEquilibriumApi
 
             for (int i = 0; i < Solutions.Length; i++)
             {
-                double[] vector = new double[dimensions];
-                for (int j = 0; j < dimensions; j++)
-                {
-                    vector[j] = (upperBound - lowerBound) * Random.NextDouble() + lowerBound;
-                }
-                Solutions[i] = new Solution(objectiveFunction(vector), vector);
+                Solutions[i] = this.Random();
             }
             Array.Sort(Solutions);
         }

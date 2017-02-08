@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
@@ -63,7 +64,7 @@ namespace AD.PartialEquilibriumApi.Example
                     // [shockedPrice ^ elasticityOfSupply] - [(priceIndex ^ (elasticityOfSubstitution + elasticityOfDemand)) / (initialPrice ^ elasticityOfSubstitution)]
                     model.CalculateRootMarketEquilibrium();
                     // Return the sector's equilibrium value to the caller.
-                    return model.MarketEquilibrium();
+                    return model.Descendants().Select(y => y.MarketEquilibrium()).Sum(y => y * y);
                 };
 
             // Set up the simplex solver.
@@ -172,7 +173,7 @@ namespace AD.PartialEquilibriumApi.Example
                 writer.WriteLine("ElasticityOfSubstitution,ElasticityOfSupply,ElasticityOfDemand,InitialPrice,InitialMarketShare,Shock");
                 writer.WriteLine("4,5,-1,1.0,1.00,0.00");
                     writer.WriteLine("4,5,-1,1.0,0.50,0.00");
-                    writer.WriteLine("4,5,-1,1.0,0.50,0.05");
+                    writer.WriteLine("4,5,-1,1.0,0.50,0.00");
                         writer.WriteLine("4,5,-1,1.0,0.50,0.05");
                         writer.WriteLine("4,5,-1,1.0,0.50,0.05");
 

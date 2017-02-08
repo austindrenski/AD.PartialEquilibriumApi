@@ -23,7 +23,7 @@ namespace AD.PartialEquilibriumApi
                 {
                     continue;
                 }
-                vector[i] = (simplex.UpperBound - simplex.LowerBound) * Simplex.Random.NextDouble() + simplex.LowerBound;
+                vector[i] = (simplex.UpperBound - simplex.LowerBound) * Simplex.RandomGenerator.NextDouble() + simplex.LowerBound;
             }
             return vector;
         }
@@ -43,7 +43,7 @@ namespace AD.PartialEquilibriumApi
                 {
                     continue;
                 }
-                vector[i] = (simplex.UpperBound - simplex.LowerBound) * Simplex.Random.NextDouble() + simplex.LowerBound + double.Epsilon;
+                vector[i] = (simplex.UpperBound - simplex.LowerBound) * Simplex.RandomGenerator.NextDouble() + simplex.LowerBound + double.Epsilon;
             }
             return vector;
         }
@@ -63,7 +63,7 @@ namespace AD.PartialEquilibriumApi
                 {
                     continue;
                 }
-                vector[i] = (simplex.UpperBound - simplex.LowerBound) * Simplex.Random.NextDouble() + simplex.LowerBound;
+                vector[i] = (simplex.UpperBound - simplex.LowerBound) * Simplex.RandomGenerator.NextDouble() + simplex.LowerBound;
             }
             return vector;
         }

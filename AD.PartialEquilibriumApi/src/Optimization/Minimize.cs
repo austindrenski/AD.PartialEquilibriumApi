@@ -22,8 +22,22 @@ namespace AD.PartialEquilibriumApi
                     simplex.TextWriter.WriteLineAsync($"> i = {$"{i}".PadLeft(simplex.Iterations.ToString().Length)}: {simplex.Solutions[0]}");
                 }
 
+                Solution random = simplex.Random();
                 Solution centroid = simplex.Centroid();
                 Solution reflected = simplex.Reflect(centroid);
+                Solution reflectedRandom = simplex.Reflect(random);
+                
+                if (random < simplex)
+                {
+                    simplex.Swap(random, simplex.LastIndex);
+                    Array.Sort(simplex.Solutions);
+                }
+
+                if (reflectedRandom < simplex)
+                {
+                    simplex.Swap(reflectedRandom, simplex.LastIndex);
+                    Array.Sort(simplex.Solutions);
+                }
 
                 if (reflected < simplex.Solutions[0])
                 {

@@ -33,15 +33,6 @@ namespace AD.PartialEquilibriumApi
             {
                 item.CalculateMarketEquilibrium();
             }
-            double sumOfSquares =
-                element.Elements()
-                       //.Select(x => x.CalculateMarketEquilibrium())
-                       .Select(x => x.MarketEquilibrium())
-                       .Select(x => x * x)
-                       .Sum();
-
-            element.SetAttributeValue(XMarketEquilibrium, sumOfSquares);
-
             return element;
         }
 

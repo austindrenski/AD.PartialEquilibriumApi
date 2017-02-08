@@ -19,6 +19,10 @@ namespace AD.PartialEquilibriumApi
         /// <returns>The ConsumerPrice modified by the shock.</returns>
         public static double ProducerPrice(this XElement element)
         {
+            if (element.Attribute(XProducerPrice) == null)
+            {
+                element.SetAttributeValue(XProducerPrice, element.InitialPrice());
+            }
             return (double) element.Attribute(XProducerPrice);
         }
 
