@@ -33,18 +33,16 @@ namespace AD.PartialEquilibriumApi
                         new XElement("script",
                             new XAttribute("type", "text/javascript"),
                             $@"
-                            google.charts.load('current', {{packages: ['table', 'orgchart']}});
-                            google.charts.setOnLoadCallback(drawChart0);
-                            function drawChart0() {{
-                                var orgData = new google.visualization.DataTable();
-                                
-                                orgData.addColumn('string', 'name');
-                                orgData.addColumn('string', 'parent');
-                                orgData.addRows([{nodeArray}]);
-
-                                var orgChart = new google.visualization.OrgChart(document.getElementById('org_chart'));
-                                orgChart.draw(orgData);
-                            }}"
+google.charts.load('current', {{packages: ['table', 'orgchart']}});
+google.charts.setOnLoadCallback(drawChart0);
+    function drawChart0() {{
+        var orgData = new google.visualization.DataTable();
+            orgData.addColumn('string', 'name');
+            orgData.addColumn('string', 'parent');
+            orgData.addRows([{nodeArray}]);
+            var orgChart = new google.visualization.OrgChart(document.getElementById('org_chart'));
+            orgChart.draw(orgData);
+    }}"
                         )
                     ),
                     new XElement("body",
