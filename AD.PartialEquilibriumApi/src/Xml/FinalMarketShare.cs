@@ -42,15 +42,21 @@ namespace AD.PartialEquilibriumApi
         {
             foreach (XElement market in model.DescendantsAndSelf().Reverse())
             {
+                if (market.Parent == null)
+                {
+                    market.FinalMarketShare(1.0);
+                    continue;
+                }
+
                 double initialMarketShare = market.InitialMarketShare();
 
                 double expenditure = 
                     Math.Pow(market.ConsumerPrice(), 1 - market.ElasticityOfSubstitution());
 
-                double totalExpenditure = 
+                double totalExpenditure =
                     market.Parent?
                           .Elements()
-                          .Sum(x => x.Parent?.ConsumerPrice() * x.InitialMarketShare()) ?? 1;
+                          .Sum(x => x.ConsumerPrice() * x.InitialMarketShare()) ?? 1;
 
                 double substitutionAdjustedTotalExpenditure = 
                     Math.Pow(totalExpenditure, 1 - market.ElasticityOfSubstitution());

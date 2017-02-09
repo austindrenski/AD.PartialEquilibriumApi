@@ -49,27 +49,26 @@ namespace AD.PartialEquilibriumApi
             {
                 double consumerPrice;
 
-                if (variables.Contains(item.Name))
+                if (item.IsVariable())
                 {
                     consumerPrice = values[Array.IndexOf(variables, item.Name)];
                 }
                 else
                 {
-                    double elasticityOfSubstitution = item.ElasticityOfSubstitution();
-
                     if (item.HasElements)
                     {
                         double consumerPriceIndexComponents =
                             item.Elements()
                                 .Sum(x => x.InitialMarketShare() * Math.Pow(x.ConsumerPrice(), 1 - x.ElasticityOfSubstitution()));
 
-                        consumerPrice = Math.Pow(consumerPriceIndexComponents, 1 / (1 - elasticityOfSubstitution));
+                        consumerPrice = Math.Pow(consumerPriceIndexComponents, 1 / (1 - item.ElasticityOfSubstitution()));
                     }
                     else
                     {
                         consumerPrice = item.ConsumerPrice();
                     }
                 }
+
                 item.ConsumerPrice(consumerPrice);
             }
         }

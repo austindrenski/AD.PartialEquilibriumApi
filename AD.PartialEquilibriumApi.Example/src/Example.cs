@@ -16,8 +16,8 @@ namespace AD.PartialEquilibriumApi.Example
             //Simplex rosenbrock = new Simplex(x => 2 * (100 * Math.Pow(x[1] - Math.Pow(x[1], 2), 2) + Math.Pow(x[0] - 1, 2)), -5, 5, 2, 10000, Console.Out);
             //rosenbrock.Minimize();
 
-            //XmlFilePath structureFile = CreateTempXmlFile();
-            //DelimitedFilePath dataFile = CreateTempCsvFile();
+            //XmlFilePath structureFile = CreateTempXmlFile0();
+            //DelimitedFilePath dataFile = CreateTempCsvFile0();
             //XName[] variables =
             //    new XName[]
             //    {
@@ -25,6 +25,19 @@ namespace AD.PartialEquilibriumApi.Example
             //            "Supplier1",
             //            "Supplier2",
             //    };
+
+            //XmlFilePath structureFile = CreateTempXmlFile1();
+            //DelimitedFilePath dataFile = CreateTempCsvFile1();
+            //XName[] variables =
+            //    new XName[]
+            //    {
+            //        //"Retail",
+            //            "Supplier1",
+            //            //"Supplier2",
+            //                "Input1",
+            //                "Input2"
+            //    };
+
 
             XmlFilePath structureFile = CreateTempXmlFile2();
             DelimitedFilePath dataFile = CreateTempCsvFile2();
@@ -35,24 +48,29 @@ namespace AD.PartialEquilibriumApi.Example
                         "Supplier1",
                         //"Supplier2",
                             "Input1",
-                            "Input2"
+                            //"Input2",
+                                "Factor1",
+                                "Factor2"
                 };
 
             // Read in the model and the data.
             XElement model = CreateModelFromFile(structureFile, dataFile);
 
             // Create chart depicting the model
-            XElement html0 = ChartFactory.CreateOrganizationalChart(model);
-            using (StreamWriter writer = new StreamWriter(@"g:\data\austin d\pe modeling\chart.html"))
-            {
-                writer.WriteLine(html0.ToString());
-            }
+            //XElement html0 = ChartFactory.CreateOrganizationalChart(model);
+            //using (StreamWriter writer = new StreamWriter(@"g:\data\austin d\pe modeling\chart.html"))
+            //{
+            //    writer.WriteLine(html0.ToString());
+            //}
+
+            // Mark variables
+            model.SetIsVariable(variables);
 
             // Apply the price shocks.
             model.ShockProducerPrices();
 
             // Calculate the market equilibrium starting on the root.
-            model.CalculateRootMarketEquilibrium();
+            model.CalculateMarketEquilibrium();
 
             // Create the objective function.
             Func<double[], double> objectiveFunction =
@@ -60,7 +78,7 @@ namespace AD.PartialEquilibriumApi.Example
                 {
                     model.SetConsumerPrices(x, variables);
                     model.ShockProducerPrices();
-                    model.CalculateRootMarketEquilibrium();
+                    model.CalculateMarketEquilibrium();
                     return model.Descendants().Sum(y => Math.Abs(y.MarketEquilibrium()));
                 };
 
@@ -77,15 +95,15 @@ namespace AD.PartialEquilibriumApi.Example
 
             // Find the minimum solution.
             Solution solution = simplex.Minimize();
-
+            
             // Update the XML tree one more time with the optimal result.
             double[] result = solution.Vector;
             model.SetConsumerPrices(result, variables);
             model.ShockProducerPrices();
-            model.CalculateRootMarketEquilibrium();
+            model.CalculateMarketEquilibrium();
 
             // Calculate new market shares
-            //model.CalculateAllFinalMarketShares();
+            model.CalculateFinalMarketShares();
 
             // Print the results.
             Console.WriteLine("-----------------------------------------------------------------------------------------");
@@ -113,7 +131,7 @@ namespace AD.PartialEquilibriumApi.Example
         }
 
         [UsedImplicitly]
-        public static XmlFilePath CreateTempXmlFile()
+        public static XmlFilePath CreateTempXmlFile0()
         {
             string xml = Path.ChangeExtension(Path.GetTempFileName(), ".xml");
             using (StreamWriter writer = new StreamWriter(xml))
@@ -128,7 +146,7 @@ namespace AD.PartialEquilibriumApi.Example
         }
 
         [UsedImplicitly]
-        public static XmlFilePath CreateTempXmlFile2()
+        public static XmlFilePath CreateTempXmlFile1()
         {
             string xml = Path.ChangeExtension(Path.GetTempFileName(), ".xml");
             using (StreamWriter writer = new StreamWriter(xml))
@@ -146,7 +164,28 @@ namespace AD.PartialEquilibriumApi.Example
         }
 
         [UsedImplicitly]
-        public static DelimitedFilePath CreateTempCsvFile()
+        public static XmlFilePath CreateTempXmlFile2()
+        {
+            string xml = Path.ChangeExtension(Path.GetTempFileName(), ".xml");
+            using (StreamWriter writer = new StreamWriter(xml))
+            {
+                writer.WriteLine(
+                    @"<Retail>
+                        <Supplier1 />
+                        <Supplier2>
+                            <Input1 />
+                            <Input2>
+                                <Factor1 />
+                                <Factor2 />
+                            </Input2>    
+                        </Supplier2>
+                      </Retail>");
+            }
+            return new XmlFilePath(xml);
+        }
+
+        [UsedImplicitly]
+        public static DelimitedFilePath CreateTempCsvFile0()
         {
             string csv = Path.ChangeExtension(Path.GetTempFileName(), ".csv");
             using (StreamWriter writer = new StreamWriter(csv))
@@ -155,6 +194,23 @@ namespace AD.PartialEquilibriumApi.Example
                 writer.WriteLine("4,5,-1,1.0,1.00,0.00");
                     writer.WriteLine("4,5,-1,1.0,0.50,0.00");
                     writer.WriteLine("4,5,-1,1.0,0.50,0.05");
+
+            }
+            return new DelimitedFilePath(csv, ',');
+        }
+
+        [UsedImplicitly]
+        public static DelimitedFilePath CreateTempCsvFile1()
+        {
+            string csv = Path.ChangeExtension(Path.GetTempFileName(), ".csv");
+            using (StreamWriter writer = new StreamWriter(csv))
+            {
+                writer.WriteLine("ElasticityOfSubstitution,ElasticityOfSupply,ElasticityOfDemand,InitialPrice,InitialMarketShare,Shock");
+                writer.WriteLine("4,5,-1,1.0,1.00,0.00");
+                    writer.WriteLine("4,5,-1,1.0,0.50,0.00");
+                    writer.WriteLine("4,5,-1,1.0,0.50,0.00");
+                        writer.WriteLine("4,5,-1,1.0,0.50,0.05");
+                        writer.WriteLine("4,5,-1,1.0,0.50,0.05");
 
             }
             return new DelimitedFilePath(csv, ',');
@@ -170,9 +226,10 @@ namespace AD.PartialEquilibriumApi.Example
                 writer.WriteLine("4,5,-1,1.0,1.00,0.00");
                     writer.WriteLine("4,5,-1,1.0,0.50,0.00");
                     writer.WriteLine("4,5,-1,1.0,0.50,0.00");
-                        writer.WriteLine("4,5,-1,1.0,0.50,0.05");
-                        writer.WriteLine("4,5,-1,1.0,0.50,0.05");
-
+                        writer.WriteLine("4,5,-1,1.0,0.50,0.00");
+                        writer.WriteLine("4,5,-1,1.0,0.50,0.00");
+                            writer.WriteLine("4,5,-1,1.0,0.50,0.05");
+                            writer.WriteLine("4,5,-1,1.0,0.50,0.05");
             }
             return new DelimitedFilePath(csv, ',');
         }

@@ -64,6 +64,7 @@
     <Compile Include="src\Xml\ElasticityOfDemand.cs" />
     <Compile Include="src\Xml\ElasticityOfSupply.cs" />
     <Compile Include="src\Xml\FinalMarketShare.cs" />
+    <Compile Include="src\Xml\IsVariable.cs" />
     <Compile Include="src\Xml\MarketEquilibrium.cs" />
     <Compile Include="src\Xml\DefineAttributeData.cs" />
     <Compile Include="src\Xml\ElasticityOfSubstitution.cs" />

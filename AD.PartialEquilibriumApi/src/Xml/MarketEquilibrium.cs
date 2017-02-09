@@ -20,6 +20,10 @@ namespace AD.PartialEquilibriumApi
         /// <returns>The value of the MarketEquilibrium attribute.</returns>
         public static double MarketEquilibrium([NotNull] this XElement element)
         {
+            if (element.Parent == null)
+            {
+                return 1.0;
+            }
             return (double)element.Attribute(XMarketEquilibrium);
         }
 
@@ -28,7 +32,7 @@ namespace AD.PartialEquilibriumApi
         /// Result = (producerPrice ^ elasticityOfSupply) - [(consumerConsumerPriceIndex ^ (elasticityOfSubstitution + elasticityOfDemand)) / (consumerPrice ^ elasticityOfSubstitution)]
         /// </summary>
         /// <returns>A reference to the existing <see cref="XElement"/>. This is returned for use with fluent syntax calls.</returns>
-        public static XElement CalculateRootMarketEquilibrium([NotNull] this XElement element)
+        public static XElement CalculateMarketEquilibrium([NotNull] this XElement element)
         {
             foreach (XElement item in element.DescendantsAndSelf().Reverse())
             {
