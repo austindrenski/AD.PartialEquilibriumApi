@@ -11,14 +11,35 @@ namespace AD.PartialEquilibriumApi
     public class Simplex
     {
         /// <summary>
+        /// The alpha constant. Recommended = 1.0.
+        /// </summary>
+        public const double Reflection = 1.0;
+
+        /// <summary>
+        /// The beta constant. Recommend = 0.5.
+        /// </summary>
+        public const double Contraction = 0.5;
+
+        /// <summary>
+        /// The gamma constant. Recommended = 2.0.
+        /// </summary>
+        public const double Expansion = 2.0;
+
+        /// <summary>
+        /// Controls how quickly the simplex can shrink.
+        /// </summary>
+        public const double Shrink = 0.5;
+
+        /// <summary>
+        /// The numerical precision used for floating poing comparisons. Initially set equal to 1e-15.
+        /// Increasing the numerical precision may help when the search space is complex, or corner solutions may exist.
+        /// </summary>
+        public double Precision { get; set; } = 1e-15;
+
+        /// <summary>
         /// The dimensions of the simplex. Equal to the length of the argument vectors.
         /// </summary>
         public int Dimensions { get; }
-
-        /// <summary>
-        /// The objective function.
-        /// </summary>
-        public Func<double[], double> ObjectiveFunction { get; }
 
         /// <summary>
         /// The number of iterations to attempt.
@@ -53,30 +74,9 @@ namespace AD.PartialEquilibriumApi
         }
 
         /// <summary>
-        /// The alpha constant. Recommended = 1.0.
+        /// The objective function.
         /// </summary>
-        public const double Reflection = 1.0;
-
-        /// <summary>
-        /// The beta constant. Recommend = 0.5.
-        /// </summary>
-        public const double Contraction = 0.5;
-
-        /// <summary>
-        /// The gamma constant. Recommended = 2.0.
-        /// </summary>
-        public const double Expansion = 2.0;
-
-        /// <summary>
-        /// Controls how quickly the simplex can shrink.
-        /// </summary>
-        public const double Shrink = 0.5;
-
-        /// <summary>
-        /// The numerical precision used for floating poing comparisons. Initially set equal to 1e-15.
-        /// Increasing the numerical precision may help when the search space is complex, or corner solutions may exist.
-        /// </summary>
-        public double Precision { get; set; } = 1e-15;
+        public Func<double[], double> ObjectiveFunction { get; }
 
         /// <summary>
         /// Random number generator.

@@ -20,9 +20,9 @@ namespace AD.PartialEquilibriumApi.Example
             //XName[] variables =
             //    new XName[]
             //    {
-            //        //"Retail",
-            //            "Supplier1",
-            //            "Supplier2",
+            //        //"A0",
+            //            "B0",
+            //            "B1",
             //    };
 
             //XmlFilePath structureFile = CreateTempXmlFile1();
@@ -30,11 +30,11 @@ namespace AD.PartialEquilibriumApi.Example
             //XName[] variables =
             //    new XName[]
             //    {
-            //        //"Retail",
-            //            "Supplier1",
-            //            //"Supplier2",
-            //                "Input1",
-            //                "Input2"
+            //        //"A0",
+            //            "B0",
+            //            //"B1",
+            //                "C0",
+            //                "C1"
             //    };
 
             //XmlFilePath structureFile = CreateTempXmlFile2();
@@ -42,13 +42,13 @@ namespace AD.PartialEquilibriumApi.Example
             //XName[] variables =
             //    new XName[]
             //    {
-            //        //"Retail",
-            //            "Supplier1",
-            //            //"Supplier2",
-            //                "Input1",
-            //                //"Input2",
-            //                    "Factor1",
-            //                    "Factor2"
+            //        //"A0",
+            //            "B0",
+            //            //"B1",
+            //                "C0",
+            //                //"C1",
+            //                    "D0",
+            //                    "D1"
             //    };
 
             //XmlFilePath structureFile = CreateTempXmlFile3();
@@ -56,15 +56,15 @@ namespace AD.PartialEquilibriumApi.Example
             //XName[] variables =
             //    new XName[]
             //    {
-            //        //"Retail",
-            //            "Supplier1",
-            //            //"Supplier2",
-            //                "Input1",
-            //                //"Input2",
-            //                    "Factor1",
-            //                    //"Factor2",
-            //                        "RawInput1",
-            //                        "RawInput2"
+            //        //"A0",
+            //            "B0",
+            //            //"B1",
+            //                "C0",
+            //                //"C1",
+            //                    "D0",
+            //                    //"D1"
+            //                        "E0",
+            //                        "E1"
             //    };
 
             XmlFilePath structureFile = CreateTempXmlFile4();
@@ -72,28 +72,28 @@ namespace AD.PartialEquilibriumApi.Example
             XName[] variables =
                 new XName[]
                 {
-                    //"Retail",
-                        "Supplier1",
-                        //"Supplier2",
-                            "Input1",
-                            //"Input2",
-                                "Factor1",
-                                //"Factor2",
-                                    "RawInput1",
-                                    //"RawInput2",
-                                        "SubRawInput1",
-                                        "SubRawInput2"
+                    //"A0",
+                        "B0",
+                        //"B1",
+                            "C0",
+                            //"C1",
+                                "D0",
+                                //"D1"
+                                    "E0",
+                                    //"E1"
+                                        "F0",
+                                        "F1"
                 };
 
             // Read in the model and the data.
             XElement model = CreateModelFromFile(structureFile, dataFile);
 
-            // Create chart depicting the model
-            //XElement html0 = ChartFactory.CreateOrganizationalChart(model);
-            //using (StreamWriter writer = new StreamWriter(@"g:\data\austin d\pe modeling\chart.html"))
-            //{
-            //    writer.WriteLine(html0.ToString());
-            //}
+            //Create chart depicting the model
+           XElement html0 = ChartFactory.CreateOrganizationalChart(model);
+            using (StreamWriter writer = new StreamWriter(@"g:\data\austin d\pe modeling\chart.html"))
+            {
+                writer.WriteLine(html0.ToString());
+            }
 
             // Mark variables and set initial state.
             model.SetIsVariable(variables)
@@ -118,8 +118,8 @@ namespace AD.PartialEquilibriumApi.Example
                 lowerBound: 0,
                 upperBound: 10,
                 dimensions: variables.Length,
-                iterations: 5000,
-                seed: null,
+                iterations: 2000,
+                seed: 0,
                 textWriter: Console.Out);
 
             // Find the minimum solution.
@@ -160,10 +160,10 @@ namespace AD.PartialEquilibriumApi.Example
             using (StreamWriter writer = new StreamWriter(xml))
             {
                 writer.WriteLine(
-                    @"<Retail>
-                        <Supplier1 />
-                        <Supplier2 />
-                      </Retail>");
+                    @"<A0>
+                          <B0/>
+                          <B1/>
+                      </A0>");
             }
             return new XmlFilePath(xml);
         }
@@ -175,13 +175,13 @@ namespace AD.PartialEquilibriumApi.Example
             using (StreamWriter writer = new StreamWriter(xml))
             {
                 writer.WriteLine(
-                    @"<Retail>
-                        <Supplier1 />
-                        <Supplier2>
-                            <Input1 />
-                            <Input2 />
-                        </Supplier2>
-                      </Retail>");
+                    @"<A0>
+                          <B0/>
+                          <B1>
+                              <C0/>
+                              <C1/>
+                          </B1>
+                      </A0>");
             }
             return new XmlFilePath(xml);
         }
@@ -193,16 +193,16 @@ namespace AD.PartialEquilibriumApi.Example
             using (StreamWriter writer = new StreamWriter(xml))
             {
                 writer.WriteLine(
-                    @"<Retail>
-                        <Supplier1 />
-                        <Supplier2>
-                            <Input1 />
-                            <Input2>
-                                <Factor1 />
-                                <Factor2 />
-                            </Input2>    
-                        </Supplier2>
-                      </Retail>");
+                    @"<A0>
+                          <B0/>
+                          <B1>
+                              <C0/>
+                              <C1>
+                                  <D0/>
+                                  <D1/>
+                              </C1>    
+                          </B1>
+                      </A0>");
             }
             return new XmlFilePath(xml);
         }
@@ -214,19 +214,19 @@ namespace AD.PartialEquilibriumApi.Example
             using (StreamWriter writer = new StreamWriter(xml))
             {
                 writer.WriteLine(
-                    @"<Retail>
-                        <Supplier1 />
-                        <Supplier2>
-                            <Input1 />
-                            <Input2>
-                                <Factor1 />
-                                <Factor2>
-                                    <RawInput1 />
-                                    <RawInput2 />
-                                </Factor2>
-                            </Input2>    
-                        </Supplier2>
-                      </Retail>");
+                    @"<A0>
+                          <B0/>
+                          <B1>
+                              <C0/>
+                              <C1>
+                                  <D0/>
+                                  <D1>
+                                      <E0/>
+                                      <E1/>
+                                  </D1>
+                              </C1>    
+                          </B1>
+                      </A0>");
             }
             return new XmlFilePath(xml);
         }
@@ -239,22 +239,22 @@ namespace AD.PartialEquilibriumApi.Example
             using (StreamWriter writer = new StreamWriter(xml))
             {
                 writer.WriteLine(
-                    @"<Retail>
-                        <Supplier1 />
-                        <Supplier2>
-                            <Input1 />
-                            <Input2>
-                                <Factor1 />
-                                <Factor2>
-                                    <RawInput1 />
-                                    <RawInput2>
-                                        <SubRawInput1 />
-                                        <SubRawInput2 />
-                                    </RawInput2>
-                                </Factor2>
-                            </Input2>    
-                        </Supplier2>
-                      </Retail>");
+                    @"<A0>
+                          <B0/>
+                          <B1>
+                              <C0/>
+                              <C1>
+                                  <D0/>
+                                  <D1>
+                                      <E0/>
+                                      <E1>
+                                          <F0/>
+                                          <F1/>
+                                      </E1>
+                                  </D1>
+                              </C1>    
+                          </B1>
+                      </A0>");
             }
             return new XmlFilePath(xml);
         }

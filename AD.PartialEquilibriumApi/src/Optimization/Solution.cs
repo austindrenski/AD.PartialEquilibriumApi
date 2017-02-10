@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 
@@ -43,10 +44,10 @@ namespace AD.PartialEquilibriumApi
         /// </summary>
         /// <param name="value">The value of this solution.</param>
         /// <param name="vector">A vector of arguments to be passed to the function.</param>
-        public Solution(double value, double[] vector)
+        public Solution(double value, IReadOnlyList<double> vector)
         {
-            Vector = new double[vector.Length];
-            for (int i = 0; i < vector.Length; i++)
+            Vector = new double[vector.Count];
+            for (int i = 0; i < vector.Count; i++)
             {
                 Vector[i] = vector[i];
             }
