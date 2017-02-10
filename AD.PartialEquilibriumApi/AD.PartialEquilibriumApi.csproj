@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="src\Optimization\Minimize.cs" />
+    <Compile Include="src\Optimization\MinimizeParallel.cs" />
     <Compile Include="src\Optimization\Random.cs" />
     <Compile Include="src\Visualization\OrganizationalChart.cs" />
     <Compile Include="src\Xml\ConsumerPrice.cs" />

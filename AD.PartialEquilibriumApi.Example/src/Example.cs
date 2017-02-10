@@ -122,7 +122,7 @@ namespace AD.PartialEquilibriumApi.Example
             }
             Console.WriteLine();
             Console.WriteLine();
-            Console.WriteLine($"Final solution: {solution}.");
+            Console.WriteLine($"Final solution (standard): {solution}.");
             Console.WriteLine();
             Console.WriteLine("-----------------------------------------------------------------------------------------");
             Console.ReadLine();
