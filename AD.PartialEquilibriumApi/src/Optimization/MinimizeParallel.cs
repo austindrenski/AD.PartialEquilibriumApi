@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -21,10 +22,11 @@ namespace AD.PartialEquilibriumApi
             {
                 concurrentBag.Add(
                     new Simplex(
-                        simplex.ObjectiveFunction,
+                        simplex.ObjectiveFunction.Clone() as Func<double[], double>,
                         simplex.LowerBound,
                         simplex.UpperBound,
                         simplex.Dimensions,
+                        simplex.Iterations,
                         null,
                         simplex.TextWriter
                     )
@@ -32,6 +34,11 @@ namespace AD.PartialEquilibriumApi
             }
 
             Parallel.For(0, loops, i => concurrentBag.ElementAt(i).Minimize());
+
+            foreach (Simplex s in concurrentBag)
+            {
+                simplex.TextWriter.WriteLine($"Parallel result: {s[0]}");
+            }
 
             return concurrentBag.Min(x => x.Solutions[0]);
         }

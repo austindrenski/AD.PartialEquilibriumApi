@@ -17,20 +17,21 @@ namespace AD.PartialEquilibriumApi.Example
             XName[] variables = modelFactory.Variables();
 
             // Read in the model and the data.
-            XElement model = XElement.Load(structureFile)
-                                     .DefineAttributeData(dataFile)
-                                     .SetIsVariable(variables);
+            XElement model = 
+                XElement.Load(structureFile)
+                        .DefineAttributeData(dataFile)
+                        .SetIsVariable(variables);
 
             // Create the objective function.
             Func<double[], double> objectiveFunction =
                 x =>
                 {
-                    XElement functionModel = model;
-                    functionModel.SetConsumerPrices(x)
-                                 .ShockProducerPrices()
-                                 .CalculateMarketEquilibrium()
-                                 .CalculateFinalMarketShares();
-                    return ObjectiveFunctionFactory.Default(functionModel);
+                    XElement localModel = new XElement(model);
+                    localModel.SetConsumerPrices(x)
+                              .ShockProducerPrices()
+                              .CalculateMarketEquilibrium()
+                              .CalculateFinalMarketShares();
+                    return ObjectiveFunctionFactory.Default(localModel);
                 };
 
             // Set up the simplex solver.
@@ -40,13 +41,16 @@ namespace AD.PartialEquilibriumApi.Example
                     lowerBound: 0,
                     upperBound: 10,
                     dimensions: variables.Length,
-                    iterations: 2000,
-                    seed: 0,
+                    iterations: 1000,
+                    seed: null,
                     textWriter: Console.Out
                 );
 
             // Find the minimum solution.
             Solution solution = simplex.Minimize();
+
+            // Find the minimum solution in parallel.
+            //Solution solution = simplex.Minimize(50);
 
             // Apply the final solution
             model.SetConsumerPrices(solution.Vector)
