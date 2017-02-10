@@ -28,33 +28,23 @@ namespace AD.PartialEquilibriumApi
         }
 
         /// <summary>
-        /// Sets the value of the ConsumerPrice attribute.
-        /// </summary>
-        /// <param name="market">An <see cref="XElement"/> describing a market.</param>
-        /// <param name="value">The value to which the ConsumerPrice attribute is set.</param>
-        public static void ConsumerPrice([NotNull] this XElement market, double value)
-        {
-            market.SetAttributeValue(XConsumerPrice, value);
-        }
-
-        /// <summary>
         /// Sets the values of the ConsumerPrice attributes in provided an array of values in document-order.
         /// </summary>
-        /// <param name="market">An <see cref="XElement"/> describing a market.</param>
+        /// <param name="model">An <see cref="XElement"/> describing a model.</param>
         /// <param name="values">The values to which the ConsumerPrice attributes are set.</param>
-        public static void SetConsumerPrices([NotNull] this XElement market, double[] values)
+        public static XElement SetConsumerPrices([NotNull] this XElement model, double[] values)
         {
             XElement[] variableMarkets = 
-                market.DescendantsAndSelf()
+                model.DescendantsAndSelf()
                       .Where(x => x.IsVariable())
                       .ToArray();
 
             for (int i = 0; i < values.Length; i++)
             {
-                variableMarkets[i].ConsumerPrice(values[i]);
+                variableMarkets[i].SetAttributeValue(XConsumerPrice, values[i]);
             }
 
-            foreach (XElement item in market.DescendantsAndSelf().Where(x => x.HasElements).Reverse())
+            foreach (XElement item in model.DescendantsAndSelf().Where(x => x.HasElements).Reverse())
             {
                 double consumerPriceIndexComponents =
                         item.Elements()
@@ -63,8 +53,9 @@ namespace AD.PartialEquilibriumApi
                 double consumerPrice = 
                     Math.Pow(consumerPriceIndexComponents, 1 / (1 - item.ElasticityOfSubstitution()));
 
-                item.ConsumerPrice(consumerPrice);
+                item.SetAttributeValue(XConsumerPrice, consumerPrice);
             }
+            return model;
         }
     }
 }

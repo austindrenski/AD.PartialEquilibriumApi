@@ -23,26 +23,25 @@ namespace AD.PartialEquilibriumApi
             {
                 element.SetAttributeValue(XProducerPrice, element.InitialPrice());
             }
-            return (double) element.Attribute(XProducerPrice);
+            return (double)element.Attribute(XProducerPrice);
         }
 
         /// <summary>
         /// Sets each ProducerPrice attribute on descendant <see cref="XElement"/> objects in reverse document order.
         /// Result = ConsumerPrice / (1 + Shock)
         /// </summary>
-        /// <param name="element">The element to shock.</param>
+        /// <param name="model">The model to shock.</param>
         /// <returns>A reference to the existing <see cref="XElement"/>. This is returned for use with fluent syntax calls.</returns>
-        public static XElement ShockProducerPrices(this XElement element)
+        public static XElement ShockProducerPrices(this XElement model)
         {
-            foreach (XElement item in element.DescendantsAndSelf().Reverse())
+            foreach (XElement item in model.DescendantsAndSelf().Reverse())
             {
                 double consumerPrice = item.ConsumerPrice();
                 double shock = item.Shock();
                 double shockedPrice = consumerPrice / (1 + shock);
                 item.SetAttributeValue(XProducerPrice, shockedPrice);
             }
-
-            return element;
+            return model;
         }
     }
 }

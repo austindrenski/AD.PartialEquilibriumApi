@@ -25,10 +25,7 @@ namespace AD.PartialEquilibriumApi
 
             for (int i = 0; i < simplex.Iterations; i++)
             {
-                if (i % 10 == 0)
-                {
-                    simplex.TextWriter.WriteLineAsync($"> i = {$"{i}".PadLeft(simplex.Iterations.ToString().Length)}: {simplex.Solutions[0]}");
-                }
+                simplex.TextWriter.WriteLineAsync($"> i = {$"{i}".PadLeft(simplex.Iterations.ToString().Length)}: {simplex.Solutions[0]}");
 
                 Solution centroid = simplex.Centroid(lastIndex);
                 Solution reflected = simplex.Reflect(centroid, lastIndex);

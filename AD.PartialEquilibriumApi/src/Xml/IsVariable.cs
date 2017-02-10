@@ -28,12 +28,13 @@ namespace AD.PartialEquilibriumApi
         /// </summary>
         /// <param name="model">The model to search.</param>
         /// <param name="value">The names of the markets to be marked as variables.</param>
-        public static void SetIsVariable(this XElement model, XName[] value)
+        public static XElement SetIsVariable(this XElement model, XName[] value)
         {
             foreach (XElement market in model.DescendantsAndSelf())
             {
                 market.SetAttributeValue(XIsVariable, value.Contains(market.Name));
             }
+            return model;
         }
     }
 }

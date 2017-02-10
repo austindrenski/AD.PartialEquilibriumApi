@@ -24,16 +24,6 @@ namespace AD.PartialEquilibriumApi
         }
 
         /// <summary>
-        /// Sets the value of the FinalMarketShare attribute.
-        /// </summary>
-        /// <param name="market">An <see cref="XElement"/> describing a market.</param>
-        /// <param name="value">The value to which the FinalMarketShare attribute is set.</param>
-        public static void FinalMarketShare([NotNull] this XElement market, double value)
-        {
-            market.SetAttributeValue(XFinalMarketShare, value);
-        }
-
-        /// <summary>
         /// Calculates the market share on this and descendant <see cref="XElement"/> objects in reverse document order.
         /// </summary>
         /// <param name="model">An <see cref="XElement"/> describing the model.</param>
@@ -44,7 +34,7 @@ namespace AD.PartialEquilibriumApi
             {
                 if (market.Parent == null)
                 {
-                    market.FinalMarketShare(market.Elements().Sum(x => x.FinalMarketShare()));
+                    market.SetAttributeValue(XFinalMarketShare, market.Elements().Sum(x => x.FinalMarketShare()));
                     continue;
                 }
 
@@ -63,7 +53,7 @@ namespace AD.PartialEquilibriumApi
 
                 double finalMarketShare = initialMarketShare * expenditure / substitutionAdjustedTotalExpenditure;
 
-                market.FinalMarketShare(finalMarketShare);
+                market.SetAttributeValue(XFinalMarketShare, finalMarketShare);
             }
 
             return model;

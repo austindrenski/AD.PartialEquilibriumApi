@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
@@ -38,8 +37,22 @@ namespace AD.PartialEquilibriumApi.Example
             //                "Input2"
             //    };
 
-            XmlFilePath structureFile = CreateTempXmlFile2();
-            DelimitedFilePath dataFile = CreateTempCsvFile2();
+            //XmlFilePath structureFile = CreateTempXmlFile2();
+            //DelimitedFilePath dataFile = CreateTempCsvFile2();
+            //XName[] variables =
+            //    new XName[]
+            //    {
+            //        //"Retail",
+            //            "Supplier1",
+            //            //"Supplier2",
+            //                "Input1",
+            //                //"Input2",
+            //                    "Factor1",
+            //                    "Factor2"
+            //    };
+
+            XmlFilePath structureFile = CreateTempXmlFile3();
+            DelimitedFilePath dataFile = CreateTempCsvFile3();
             XName[] variables =
                 new XName[]
                 {
@@ -49,7 +62,9 @@ namespace AD.PartialEquilibriumApi.Example
                             "Input1",
                             //"Input2",
                                 "Factor1",
-                                "Factor2"
+                                //"Factor2",
+                                    "RawInput1",
+                                    "RawInput2"
                 };
 
             // Read in the model and the data.
@@ -62,47 +77,35 @@ namespace AD.PartialEquilibriumApi.Example
             //    writer.WriteLine(html0.ToString());
             //}
 
-            // Mark variables
-            model.SetIsVariable(variables);
-
-            // Apply the price shocks.
-            model.ShockProducerPrices();
-
-            // Calculate the market equilibrium starting on the root.
-            model.CalculateMarketEquilibrium();
+            // Mark variables and set initial state.
+            model.SetIsVariable(variables)
+                 .ShockProducerPrices()
+                 .CalculateMarketEquilibrium();
 
             // Create the objective function.
             Func<double[], double> objectiveFunction =
                 x =>
                 {
-                    model.SetConsumerPrices(x);
-                    model.ShockProducerPrices();
-                    model.CalculateMarketEquilibrium();
+                    model.SetConsumerPrices(x)
+                         .ShockProducerPrices()
+                         .CalculateMarketEquilibrium()
+                         .CalculateFinalMarketShares();
                     return ObjectiveFunctionFactory.Default(model);
                 };
 
             // Set up the simplex solver.
             Simplex simplex =
-                new Simplex(
-                    objectiveFunction: x => objectiveFunction(x),
-                    lowerBound: 0,
-                    upperBound: 10,
-                    dimensions: variables.Length,
-                    iterations: 1000,
-                    seed: 0,
-                    textWriter: Console.Out);
+            new Simplex(
+                objectiveFunction: x => objectiveFunction(x),
+                lowerBound: 0,
+                upperBound: 10,
+                dimensions: variables.Length,
+                iterations: 2000,
+                seed: 0,
+                textWriter: Console.Out);
 
             // Find the minimum solution.
             Solution solution = simplex.Minimize();
-
-            // Update the XML tree one more time with the optimal result.
-            double[] result = solution.Vector;
-            model.SetConsumerPrices(result);
-            model.ShockProducerPrices();
-            model.CalculateMarketEquilibrium();
-
-            // Calculate new market shares
-            model.CalculateFinalMarketShares();
 
             // Print the results.
             Console.WriteLine("-----------------------------------------------------------------------------------------");
@@ -117,6 +120,9 @@ namespace AD.PartialEquilibriumApi.Example
             {
                 model.WriteTo(writer);
             }
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine($"Final solution: {solution}.");
             Console.WriteLine();
             Console.WriteLine("-----------------------------------------------------------------------------------------");
             Console.ReadLine();
@@ -184,6 +190,30 @@ namespace AD.PartialEquilibriumApi.Example
         }
 
         [UsedImplicitly]
+        public static XmlFilePath CreateTempXmlFile3()
+        {
+            string xml = Path.ChangeExtension(Path.GetTempFileName(), ".xml");
+            using (StreamWriter writer = new StreamWriter(xml))
+            {
+                writer.WriteLine(
+                    @"<Retail>
+                        <Supplier1 />
+                        <Supplier2>
+                            <Input1 />
+                            <Input2>
+                                <Factor1 />
+                                <Factor2>
+                                    <RawInput1 />
+                                    <RawInput2 />
+                                </Factor2>
+                            </Input2>    
+                        </Supplier2>
+                      </Retail>");
+            }
+            return new XmlFilePath(xml);
+        }
+
+        [UsedImplicitly]
         public static DelimitedFilePath CreateTempCsvFile0()
         {
             string csv = Path.ChangeExtension(Path.GetTempFileName(), ".csv");
@@ -223,6 +253,26 @@ namespace AD.PartialEquilibriumApi.Example
             {
                 writer.WriteLine("ElasticityOfSubstitution,ElasticityOfSupply,ElasticityOfDemand,InitialPrice,InitialMarketShare,Shock");
                 writer.WriteLine("4,5,-1,1.0,1.00,0.00");
+                writer.WriteLine("4,5,-1,1.0,0.50,0.00");
+                writer.WriteLine("4,5,-1,1.0,0.50,0.00");
+                writer.WriteLine("4,5,-1,1.0,0.50,0.00");
+                writer.WriteLine("4,5,-1,1.0,0.50,0.00");
+                writer.WriteLine("4,5,-1,1.0,0.50,0.05");
+                writer.WriteLine("4,5,-1,1.0,0.50,0.05");
+            }
+            return new DelimitedFilePath(csv, ',');
+        }
+
+        [UsedImplicitly]
+        public static DelimitedFilePath CreateTempCsvFile3()
+        {
+            string csv = Path.ChangeExtension(Path.GetTempFileName(), ".csv");
+            using (StreamWriter writer = new StreamWriter(csv))
+            {
+                writer.WriteLine("ElasticityOfSubstitution,ElasticityOfSupply,ElasticityOfDemand,InitialPrice,InitialMarketShare,Shock");
+                writer.WriteLine("4,5,-1,1.0,1.00,0.00");
+                writer.WriteLine("4,5,-1,1.0,0.50,0.00");
+                writer.WriteLine("4,5,-1,1.0,0.50,0.00");
                 writer.WriteLine("4,5,-1,1.0,0.50,0.00");
                 writer.WriteLine("4,5,-1,1.0,0.50,0.00");
                 writer.WriteLine("4,5,-1,1.0,0.50,0.00");

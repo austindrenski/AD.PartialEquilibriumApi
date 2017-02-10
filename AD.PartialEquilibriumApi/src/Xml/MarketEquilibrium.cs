@@ -37,6 +37,10 @@ namespace AD.PartialEquilibriumApi
                     item.SetAttributeValue(XMarketEquilibrium, item.Elements().Sum(x => x.MarketEquilibrium() * x.MarketEquilibrium()));
                     continue;
                 }
+                if (item.Parent == null)
+                {
+                    throw new ArgumentNullException("This error shouldn't be thrown. Something has gone wrong with the model state.");
+                }
                 double consumerConsumerPriceIndex = item.Parent.ConsumerPrice();
                 double consumerPrice = item.ConsumerPrice();
                 double elasticityOfDemand = item.ElasticityOfDemand();
