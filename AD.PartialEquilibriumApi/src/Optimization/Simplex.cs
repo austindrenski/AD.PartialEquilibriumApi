@@ -120,7 +120,7 @@ namespace AD.PartialEquilibriumApi
             ObjectiveFunction = objectiveFunction;
             LowerBound = lowerBound;
             UpperBound = upperBound;
-            Solutions = new Solution[dimensions + 5];
+            Solutions = new Solution[dimensions * 3];
 
             for (int i = 0; i < Solutions.Length; i++)
             {
