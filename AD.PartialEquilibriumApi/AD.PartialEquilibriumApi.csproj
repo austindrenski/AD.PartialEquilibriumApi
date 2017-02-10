@@ -60,6 +60,13 @@
     <Compile Include="src\Optimization\Minimize.cs" />
     <Compile Include="src\Optimization\MinimizeParallel.cs" />
     <Compile Include="src\Optimization\Random.cs" />
+    <Compile Include="src\TestModels\IModel.cs" />
+    <Compile Include="src\TestModels\Model0.cs" />
+    <Compile Include="src\TestModels\Model1.cs" />
+    <Compile Include="src\TestModels\Model2.cs" />
+    <Compile Include="src\TestModels\Model3.cs" />
+    <Compile Include="src\TestModels\Model4.cs" />
+    <Compile Include="src\TestModels\ModelFactory.cs" />
     <Compile Include="src\Visualization\OrganizationalChart.cs" />
     <Compile Include="src\Xml\ConsumerPrice.cs" />
     <Compile Include="src\Xml\ElasticityOfDemand.cs" />

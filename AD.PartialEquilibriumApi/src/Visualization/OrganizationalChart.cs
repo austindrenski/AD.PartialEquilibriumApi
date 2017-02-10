@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System.IO;
+using System.Linq;
 using System.Xml.Linq;
+using AD.IO;
 using JetBrains.Annotations;
 
 namespace AD.PartialEquilibriumApi
@@ -51,6 +53,19 @@ google.charts.setOnLoadCallback(drawChart0);
                     )
                 );
             return html;
+        }
+
+        [UsedImplicitly]
+        public static XElement CreateModelFromFile(XElement model, HtmlFilePath chartOutputPath)
+        {
+            XElement html = CreateOrganizationalChart(model);
+
+            using (StreamWriter writer = new StreamWriter(chartOutputPath))
+            {
+                writer.WriteLine(html.ToString());
+            }
+
+            return model;
         }
     }
 }
