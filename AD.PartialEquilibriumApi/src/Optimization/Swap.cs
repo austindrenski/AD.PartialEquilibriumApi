@@ -16,12 +16,18 @@ namespace AD.PartialEquilibriumApi
         /// <param name="index">The index of the current solution to be replaced.</param>
         public static void Swap(this Simplex simplex, Solution solution, int index)
         {
+            // This method performs the same work as the LINQ form commented below.
+            // Need to benchmark this later. Leaving the for-loop version for now. 
+            // Possible that assignments will be faster and lighter on the GC.
+            //
+            //simplex.Solutions[index] = new Solution(simplex.ObjectiveFunction(solution.Vector), solution.Vector);
+            //
             for (int i = 0; i < simplex.Dimensions; i++)
             {
                 simplex.Solutions[index][i] = solution[i];
             }
 
-            simplex.Solutions[index].Value = solution.Value;
+            simplex.Solutions[index].Value = simplex.ObjectiveFunction(simplex.Solutions[index].Vector);
         }
     }
 }

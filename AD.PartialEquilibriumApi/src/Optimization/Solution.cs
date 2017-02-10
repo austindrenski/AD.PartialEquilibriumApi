@@ -10,6 +10,8 @@ namespace AD.PartialEquilibriumApi
     [PublicAPI]
     public struct Solution : IEquatable<Solution>, IComparable<Solution>
     {
+        private const double Tolerance = 1e-15;
+
         /// <summary>
         /// Returns the argument vector. An indexer is provided for set operations.
         /// </summary>
@@ -73,7 +75,7 @@ namespace AD.PartialEquilibriumApi
         /// </summary>
         public static bool operator <(Solution left, Solution right)
         {
-            return left.Value < right.Value;
+            return left.Value - right.Value < Tolerance;
         }
 
         /// <summary>
@@ -81,7 +83,7 @@ namespace AD.PartialEquilibriumApi
         /// </summary>
         public static bool operator >(Solution left, Solution right)
         {
-            return left.Value > right.Value;
+            return left.Value - right.Value > Tolerance;
         }
 
         /// <summary>
@@ -89,7 +91,7 @@ namespace AD.PartialEquilibriumApi
         /// </summary>
         public static bool operator <=(Solution left, Solution right)
         {
-            return left.Value <= right.Value;
+            return left.Value - right.Value <= Tolerance;
         }
 
         /// <summary>
@@ -97,71 +99,7 @@ namespace AD.PartialEquilibriumApi
         /// </summary>
         public static bool operator >=(Solution left, Solution right)
         {
-            return left.Value >= right.Value;
-        }
-
-        /// <summary>
-        /// True if the value of the solution is less than any of the solutions in the <see cref="Simplex"/>.
-        /// </summary>
-        public static bool operator <(Solution solution, Simplex simplex)
-        {
-            int betterThan = 0;
-            for (int i = 0; i < simplex.Solutions.Length; i++)
-            {
-                if (solution < simplex.Solutions[i])
-                {
-                    betterThan++;
-                }
-            }
-            return betterThan > 0;
-        }
-
-        /// <summary>
-        /// True if the value of the solution is greater than any of the solutions in the <see cref="Simplex"/>.
-        /// </summary>
-        public static bool operator >(Solution solution, Simplex simplex)
-        {
-            int betterThan = 0;
-            for (int i = 0; i < simplex.Solutions.Length; i++)
-            {
-                if (solution > simplex.Solutions[i])
-                {
-                    betterThan++;
-                }
-            }
-            return betterThan > 0;
-        }
-        
-        /// <summary>
-        /// True if the value of the solution is less than or equal to any of the solutions in the <see cref="Simplex"/>.
-        /// </summary>
-        public static bool operator <=(Solution solution, Simplex simplex)
-        {
-            int betterThan = 0;
-            for (int i = 0; i < simplex.Solutions.Length; i++)
-            {
-                if (solution <= simplex.Solutions[i])
-                {
-                    betterThan++;
-                }
-            }
-            return betterThan > 0;
-        }
-
-        /// <summary>
-        /// True if the value of the solution is greater than or equal to any of the solutions in the <see cref="Simplex"/>.
-        /// </summary>
-        public static bool operator >=(Solution solution, Simplex simplex)
-        {
-            int betterThan = 0;
-            for (int i = 0; i < simplex.Solutions.Length; i++)
-            {
-                if (solution >= simplex.Solutions[i])
-                {
-                    betterThan++;
-                }
-            }
-            return betterThan > 0;
+            return left.Value - right.Value >= Tolerance;
         }
 
         /// <summary>
@@ -195,7 +133,6 @@ namespace AD.PartialEquilibriumApi
             }
             return obj is Solution && Equals((Solution)obj);
         }
-
 
         /// <summary>
         /// Returns the hash code for this instance.

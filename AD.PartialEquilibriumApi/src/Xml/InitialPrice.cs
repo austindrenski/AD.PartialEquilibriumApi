@@ -29,10 +29,6 @@ namespace AD.PartialEquilibriumApi
         public static void InitialPrice([NotNull] this XElement market, double value)
         {
             market.SetAttributeValue(XInitialPrice, value);
-            if (market.Parent != null)
-            {
-                market.ConsumerPrice(value);
-            }
         }
     }
 }

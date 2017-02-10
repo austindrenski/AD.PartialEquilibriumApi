@@ -24,9 +24,10 @@ namespace AD.PartialEquilibriumApi.Tests
                     2.5,
                     3.0
                 };
+            model.SetIsVariable(variables);
 
             // Act
-            model.SetConsumerPrices(values, variables);
+            model.SetConsumerPrices(values);
 
             // Assert
             Assert.IsTrue((double)model.Descendants("Supplier1").Single().Attribute("ConsumerPrice") == 2.5);
@@ -50,9 +51,10 @@ namespace AD.PartialEquilibriumApi.Tests
                     2.5,
                     3.0
                 };
+            model.SetIsVariable(variables);
 
             // Act
-            model.SetConsumerPrices(values, variables);
+            model.SetConsumerPrices(values);
 
             // Assert
             Assert.IsTrue((double)model.Descendants("Supplier1").Single().Attribute("ConsumerPrice") == 2.5);

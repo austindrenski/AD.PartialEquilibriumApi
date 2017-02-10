@@ -38,7 +38,7 @@ namespace AD.PartialEquilibriumApi
         /// <summary>
         /// The solutions that currently define the <see cref="Simplex"/>.
         /// </summary>
-        public Solution[] Solutions { get; set; }
+        public Solution[] Solutions { get; }
 
         /// <summary>
         /// Indexed access to the vector of <see cref="Solution"/> objects..
@@ -53,30 +53,30 @@ namespace AD.PartialEquilibriumApi
         }
 
         /// <summary>
-        /// The alpha constant.
+        /// The alpha constant. Recommended = 1.0.
         /// </summary>
         public const double Reflection = 1.0;
 
         /// <summary>
-        /// The beta constant.
+        /// The beta constant. Recommend = 0.5.
         /// </summary>
         public const double Contraction = 0.5;
 
         /// <summary>
-        /// The gamma constant.
+        /// The gamma constant. Recommended = 2.0.
         /// </summary>
         public const double Expansion = 2.0;
+
+        /// <summary>
+        /// Controls how quickly the simplex can shrink.
+        /// </summary>
+        public const double Shrink = 0.5;
 
         /// <summary>
         /// The numerical precision used for floating poing comparisons. Initially set equal to 1e-15.
         /// Increasing the numerical precision may help when the search space is complex, or corner solutions may exist.
         /// </summary>
         public double Precision { get; set; } = 1e-15;
-
-        /// <summary>
-        /// The current step length. Initially set equal to 1e+00.
-        /// </summary>
-        public double StepLength { get; set; } = 1e+00;
 
         /// <summary>
         /// Random number generator.

@@ -36,10 +36,6 @@ namespace AD.PartialEquilibriumApi
         {
             foreach (XElement item in element.DescendantsAndSelf().Reverse())
             {
-                if (item.Parent == null)
-                {
-                    continue;
-                }
                 double consumerPrice = item.ConsumerPrice();
                 double shock = item.Shock();
                 double shockedPrice = consumerPrice / (1 + shock);

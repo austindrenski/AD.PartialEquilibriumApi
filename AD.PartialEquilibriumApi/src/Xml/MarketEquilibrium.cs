@@ -20,10 +20,6 @@ namespace AD.PartialEquilibriumApi
         /// <returns>The value of the MarketEquilibrium attribute.</returns>
         public static double MarketEquilibrium([NotNull] this XElement element)
         {
-            if (element.Parent == null)
-            {
-                return 1.0;
-            }
             return (double)element.Attribute(XMarketEquilibrium);
         }
 
@@ -36,11 +32,11 @@ namespace AD.PartialEquilibriumApi
         {
             foreach (XElement item in element.DescendantsAndSelf().Reverse())
             {
-                if (item.Parent == null)
+                if (item.HasElements)
                 {
+                    item.SetAttributeValue(XMarketEquilibrium, item.Elements().Sum(x => x.MarketEquilibrium() * x.MarketEquilibrium()));
                     continue;
                 }
-
                 double consumerConsumerPriceIndex = item.Parent.ConsumerPrice();
                 double consumerPrice = item.ConsumerPrice();
                 double elasticityOfDemand = item.ElasticityOfDemand();

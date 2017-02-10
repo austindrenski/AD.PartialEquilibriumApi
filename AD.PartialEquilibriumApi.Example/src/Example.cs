@@ -38,7 +38,6 @@ namespace AD.PartialEquilibriumApi.Example
             //                "Input2"
             //    };
 
-
             XmlFilePath structureFile = CreateTempXmlFile2();
             DelimitedFilePath dataFile = CreateTempCsvFile2();
             XName[] variables =
@@ -76,10 +75,10 @@ namespace AD.PartialEquilibriumApi.Example
             Func<double[], double> objectiveFunction =
                 x =>
                 {
-                    model.SetConsumerPrices(x, variables);
+                    model.SetConsumerPrices(x);
                     model.ShockProducerPrices();
                     model.CalculateMarketEquilibrium();
-                    return model.Descendants().Sum(y => Math.Abs(y.MarketEquilibrium()));
+                    return ObjectiveFunctionFactory.Default(model);
                 };
 
             // Set up the simplex solver.
@@ -87,18 +86,18 @@ namespace AD.PartialEquilibriumApi.Example
                 new Simplex(
                     objectiveFunction: x => objectiveFunction(x),
                     lowerBound: 0,
-                    upperBound: 100,
+                    upperBound: 10,
                     dimensions: variables.Length,
-                    iterations: 10000,
+                    iterations: 1000,
                     seed: 0,
                     textWriter: Console.Out);
 
             // Find the minimum solution.
             Solution solution = simplex.Minimize();
-            
+
             // Update the XML tree one more time with the optimal result.
             double[] result = solution.Vector;
-            model.SetConsumerPrices(result, variables);
+            model.SetConsumerPrices(result);
             model.ShockProducerPrices();
             model.CalculateMarketEquilibrium();
 
@@ -192,8 +191,8 @@ namespace AD.PartialEquilibriumApi.Example
             {
                 writer.WriteLine("ElasticityOfSubstitution,ElasticityOfSupply,ElasticityOfDemand,InitialPrice,InitialMarketShare,Shock");
                 writer.WriteLine("4,5,-1,1.0,1.00,0.00");
-                    writer.WriteLine("4,5,-1,1.0,0.50,0.00");
-                    writer.WriteLine("4,5,-1,1.0,0.50,0.05");
+                writer.WriteLine("4,5,-1,1.0,0.50,0.00");
+                writer.WriteLine("4,5,-1,1.0,0.50,0.05");
 
             }
             return new DelimitedFilePath(csv, ',');
@@ -207,10 +206,10 @@ namespace AD.PartialEquilibriumApi.Example
             {
                 writer.WriteLine("ElasticityOfSubstitution,ElasticityOfSupply,ElasticityOfDemand,InitialPrice,InitialMarketShare,Shock");
                 writer.WriteLine("4,5,-1,1.0,1.00,0.00");
-                    writer.WriteLine("4,5,-1,1.0,0.50,0.00");
-                    writer.WriteLine("4,5,-1,1.0,0.50,0.00");
-                        writer.WriteLine("4,5,-1,1.0,0.50,0.05");
-                        writer.WriteLine("4,5,-1,1.0,0.50,0.05");
+                writer.WriteLine("4,5,-1,1.0,0.50,0.00");
+                writer.WriteLine("4,5,-1,1.0,0.50,0.00");
+                writer.WriteLine("4,5,-1,1.0,0.50,0.05");
+                writer.WriteLine("4,5,-1,1.0,0.50,0.05");
 
             }
             return new DelimitedFilePath(csv, ',');
@@ -224,12 +223,12 @@ namespace AD.PartialEquilibriumApi.Example
             {
                 writer.WriteLine("ElasticityOfSubstitution,ElasticityOfSupply,ElasticityOfDemand,InitialPrice,InitialMarketShare,Shock");
                 writer.WriteLine("4,5,-1,1.0,1.00,0.00");
-                    writer.WriteLine("4,5,-1,1.0,0.50,0.00");
-                    writer.WriteLine("4,5,-1,1.0,0.50,0.00");
-                        writer.WriteLine("4,5,-1,1.0,0.50,0.00");
-                        writer.WriteLine("4,5,-1,1.0,0.50,0.00");
-                            writer.WriteLine("4,5,-1,1.0,0.50,0.05");
-                            writer.WriteLine("4,5,-1,1.0,0.50,0.05");
+                writer.WriteLine("4,5,-1,1.0,0.50,0.00");
+                writer.WriteLine("4,5,-1,1.0,0.50,0.00");
+                writer.WriteLine("4,5,-1,1.0,0.50,0.00");
+                writer.WriteLine("4,5,-1,1.0,0.50,0.00");
+                writer.WriteLine("4,5,-1,1.0,0.50,0.05");
+                writer.WriteLine("4,5,-1,1.0,0.50,0.05");
             }
             return new DelimitedFilePath(csv, ',');
         }

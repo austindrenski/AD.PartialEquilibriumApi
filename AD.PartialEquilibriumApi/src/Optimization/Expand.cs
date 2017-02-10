@@ -22,9 +22,9 @@ namespace AD.PartialEquilibriumApi
             for (int i = 0; i < simplex.Dimensions; i++)
             {
                 expanded[i] = (1 - Simplex.Expansion) * centroid[i] + Simplex.Expansion * reflected[i];
-
-                expanded = expanded.EnforceBounds(simplex);
             }
+
+            expanded = expanded.EnforceBounds(simplex);
 
             return new Solution(simplex.ObjectiveFunction(expanded), expanded);
         }

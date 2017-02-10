@@ -42,32 +42,26 @@ namespace AD.PartialEquilibriumApi
         /// </summary>
         /// <param name="market">An <see cref="XElement"/> describing a market.</param>
         /// <param name="values">The values to which the ConsumerPrice attributes are set.</param>
-        /// <param name="variables">The names of the markets where prices are endogenous.</param>
-        public static void SetConsumerPrices([NotNull] this XElement market, double[] values, XName[] variables)
+        public static void SetConsumerPrices([NotNull] this XElement market, double[] values)
         {
-            foreach (XElement item in market.DescendantsAndSelf().Reverse())
+            XElement[] variableMarkets = 
+                market.DescendantsAndSelf()
+                      .Where(x => x.IsVariable())
+                      .ToArray();
+
+            for (int i = 0; i < values.Length; i++)
             {
-                double consumerPrice;
+                variableMarkets[i].ConsumerPrice(values[i]);
+            }
 
-                if (item.IsVariable())
-                {
-                    consumerPrice = values[Array.IndexOf(variables, item.Name)];
-                }
-                else
-                {
-                    if (item.HasElements)
-                    {
-                        double consumerPriceIndexComponents =
-                            item.Elements()
-                                .Sum(x => x.InitialMarketShare() * Math.Pow(x.ConsumerPrice(), 1 - x.ElasticityOfSubstitution()));
+            foreach (XElement item in market.DescendantsAndSelf().Where(x => x.HasElements).Reverse())
+            {
+                double consumerPriceIndexComponents =
+                        item.Elements()
+                            .Sum(x => x.InitialMarketShare() * Math.Pow(x.ConsumerPrice(), 1 - x.ElasticityOfSubstitution()));
 
-                        consumerPrice = Math.Pow(consumerPriceIndexComponents, 1 / (1 - item.ElasticityOfSubstitution()));
-                    }
-                    else
-                    {
-                        consumerPrice = item.ConsumerPrice();
-                    }
-                }
+                double consumerPrice = 
+                    Math.Pow(consumerPriceIndexComponents, 1 / (1 - item.ElasticityOfSubstitution()));
 
                 item.ConsumerPrice(consumerPrice);
             }

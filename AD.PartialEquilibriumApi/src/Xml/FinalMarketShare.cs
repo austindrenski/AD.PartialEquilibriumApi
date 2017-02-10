@@ -44,19 +44,19 @@ namespace AD.PartialEquilibriumApi
             {
                 if (market.Parent == null)
                 {
-                    market.FinalMarketShare(1.0);
+                    market.FinalMarketShare(market.Elements().Sum(x => x.FinalMarketShare()));
                     continue;
                 }
 
-                double initialMarketShare = market.InitialMarketShare();
+                double totalExpenditure =
+                    market.Parent
+                          .Elements()
+                          .Sum(x => x.ConsumerPrice() * x.InitialMarketShare());
 
-                double expenditure = 
+                double expenditure =
                     Math.Pow(market.ConsumerPrice(), 1 - market.ElasticityOfSubstitution());
 
-                double totalExpenditure =
-                    market.Parent?
-                          .Elements()
-                          .Sum(x => x.ConsumerPrice() * x.InitialMarketShare()) ?? 1;
+                double initialMarketShare = market.InitialMarketShare();
 
                 double substitutionAdjustedTotalExpenditure = 
                     Math.Pow(totalExpenditure, 1 - market.ElasticityOfSubstitution());
