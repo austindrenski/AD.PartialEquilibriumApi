@@ -101,6 +101,10 @@ namespace AD.PartialEquilibriumApi
         /// <exception cref="ArgumentOutOfRangeException"/>
         public Simplex(Func<double[], double> objectiveFunction, double lowerBound, double upperBound, int dimensions, int iterations, int? seed = null, TextWriter textWriter = null)
         {
+            if (dimensions < 1)
+            {
+                throw new ArgumentOutOfRangeException("The dimensions must be greater than or equal to one.");
+            }
             if (lowerBound > upperBound)
             {
                 throw new ArgumentOutOfRangeException("The lower bound must be less than or equal to the upper bound.");
@@ -116,7 +120,7 @@ namespace AD.PartialEquilibriumApi
             ObjectiveFunction = objectiveFunction;
             LowerBound = lowerBound;
             UpperBound = upperBound;
-            Solutions = new Solution[dimensions + 1];
+            Solutions = new Solution[dimensions + 2];
 
             for (int i = 0; i < Solutions.Length; i++)
             {
@@ -137,7 +141,7 @@ namespace AD.PartialEquilibriumApi
         /// <param name="textWriter">Set this property to the standard output for progress reporting. If null, a <see cref="StringWriter"/> is initialized.</param>
         /// <exception cref="ArgumentOutOfRangeException"/>
         public Simplex(Func<double[], double> objectiveFunction, double lowerBound, double upperBound, int dimensions, int? seed = null, TextWriter textWriter = null)
-            : this(objectiveFunction, lowerBound, upperBound, dimensions, dimensions < 5 ? 1000 : dimensions * 200, seed, textWriter)
+            : this(objectiveFunction, lowerBound, upperBound, dimensions, dimensions * 1000, seed, textWriter)
         {
         }
     }

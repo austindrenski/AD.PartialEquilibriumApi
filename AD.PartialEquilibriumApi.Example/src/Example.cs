@@ -98,10 +98,10 @@ namespace AD.PartialEquilibriumApi.Example
             new Simplex(
                 objectiveFunction: x => objectiveFunction(x),
                 lowerBound: 0,
-                upperBound: 10,
+                upperBound: 100,
                 dimensions: variables.Length,
                 iterations: 2000,
-                seed: 0,
+                seed: null,
                 textWriter: Console.Out);
 
             // Find the minimum solution.

@@ -34,7 +34,7 @@ namespace AD.PartialEquilibriumApi
             {
                 if (item.HasElements)
                 {
-                    item.SetAttributeValue(XMarketEquilibrium, item.Elements().Sum(x => x.MarketEquilibrium() * x.MarketEquilibrium()));
+                    item.SetAttributeValue(XMarketEquilibrium, item.Elements().Sum(x => Math.Pow(x.MarketEquilibrium(), 2)));
                     continue;
                 }
                 if (item.Parent == null)
