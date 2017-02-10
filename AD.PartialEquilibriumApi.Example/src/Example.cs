@@ -51,8 +51,24 @@ namespace AD.PartialEquilibriumApi.Example
             //                    "Factor2"
             //    };
 
-            XmlFilePath structureFile = CreateTempXmlFile3();
-            DelimitedFilePath dataFile = CreateTempCsvFile3();
+            //XmlFilePath structureFile = CreateTempXmlFile3();
+            //DelimitedFilePath dataFile = CreateTempCsvFile3();
+            //XName[] variables =
+            //    new XName[]
+            //    {
+            //        //"Retail",
+            //            "Supplier1",
+            //            //"Supplier2",
+            //                "Input1",
+            //                //"Input2",
+            //                    "Factor1",
+            //                    //"Factor2",
+            //                        "RawInput1",
+            //                        "RawInput2"
+            //    };
+
+            XmlFilePath structureFile = CreateTempXmlFile4();
+            DelimitedFilePath dataFile = CreateTempCsvFile4();
             XName[] variables =
                 new XName[]
                 {
@@ -64,7 +80,9 @@ namespace AD.PartialEquilibriumApi.Example
                                 "Factor1",
                                 //"Factor2",
                                     "RawInput1",
-                                    "RawInput2"
+                                    //"RawInput2",
+                                        "SubRawInput1",
+                                        "SubRawInput2"
                 };
 
             // Read in the model and the data.
@@ -98,9 +116,9 @@ namespace AD.PartialEquilibriumApi.Example
             new Simplex(
                 objectiveFunction: x => objectiveFunction(x),
                 lowerBound: 0,
-                upperBound: 100,
+                upperBound: 10,
                 dimensions: variables.Length,
-                iterations: 2000,
+                iterations: 5000,
                 seed: null,
                 textWriter: Console.Out);
 
@@ -213,6 +231,34 @@ namespace AD.PartialEquilibriumApi.Example
             return new XmlFilePath(xml);
         }
 
+
+        [UsedImplicitly]
+        public static XmlFilePath CreateTempXmlFile4()
+        {
+            string xml = Path.ChangeExtension(Path.GetTempFileName(), ".xml");
+            using (StreamWriter writer = new StreamWriter(xml))
+            {
+                writer.WriteLine(
+                    @"<Retail>
+                        <Supplier1 />
+                        <Supplier2>
+                            <Input1 />
+                            <Input2>
+                                <Factor1 />
+                                <Factor2>
+                                    <RawInput1 />
+                                    <RawInput2>
+                                        <SubRawInput1 />
+                                        <SubRawInput2 />
+                                    </RawInput2>
+                                </Factor2>
+                            </Input2>    
+                        </Supplier2>
+                      </Retail>");
+            }
+            return new XmlFilePath(xml);
+        }
+
         [UsedImplicitly]
         public static DelimitedFilePath CreateTempCsvFile0()
         {
@@ -271,6 +317,28 @@ namespace AD.PartialEquilibriumApi.Example
             {
                 writer.WriteLine("ElasticityOfSubstitution,ElasticityOfSupply,ElasticityOfDemand,InitialPrice,InitialMarketShare,Shock");
                 writer.WriteLine("4,5,-1,1.0,1.00,0.00");
+                writer.WriteLine("4,5,-1,1.0,0.50,0.00");
+                writer.WriteLine("4,5,-1,1.0,0.50,0.00");
+                writer.WriteLine("4,5,-1,1.0,0.50,0.00");
+                writer.WriteLine("4,5,-1,1.0,0.50,0.00");
+                writer.WriteLine("4,5,-1,1.0,0.50,0.00");
+                writer.WriteLine("4,5,-1,1.0,0.50,0.00");
+                writer.WriteLine("4,5,-1,1.0,0.50,0.05");
+                writer.WriteLine("4,5,-1,1.0,0.50,0.05");
+            }
+            return new DelimitedFilePath(csv, ',');
+        }
+
+        [UsedImplicitly]
+        public static DelimitedFilePath CreateTempCsvFile4()
+        {
+            string csv = Path.ChangeExtension(Path.GetTempFileName(), ".csv");
+            using (StreamWriter writer = new StreamWriter(csv))
+            {
+                writer.WriteLine("ElasticityOfSubstitution,ElasticityOfSupply,ElasticityOfDemand,InitialPrice,InitialMarketShare,Shock");
+                writer.WriteLine("4,5,-1,1.0,1.00,0.00");
+                writer.WriteLine("4,5,-1,1.0,0.50,0.00");
+                writer.WriteLine("4,5,-1,1.0,0.50,0.00");
                 writer.WriteLine("4,5,-1,1.0,0.50,0.00");
                 writer.WriteLine("4,5,-1,1.0,0.50,0.00");
                 writer.WriteLine("4,5,-1,1.0,0.50,0.00");
