@@ -2,11 +2,12 @@
 using System.Xml.Linq;
 using AD.IO;
 using JetBrains.Annotations;
+
 #pragma warning disable 1591
 
-namespace AD.PartialEquilibriumApi
+namespace AD.PartialEquilibriumApi.Example.TestModels
 {
-    public class Model0 : IModel
+    public class Model2 : IModel
     {
         [UsedImplicitly]
         public XmlFilePath Model()
@@ -17,7 +18,13 @@ namespace AD.PartialEquilibriumApi
                 writer.WriteLine(
                     @"<A0>
                           <B0/>
-                          <B1/>
+                          <B1>
+                              <C0/>
+                              <C1>
+                                  <D0/>
+                                  <D1/>
+                              </C1>    
+                          </B1>
                       </A0>");
             }
             return new XmlFilePath(xml);
@@ -32,8 +39,11 @@ namespace AD.PartialEquilibriumApi
                 writer.WriteLine("ElasticityOfSubstitution,ElasticityOfSupply,ElasticityOfDemand,InitialPrice,InitialMarketShare,Shock");
                 writer.WriteLine("4,5,-1,1.0,1.00,0.00");
                 writer.WriteLine("4,5,-1,1.0,0.50,0.00");
+                writer.WriteLine("4,5,-1,1.0,0.50,0.00");
+                writer.WriteLine("4,5,-1,1.0,0.50,0.00");
+                writer.WriteLine("4,5,-1,1.0,0.50,0.00");
                 writer.WriteLine("4,5,-1,1.0,0.50,0.05");
-
+                writer.WriteLine("4,5,-1,1.0,0.50,0.05");
             }
             return new DelimitedFilePath(csv, ',');
         }
@@ -45,7 +55,11 @@ namespace AD.PartialEquilibriumApi
             {
                 //"A0",
                     "B0",
-                    "B1",
+                    //"B1",
+                        "C0",
+                        //"C1",
+                            "D0",
+                            "D1"
             };
         }
     }

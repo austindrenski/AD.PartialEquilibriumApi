@@ -10,7 +10,7 @@ namespace AD.PartialEquilibriumApi.Example
     {
         public static void Example1()
         {
-            IModel modelFactory = ModelFactory.Model4();
+            TestModels.IModel modelFactory = TestModels.ModelFactory.Model4();
             
             XmlFilePath structureFile = modelFactory.Model();
             DelimitedFilePath dataFile = modelFactory.Data();

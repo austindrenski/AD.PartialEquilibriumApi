@@ -2,11 +2,12 @@
 using System.Xml.Linq;
 using AD.IO;
 using JetBrains.Annotations;
+
 #pragma warning disable 1591
 
-namespace AD.PartialEquilibriumApi
+namespace AD.PartialEquilibriumApi.Example.TestModels
 {
-    public class Model1 : IModel
+    public class Model3 : IModel
     {
         [UsedImplicitly]
         public XmlFilePath Model()
@@ -19,7 +20,13 @@ namespace AD.PartialEquilibriumApi
                           <B0/>
                           <B1>
                               <C0/>
-                              <C1/>
+                              <C1>
+                                  <D0/>
+                                  <D1>
+                                      <E0/>
+                                      <E1/>
+                                  </D1>
+                              </C1>    
                           </B1>
                       </A0>");
             }
@@ -36,9 +43,12 @@ namespace AD.PartialEquilibriumApi
                 writer.WriteLine("4,5,-1,1.0,1.00,0.00");
                 writer.WriteLine("4,5,-1,1.0,0.50,0.00");
                 writer.WriteLine("4,5,-1,1.0,0.50,0.00");
+                writer.WriteLine("4,5,-1,1.0,0.50,0.00");
+                writer.WriteLine("4,5,-1,1.0,0.50,0.00");
+                writer.WriteLine("4,5,-1,1.0,0.50,0.00");
+                writer.WriteLine("4,5,-1,1.0,0.50,0.00");
                 writer.WriteLine("4,5,-1,1.0,0.50,0.05");
                 writer.WriteLine("4,5,-1,1.0,0.50,0.05");
-
             }
             return new DelimitedFilePath(csv, ',');
         }
@@ -52,7 +62,11 @@ namespace AD.PartialEquilibriumApi
                     "B0",
                     //"B1",
                         "C0",
-                        "C1"
+                        //"C1",
+                            "D0",
+                            //"D1"
+                                "E0",
+                                "E1"
             };
         }
     }

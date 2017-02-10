@@ -1,7 +1,8 @@
 ﻿using JetBrains.Annotations;
+
 #pragma warning disable 1591
 
-namespace AD.PartialEquilibriumApi
+namespace AD.PartialEquilibriumApi.Example.TestModels
 {
     [UsedImplicitly]
     public static class ModelFactory

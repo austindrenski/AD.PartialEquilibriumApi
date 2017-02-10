@@ -2,11 +2,12 @@
 using System.Xml.Linq;
 using AD.IO;
 using JetBrains.Annotations;
+
 #pragma warning disable 1591
 
-namespace AD.PartialEquilibriumApi
+namespace AD.PartialEquilibriumApi.Example.TestModels
 {
-    public class Model2 : IModel
+    public class Model4 : IModel
     {
         [UsedImplicitly]
         public XmlFilePath Model()
@@ -21,7 +22,13 @@ namespace AD.PartialEquilibriumApi
                               <C0/>
                               <C1>
                                   <D0/>
-                                  <D1/>
+                                  <D1>
+                                      <E0/>
+                                      <E1>
+                                          <F0/>
+                                          <F1/>
+                                      </E1>
+                                  </D1>
                               </C1>    
                           </B1>
                       </A0>");
@@ -37,6 +44,10 @@ namespace AD.PartialEquilibriumApi
             {
                 writer.WriteLine("ElasticityOfSubstitution,ElasticityOfSupply,ElasticityOfDemand,InitialPrice,InitialMarketShare,Shock");
                 writer.WriteLine("4,5,-1,1.0,1.00,0.00");
+                writer.WriteLine("4,5,-1,1.0,0.50,0.00");
+                writer.WriteLine("4,5,-1,1.0,0.50,0.00");
+                writer.WriteLine("4,5,-1,1.0,0.50,0.00");
+                writer.WriteLine("4,5,-1,1.0,0.50,0.00");
                 writer.WriteLine("4,5,-1,1.0,0.50,0.00");
                 writer.WriteLine("4,5,-1,1.0,0.50,0.00");
                 writer.WriteLine("4,5,-1,1.0,0.50,0.00");
@@ -58,7 +69,11 @@ namespace AD.PartialEquilibriumApi
                         "C0",
                         //"C1",
                             "D0",
-                            "D1"
+                            //"D1"
+                                "E0",
+                                //"E1"
+                                    "F0",
+                                    "F1"
             };
         }
     }
