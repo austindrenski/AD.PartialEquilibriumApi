@@ -62,7 +62,7 @@ namespace AD.PartialEquilibriumApi.Example
             PrintResults(model, solution);
         }
 
-        private static void PrintResults(XElement model, Solution solution)
+        private static void PrintResults(XNode model, Solution solution)
         {
             Console.WriteLine("-----------------------------------------------------------------------------------------");
             XmlWriterSettings settings = new XmlWriterSettings
