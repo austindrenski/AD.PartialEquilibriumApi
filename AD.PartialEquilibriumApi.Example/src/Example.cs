@@ -26,12 +26,12 @@ namespace AD.PartialEquilibriumApi.Example
             Func<double[], double> objectiveFunction =
                 x =>
                 {
-                    //XElement localModel = new XElement(model);
-                    model.SetConsumerPrices(x)
+                    XElement localModel = new XElement(model);
+                    localModel.SetConsumerPrices(x)
                               .ShockProducerPrices()
                               .CalculateMarketEquilibrium()
                               .CalculateFinalMarketShares();
-                    return ObjectiveFunctionFactory.Default(model);
+                    return ObjectiveFunctionFactory.Default(localModel);
                 };
 
             // Set up the simplex solver.
