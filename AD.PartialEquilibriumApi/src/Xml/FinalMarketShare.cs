@@ -20,6 +20,10 @@ namespace AD.PartialEquilibriumApi
         /// <returns>The value set by the user to the FinalMarketShare attribute.</returns>
         public static double FinalMarketShare([NotNull] this XElement market)
         {
+            if (market.Attribute(XFinalMarketShare) == null)
+            {
+                market.CalculateFinalMarketShares();
+            }
             return (double)market.Attribute(XFinalMarketShare);
         }
 

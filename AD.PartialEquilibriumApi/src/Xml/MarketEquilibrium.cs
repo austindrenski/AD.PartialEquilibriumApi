@@ -30,19 +30,19 @@ namespace AD.PartialEquilibriumApi
         /// <returns>A reference to the existing <see cref="XElement"/>. This is returned for use with fluent syntax calls.</returns>
         public static XElement CalculateMarketEquilibrium([NotNull] this XElement element)
         {
+            element.CalculateFinalMarketShares();
             foreach (XElement item in element.DescendantsAndSelf().Reverse())
             {
-                //if (item.HasElements)
-                //{
-                    //item.SetAttributeValue(XMarketEquilibrium, item.Elements().Sum(x => Math.Pow(x.MarketEquilibrium(), 2)));
-                    //item.SetAttributeValue(XMarketEquilibrium, item.)
-                    //continue;
-                //}
-                //if (item.Parent == null)
-                //{
-                //    throw new ArgumentNullException("This error shouldn't be thrown. Something has gone wrong with the model state.");
-                //}
-                double consumerConsumerPriceIndex = item.Parent?.ConsumerPrice() ?? item.ConsumerPrice();
+                if (item.HasElements)
+                {
+                    item.SetAttributeValue(XMarketEquilibrium, item.Elements().Sum(x => x.MarketEquilibrium()));
+                    continue;
+                }
+                if (item.Parent == null)
+                {
+                    throw new ArgumentNullException("This error shouldn't be thrown. Something has gone wrong with the model state.");
+                }
+                double consumerConsumerPriceIndex = item.Parent.ConsumerPrice();
                 double consumerPrice = item.ConsumerPrice();
                 double elasticityOfDemand = item.ElasticityOfDemand();
                 double elasticityOfSubstitution = item.ElasticityOfSubstitution();

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using JetBrains.Annotations;
@@ -34,27 +35,51 @@ namespace AD.PartialEquilibriumApi
         /// <param name="values">The values to which the ConsumerPrice attributes are set.</param>
         public static XElement SetConsumerPrices([NotNull] this XElement model, double[] values)
         {
-            XElement[] variableMarkets = 
-                model.DescendantsAndSelf()
-                      .Where(x => x.IsVariable())
-                      .ToArray();
-
-            for (int i = 0; i < values.Length; i++)
+            // Set prices if the market is a variable of the model.
+            int index = 0;
+            foreach (XElement market in model.DescendantsAndSelf().Where(x => x.IsVariable() && !x.IsExogenous()))
             {
-                variableMarkets[i].SetAttributeValue(XConsumerPrice, values[i]);
+                market.SetAttributeValue(XConsumerPrice, values[index++]);
             }
 
-            foreach (XElement item in model.DescendantsAndSelf().Where(x => x.HasElements).Reverse())
+            // Set prices if the market is exogenous to the model.
+            // 
+            // NotImplemented 
+
+            // Set prices if the market is endogenous to the model.
+            foreach (XElement item in model.DescendantsAndSelf().Where(x => !x.IsVariable() && !x.IsExogenous()).Reverse())
             {
                 double consumerPriceIndexComponents =
                         item.Elements()
                             .Sum(x => x.InitialMarketShare() * Math.Pow(x.ConsumerPrice(), 1 - x.ElasticityOfSubstitution()));
 
-                double consumerPrice = 
+                double consumerPrice =
                     Math.Pow(consumerPriceIndexComponents, 1 / (1 - item.ElasticityOfSubstitution()));
 
                 item.SetAttributeValue(XConsumerPrice, consumerPrice);
             }
+
+            return model;
+        }
+
+        /// <summary>
+        /// Sets the price if the market is marked exogenous.
+        /// </summary>
+        /// <param name="model">The model to search.</param>
+        /// <param name="values">The prices to be set.</param>
+        public static XElement SetExogenousPrices(this XElement model, params double[] values)
+        {
+            if (values == null)
+            {
+                return model;
+            }
+
+            int index = 0;
+            foreach (XElement market in model.DescendantsAndSelf().Where(x => x.IsExogenous()))
+            {
+                market.SetAttributeValue(XConsumerPrice, values[index++]);
+            }
+
             return model;
         }
     }
