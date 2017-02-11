@@ -22,5 +22,14 @@ namespace AD.PartialEquilibriumApi
             return model.DescendantsAndSelf()
                         .Sum(x => Math.Abs(x.MarketEquilibrium()) * x.AncestorsAndSelf().Count());
         }
+
+        /// <summary>
+        /// Experimenatal objective function calculations.
+        /// </summary>
+        /// <returns>A double value that when minimized, optimizes the model.</returns>
+        public static double Experimental(XElement model)
+        {
+            return model.DescendantsAndSelf().Where(x => x.IsVariable()).Sum(x => x.MarketEquilibrium() * x.MarketEquilibrium());
+        }
     }
 }

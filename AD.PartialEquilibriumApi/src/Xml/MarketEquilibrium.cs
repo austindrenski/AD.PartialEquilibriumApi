@@ -32,16 +32,17 @@ namespace AD.PartialEquilibriumApi
         {
             foreach (XElement item in element.DescendantsAndSelf().Reverse())
             {
-                if (item.HasElements)
-                {
-                    item.SetAttributeValue(XMarketEquilibrium, item.Elements().Sum(x => Math.Pow(x.MarketEquilibrium(), 2)));
-                    continue;
-                }
-                if (item.Parent == null)
-                {
-                    throw new ArgumentNullException("This error shouldn't be thrown. Something has gone wrong with the model state.");
-                }
-                double consumerConsumerPriceIndex = item.Parent.ConsumerPrice();
+                //if (item.HasElements)
+                //{
+                    //item.SetAttributeValue(XMarketEquilibrium, item.Elements().Sum(x => Math.Pow(x.MarketEquilibrium(), 2)));
+                    //item.SetAttributeValue(XMarketEquilibrium, item.)
+                    //continue;
+                //}
+                //if (item.Parent == null)
+                //{
+                //    throw new ArgumentNullException("This error shouldn't be thrown. Something has gone wrong with the model state.");
+                //}
+                double consumerConsumerPriceIndex = item.Parent?.ConsumerPrice() ?? item.ConsumerPrice();
                 double consumerPrice = item.ConsumerPrice();
                 double elasticityOfDemand = item.ElasticityOfDemand();
                 double elasticityOfSubstitution = item.ElasticityOfSubstitution();

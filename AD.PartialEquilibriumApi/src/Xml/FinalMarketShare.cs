@@ -24,7 +24,8 @@ namespace AD.PartialEquilibriumApi
         }
 
         /// <summary>
-        /// Calculates the market share on this and descendant <see cref="XElement"/> objects in reverse document order.
+        /// Calculates market shares on this and descendant <see cref="XElement"/> objects in reverse document order.
+        /// Result = [γ_i * price_i^(1-σ_i)] / Σ_j [γ_j * price_j^(1-σ_j)].
         /// </summary>
         /// <param name="model">An <see cref="XElement"/> describing the model.</param>
         /// <returns>A reference to the existing <see cref="XElement"/>. This is returned for use with fluent syntax calls.</returns>
@@ -32,25 +33,16 @@ namespace AD.PartialEquilibriumApi
         {
             foreach (XElement market in model.DescendantsAndSelf().Reverse())
             {
-                if (market.Parent == null)
-                {
-                    market.SetAttributeValue(XFinalMarketShare, market.Elements().Sum(x => x.FinalMarketShare()));
-                    continue;
-                }
-
-                double totalExpenditure =
-                    market.Parent
-                          .Elements()
-                          .Sum(x => x.InitialMarketShare() * x.ConsumerPrice());
-
-                double adjustedTotalExpenditure = 
-                    Math.Pow(totalExpenditure, 1 - market.ElasticityOfSubstitution());
-
                 double expenditure = 
                     market.InitialMarketShare() * Math.Pow(market.ConsumerPrice(), 1 - market.ElasticityOfSubstitution());
 
+                double totalExpenditure = 
+                    market.Parent?
+                          .Elements()
+                          .Sum(x => x.InitialMarketShare() * Math.Pow(x.ConsumerPrice(), 1 - x.ElasticityOfSubstitution())) ?? expenditure;
+
                 double finalMarketShare = 
-                    expenditure / adjustedTotalExpenditure;
+                    expenditure / totalExpenditure;
 
                 market.SetAttributeValue(XFinalMarketShare, finalMarketShare);
             }

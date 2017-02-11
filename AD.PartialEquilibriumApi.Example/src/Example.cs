@@ -31,7 +31,7 @@ namespace AD.PartialEquilibriumApi.Example
                               .ShockProducerPrices()
                               .CalculateMarketEquilibrium()
                               .CalculateFinalMarketShares();
-                    return ObjectiveFunctionFactory.Default(localModel);
+                    return ObjectiveFunctionFactory.Experimental(localModel);
                 };
 
             // Set up the simplex solver.
