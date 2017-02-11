@@ -58,6 +58,7 @@
     <Compile Include="src\Example.cs" />
     <Compile Include="src\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="src\TestModels\ExtensiveMarginModel0.cs" />
     <Compile Include="src\TestModels\IModel.cs" />
     <Compile Include="src\TestModels\Model0.cs" />
     <Compile Include="src\TestModels\Model1.cs" />

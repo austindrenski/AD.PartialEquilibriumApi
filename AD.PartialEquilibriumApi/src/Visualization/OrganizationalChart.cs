@@ -55,6 +55,12 @@ namespace AD.PartialEquilibriumApi
             return html;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="chartOutputPath"></param>
+        /// <returns></returns>
         [UsedImplicitly]
         public static XElement CreateModelFromFile(XElement model, HtmlFilePath chartOutputPath)
         {
