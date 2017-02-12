@@ -30,25 +30,24 @@ namespace AD.PartialEquilibriumApi
         /// <returns>A reference to the existing <see cref="XElement"/>. This is returned for use with fluent syntax calls.</returns>
         public static XElement CalculateMarketEquilibrium([NotNull] this XElement element)
         {
-            element.CalculateFinalMarketShares();
-            foreach (XElement item in element.DescendantsAndSelf().Reverse())
+            foreach (XElement market in element.DescendantsAndSelf().Reverse())
             {
-                if (item.HasElements)
+                if (market.HasElements)
                 {
-                    item.SetAttributeValue(XMarketEquilibrium, item.Elements().Sum(x => x.MarketEquilibrium()));
+                    market.SetAttributeValue(XMarketEquilibrium, market.Elements().Sum(x => x.MarketEquilibrium()));
                     continue;
                 }
-                if (item.Parent == null)
+                if (market.Parent == null)
                 {
                     throw new ArgumentNullException("This error shouldn't be thrown. Something has gone wrong with the model state.");
                 }
-                double consumerConsumerPriceIndex = item.Parent.ConsumerPrice();
-                double consumerPrice = item.ConsumerPrice();
-                double elasticityOfDemand = item.ElasticityOfDemand();
-                double elasticityOfSubstitution = item.ElasticityOfSubstitution();
-                double elasticityOfSupply = item.ElasticityOfSupply();
-                double producerPrice = item.ProducerPrice();
-
+                double consumerConsumerPriceIndex = market.Parent.ConsumerPrice();
+                double consumerPrice = market.ConsumerPrice();
+                double elasticityOfDemand = market.ElasticityOfDemand();
+                double elasticityOfSubstitution = market.ElasticityOfSubstitution();
+                double elasticityOfSupply = market.ElasticityOfSupply();
+                double producerPrice = market.ProducerPrice();
+                
                 double marketEquilibrium =
                     Math.Pow(producerPrice, elasticityOfSupply)
                     -
@@ -56,7 +55,7 @@ namespace AD.PartialEquilibriumApi
                     /
                     Math.Pow(consumerPrice, elasticityOfSubstitution);
 
-                item.SetAttributeValue(XMarketEquilibrium, marketEquilibrium);
+                market.SetAttributeValue(XMarketEquilibrium, marketEquilibrium);
             }
 
             return element;

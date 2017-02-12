@@ -17,19 +17,22 @@ namespace AD.PartialEquilibriumApi
         /// </summary>
         /// <param name="model">An <see cref="XElement"/> describing a model.</param>
         /// <returns>A double value that when minimized, optimizes the model.</returns>
-        public static double Default(XElement model)
+        public static double SumOfAbsoluteValueByDepth(XElement model)
         {
             return model.DescendantsAndSelf()
                         .Sum(x => Math.Abs(x.MarketEquilibrium()) * x.AncestorsAndSelf().Count());
         }
 
         /// <summary>
-        /// Experimenatal objective function calculations.
+        /// Calculates an objective value as:
+        /// model.DescendantsAndSelf().Sum(x => x.MarketEquilibrium() * x.MarketEquilibrium());
         /// </summary>
+        /// <param name="model">An <see cref="XElement"/> describing a model.</param>
         /// <returns>A double value that when minimized, optimizes the model.</returns>
-        public static double Experimental(XElement model)
+        public static double SumOfSquares(XElement model)
         {
-            return model.DescendantsAndSelf().Where(x => x.IsVariable()).Sum(x => x.MarketEquilibrium() * x.MarketEquilibrium());
+            return model.DescendantsAndSelf()
+                        .Sum(x => x.MarketEquilibrium() * x.MarketEquilibrium());
         }
     }
 }

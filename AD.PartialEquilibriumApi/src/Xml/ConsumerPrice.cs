@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using JetBrains.Annotations;
@@ -35,28 +34,24 @@ namespace AD.PartialEquilibriumApi
         /// <param name="values">The values to which the ConsumerPrice attributes are set.</param>
         public static XElement SetConsumerPrices([NotNull] this XElement model, double[] values)
         {
-            // Set prices if the market is a variable of the model.
+            //// Set prices if the market is a variable of the model.
             int index = 0;
             foreach (XElement market in model.DescendantsAndSelf().Where(x => x.IsVariable() && !x.IsExogenous()))
             {
                 market.SetAttributeValue(XConsumerPrice, values[index++]);
             }
 
-            // Set prices if the market is exogenous to the model.
-            // 
-            // NotImplemented 
-
             // Set prices if the market is endogenous to the model.
-            foreach (XElement item in model.DescendantsAndSelf().Where(x => !x.IsVariable() && !x.IsExogenous()).Reverse())
+            foreach (XElement market in model.DescendantsAndSelf().Where(x => !x.IsVariable() && !x.IsExogenous()).Reverse())
             {
                 double consumerPriceIndexComponents =
-                        item.Elements()
-                            .Sum(x => x.InitialMarketShare() * Math.Pow(x.ConsumerPrice(), 1 - x.ElasticityOfSubstitution()));
+                    market.Elements()
+                          .Sum(x => x.InitialMarketShare() * Math.Pow(x.ConsumerPrice(), 1 - x.ElasticityOfSubstitution()));
 
                 double consumerPrice =
-                    Math.Pow(consumerPriceIndexComponents, 1 / (1 - item.ElasticityOfSubstitution()));
+                    Math.Pow(consumerPriceIndexComponents, 1 / (1 - market.ElasticityOfSubstitution()));
 
-                item.SetAttributeValue(XConsumerPrice, consumerPrice);
+                market.SetAttributeValue(XConsumerPrice, consumerPrice);
             }
 
             return model;

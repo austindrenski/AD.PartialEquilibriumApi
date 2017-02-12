@@ -7,7 +7,7 @@ using JetBrains.Annotations;
 
 namespace AD.PartialEquilibriumApi.Example.TestModels
 {
-    public class Model4 : IModel
+    public class CostShareModel0 : IModel
     {
         [UsedImplicitly]
         public XmlFilePath Model()
@@ -42,18 +42,18 @@ namespace AD.PartialEquilibriumApi.Example.TestModels
             string csv = Path.ChangeExtension(Path.GetTempFileName(), ".csv");
             using (StreamWriter writer = new StreamWriter(csv))
             {
-                writer.WriteLine("ElasticityOfSubstitution,ElasticityOfSupply,ElasticityOfDemand,InitialPrice,InitialMarketShare,Shock");
-                writer.WriteLine("4,5,-1,1.0,1.00,0.00");
-                writer.WriteLine("4,5,-1,1.0,0.50,0.00");
-                writer.WriteLine("4,5,-1,1.0,0.50,0.00");
-                writer.WriteLine("4,5,-1,1.0,0.50,0.00");
-                writer.WriteLine("4,5,-1,1.0,0.50,0.00");
-                writer.WriteLine("4,5,-1,1.0,0.50,0.00");
-                writer.WriteLine("4,5,-1,1.0,0.50,0.00");
-                writer.WriteLine("4,5,-1,1.0,0.50,0.00");
-                writer.WriteLine("4,5,-1,1.0,0.50,0.00");
-                writer.WriteLine("4,5,-1,1.0,0.50,0.05");
-                writer.WriteLine("4,5,-1,1.0,0.50,0.05");
+                writer.WriteLine("ElasticityOfSubstitution,ElasticityOfSupply,ElasticityOfDemand,InitialPrice,InitialMarketShare,Shock,UpstreamCostShare");
+                writer.WriteLine("4,5,-1,1.0,1.00,0.00,1");
+                writer.WriteLine("4,5,-1,1.0,0.50,0.00,1");
+                writer.WriteLine("4,5,-1,1.0,0.50,0.00,1");
+                writer.WriteLine("4,5,-1,1.0,0.50,0.00,1");
+                writer.WriteLine("4,5,-1,1.0,0.50,0.00,1");
+                writer.WriteLine("4,5,-1,1.0,0.50,0.00,1");
+                writer.WriteLine("4,5,-1,1.0,0.50,0.00,1");
+                writer.WriteLine("4,5,-1,1.0,0.50,0.00,1");
+                writer.WriteLine("4,5,-1,1.0,0.50,0.00,1");
+                writer.WriteLine("4,5,-1,1.0,0.50,0.05,1");
+                writer.WriteLine("4,5,-1,1.0,0.50,0.05,1");
             }
             return new DelimitedFilePath(csv, ',');
         }
@@ -63,15 +63,15 @@ namespace AD.PartialEquilibriumApi.Example.TestModels
         {
             return new XName[]
             {
-                //"A0",
+                "A0",
                     "B0",
-                    //"B1",
+                    "B1",
                         "C0",
-                        //"C1",
+                        "C1",
                             "D0",
-                            //"D1",
+                            "D1",
                                 "E0",
-                                //"E1",
+                                "E1",
                                     "F0",
                                      "F1"
             };

@@ -18,6 +18,10 @@ namespace AD.PartialEquilibriumApi
         /// <returns>The value set by the user to the Shock attribute.</returns>
         public static double Shock([NotNull] this XElement market)
         {
+            if (market.Attribute(XShock) == null)
+            {
+                return 0;
+            }
             return (double)market.Attribute(XShock);
         }
 

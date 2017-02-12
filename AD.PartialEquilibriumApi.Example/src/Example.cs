@@ -31,7 +31,7 @@ namespace AD.PartialEquilibriumApi.Example
                               .ShockProducerPrices()
                               .CalculateMarketEquilibrium()
                               .CalculateFinalMarketShares();
-                    return ObjectiveFunctionFactory.Default(localModel);
+                    return ObjectiveFunctionFactory.SumOfSquares(localModel);
                 };
 
             // Set up the simplex solver.
@@ -41,7 +41,7 @@ namespace AD.PartialEquilibriumApi.Example
                     lowerBound: 0,
                     upperBound: 10,
                     dimensions: variables.Length,
-                    iterations: 3000,
+                    iterations: 5000,
                     seed: 0,
                     textWriter: Console.Out
                 );
@@ -50,7 +50,7 @@ namespace AD.PartialEquilibriumApi.Example
             Solution solution = simplex.Minimize();
 
             // Find the minimum solution in parallel.
-            //Solution solution = simplex.Minimize(50);
+            //Solution solution = simplex.Minimize(10);
 
             // Apply the final solution
             model.SetConsumerPrices(solution.Vector)

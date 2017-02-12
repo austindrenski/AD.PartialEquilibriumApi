@@ -83,6 +83,7 @@
     <Compile Include="src\Optimization\Solution.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="src\Xml\ObjectiveFunctionFactory.cs" />
+    <Compile Include="src\Xml\UpstreamCostShare.cs" />
     <Compile Include="src\Xml\ProducerPrice.cs" />
     <Compile Include="src\Xml\Shock.cs" />
   </ItemGroup>

@@ -36,11 +36,17 @@ namespace AD.PartialEquilibriumApi.Example.TestModels
         {
             return new Model4();
         }
-        
+
         [UsedImplicitly]
         public static IModel ExtensiveMarginModel0()
         {
             return new ExtensiveMarginModel0();
+        }
+
+        [UsedImplicitly]
+        public static IModel CostShareModel0()
+        {
+            return new CostShareModel0();
         }
     }
 }
