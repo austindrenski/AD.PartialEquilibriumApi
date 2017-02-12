@@ -66,6 +66,7 @@
     <Compile Include="src\TestModels\Model2.cs" />
     <Compile Include="src\TestModels\Model3.cs" />
     <Compile Include="src\TestModels\Model4.cs" />
+    <Compile Include="src\TestModels\Model5.cs" />
     <Compile Include="src\TestModels\ModelFactory.cs" />
   </ItemGroup>
   <ItemGroup>
