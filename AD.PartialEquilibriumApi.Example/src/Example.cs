@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
@@ -31,6 +32,7 @@ namespace AD.PartialEquilibriumApi.Example
                               .ShockProducerPrices()
                               .CalculateMarketEquilibrium()
                               .CalculateFinalMarketShares();
+
                     return ObjectiveFunctionFactory.SumOfSquares(localModel);
                 };
 
