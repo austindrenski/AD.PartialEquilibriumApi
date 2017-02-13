@@ -52,17 +52,17 @@ namespace AD.PartialEquilibriumApi.Example.TestModels
                 writer.WriteLine("4,5,-1,1.0,1.00,0.000"); // A0
                 writer.WriteLine("4,5,-1,1.0,0.50,0.000"); // .B0
                 writer.WriteLine("4,5,-1,1.0,0.50,0.000"); // ..C0
-                writer.WriteLine("4,5,-1,1.0,0.50,0.025"); // ...D0
-                writer.WriteLine("4,5,-1,1.0,0.50,0.050"); // ...D1
+                writer.WriteLine("4,5,-1,1.0,0.50,0.000"); // ...D0
+                writer.WriteLine("4,5,-1,1.0,0.50,0.000"); // ...D1
                 writer.WriteLine("4,5,-1,1.0,0.50,0.000"); // ..C1
                 writer.WriteLine("4,5,-1,1.0,0.50,0.000"); // ...D2
                 writer.WriteLine("4,5,-1,1.0,0.50,0.000"); // ...D3
-                writer.WriteLine("4,5,-1,1.0,0.50,0.050"); // .B1
+                writer.WriteLine("4,5,-1,1.0,0.50,0.000"); // .B1
                 writer.WriteLine("4,5,-1,1.0,0.50,0.000"); // ..C2
                 writer.WriteLine("4,5,-1,1.0,0.50,0.000"); // ...D4
                 writer.WriteLine("4,5,-1,1.0,0.50,0.000"); // ...D5
-                writer.WriteLine("4,5,-1,1.0,0.50,0.050"); // ..C3
-                writer.WriteLine("4,5,-1,1.0,0.50,0.000"); // ...D6
+                writer.WriteLine("4,5,-1,1.0,0.50,0.000"); // ..C3
+                writer.WriteLine("4,5,-1,1.0,0.50,0.050"); // ...D6
                 writer.WriteLine("4,5,-1,1.0,0.50,0.050"); // ...D7
             }
             return new DelimitedFilePath(csv, ',');

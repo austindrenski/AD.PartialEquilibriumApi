@@ -55,7 +55,7 @@ namespace AD.PartialEquilibriumApi.Example.TestModels
             {
                 //"A0",
                     "B0",
-                    "B1",
+                    //"B1",
                         "C0",
                         "C1",
                             "D0",
