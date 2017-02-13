@@ -20,7 +20,8 @@ namespace AD.PartialEquilibriumApi.Example
             XElement model = 
                 XElement.Load(structureFile)
                         .DefineAttributeData(dataFile)
-                        .SetIsVariable(variables);
+                        .SetIsVariable(variables)
+                        .ShockProducerPrices();
 
             // Create the objective function.
             Func<double[], double> objectiveFunction =
@@ -28,7 +29,6 @@ namespace AD.PartialEquilibriumApi.Example
                 {
                     XElement localModel = new XElement(model);
                     localModel.SetConsumerPrices(x)
-                              .ShockProducerPrices()
                               .CalculateMarketEquilibrium()
                               .CalculateFinalMarketShares();
 
