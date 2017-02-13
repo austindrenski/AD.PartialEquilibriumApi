@@ -35,13 +35,30 @@ namespace AD.PartialEquilibriumApi
         public static XElement SetConsumerPrices([NotNull] this XElement model, double[] values)
         {
             // Set prices where markets are basic and variables of the model.
-            int index = 0;
+            int index = values.Length;
             foreach (XElement market in model.DescendantsAndSelf().Where(x => /*!x.HasElements & */x.IsVariable() && !x.IsExogenous()))
             {
                 // If the market is basic, set the i
                 if (!market.HasElements)
                 {
-                    market.SetAttributeValue(XConsumerPrice, values[index++]);
+                    market.SetAttributeValue(XConsumerPrice, values[--index]);
+                }
+                else
+                {
+                    market.SetAttributeValue(XConsumerPrice, 
+                        values[--index] 
+                        +
+                        1.0 
+                        *
+                        Math.Pow(
+                            market.Elements()
+                                  .Sum(x => x.InitialMarketShare() 
+                                            * 
+                                            Math.Pow(
+                                                x.ConsumerPrice(), 
+                                                1 - x.ElasticityOfSubstitution())), 
+                            
+                            1 - market.ElasticityOfSubstitution()));
                 }
             }
 
