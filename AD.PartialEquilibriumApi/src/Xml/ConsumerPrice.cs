@@ -34,15 +34,34 @@ namespace AD.PartialEquilibriumApi
         /// <param name="values">The values to which the ConsumerPrice attributes are set.</param>
         public static XElement SetConsumerPrices([NotNull] this XElement model, double[] values)
         {
-            //// Set prices if the market is a variable of the model.
+            // Set prices where markets are basic and variables of the model.
             int index = 0;
-            foreach (XElement market in model.DescendantsAndSelf().Where(x => x.IsVariable() && !x.IsExogenous()))
+            foreach (XElement market in model.DescendantsAndSelf().Where(x => /*!x.HasElements & */x.IsVariable() && !x.IsExogenous()))
             {
-                market.SetAttributeValue(XConsumerPrice, values[index++]);
+                // If the market is basic, set the i
+                if (!market.HasElements)
+                {
+                    market.SetAttributeValue(XConsumerPrice, values[index++]);
+                }
             }
 
-            // Set prices if the market is endogenous to the model.
-            foreach (XElement market in model.DescendantsAndSelf().Where(x => !x.IsVariable() && !x.IsExogenous()).Reverse())
+            // Set prices where markets are not basic and variables of the model.
+            //index = 0;
+            //foreach (XElement market in model.DescendantsAndSelf().Where(x => x.HasElements & x.IsVariable() && !x.IsExogenous()))
+            //{
+            //    market.SetAttributeValue(XConsumerPrice, values[index++]);
+            //}
+
+            // Set prices where the markets are basic but not endogenous to the model.
+            foreach (XElement market in model.DescendantsAndSelf().Where(x => !x.HasElements && !x.IsVariable() && !x.IsExogenous()).Reverse())
+            {
+                double consumerPrice = market.InitialPrice();
+
+                market.SetAttributeValue(XConsumerPrice, consumerPrice);
+            }
+
+            // Set prices where the markets are not basic and not endogenous to the model.
+            foreach (XElement market in model.DescendantsAndSelf().Where(x => x.HasElements && !x.IsVariable() && !x.IsExogenous()).Reverse())
             {
                 double consumerPriceIndexComponents =
                     market.Elements()
