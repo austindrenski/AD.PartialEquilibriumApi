@@ -47,28 +47,25 @@ namespace AD.PartialEquilibriumApi
                 double consumerPriceIndex =
                     Math.Pow(consumerPriceIndexComponents, 1 / (1 - market.ElasticityOfSubstitution()));
                 
-                if (market.Parent == null)
-                {
-                    consumerPrice = consumerPriceIndex;
-                }
-                else if (market.IsVariable() && !market.HasElements)
+                if (market.IsVariable())
                 {
                     consumerPrice = values[--index];
-                }
 
-                else if (market.IsVariable() && market.HasElements)
-                {
-                    --index;
-                    consumerPrice = consumerPriceIndex;
+                    //if (!double.IsInfinity(consumerPriceIndex))
+                    //{
+                    //    if (consumerPrice < consumerPriceIndex)
+                    //    {
+                    //        consumerPrice += consumerPriceIndex - consumerPrice;
+                    //    }
+                    //}
                 }
-                else if (!market.IsVariable() && !market.HasElements)
+                else if (market.HasElements)
                 {
-                    --index;
-                    consumerPrice = market.InitialPrice();
+                    consumerPrice = consumerPriceIndex;
                 }
                 else
                 {
-                    consumerPrice = consumerPriceIndex;
+                    consumerPrice = market.InitialPrice();
                 }
 
                 market.SetAttributeValue(XConsumerPrice, consumerPrice);

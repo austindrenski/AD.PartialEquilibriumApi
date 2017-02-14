@@ -32,17 +32,7 @@ namespace AD.PartialEquilibriumApi
         {
             foreach (XElement market in element.DescendantsAndSelf().Reverse())
             {
-                if (market.HasElements)
-                {
-                    market.SetAttributeValue(XMarketEquilibrium, market.Elements().Sum(x => x.MarketEquilibrium()));
-                    continue;
-                }
-                if (market.Parent == null)
-                {
-                    throw new ArgumentNullException("This error should not be thrown.");
-                }
-
-                double consumerPriceIndex = market.Parent.ConsumerPrice();
+                double consumerPriceIndex = market.Parent?.ConsumerPrice() ?? 1;
                 double consumerPrice = market.ConsumerPrice();
                 double elasticityOfDemand = market.ElasticityOfDemand();
                 double elasticityOfSubstitution = market.ElasticityOfSubstitution();
