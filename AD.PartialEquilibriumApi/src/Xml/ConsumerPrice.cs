@@ -68,7 +68,6 @@ namespace AD.PartialEquilibriumApi
                 }
                 else
                 {
-                    --index;
                     consumerPrice = consumerPriceIndex;
                 }
 
