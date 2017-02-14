@@ -10,7 +10,7 @@ namespace AD.PartialEquilibriumApi.Example
     {
         public static void Example1()
         {
-            TestModels.IModel modelFactory = TestModels.ModelFactory.Model2C();
+            TestModels.IModel modelFactory = TestModels.ModelFactory.Model2D();
             
             XmlFilePath structureFile = modelFactory.Model();
             DelimitedFilePath dataFile = modelFactory.Data();
@@ -20,8 +20,7 @@ namespace AD.PartialEquilibriumApi.Example
             XElement model =
                     XElement.Load(structureFile)
                             .DefineAttributeData(dataFile)
-                            .SetIsVariable(variables)
-                            .ShockProducerPrices();
+                            .SetIsVariable(variables);
 
             // Create the objective function.
             Func<double[], double> objectiveFunction =
@@ -30,8 +29,8 @@ namespace AD.PartialEquilibriumApi.Example
                     XElement localModel = new XElement(model);
                     localModel.SetConsumerPrices(x)
                               .ShockProducerPrices()
-                              .CalculateMarketEquilibrium()
-                              .CalculateFinalMarketShares();
+                              .CalculateMarketShares()
+                              .CalculateMarketEquilibrium();
 
                     return ObjectiveFunctionFactory.SumOfSquares(localModel);
                 };
@@ -43,7 +42,7 @@ namespace AD.PartialEquilibriumApi.Example
                     lowerBound: 0,
                     upperBound: 10,
                     dimensions: variables.Length,
-                    iterations: 3000,
+                    iterations: 10000,
                     seed: 0,
                     textWriter: Console.Out
                 );
@@ -57,8 +56,8 @@ namespace AD.PartialEquilibriumApi.Example
             // Apply the final solution
             model.SetConsumerPrices(solution.Vector)
                  .ShockProducerPrices()
-                 .CalculateMarketEquilibrium()
-                 .CalculateFinalMarketShares();
+                 .CalculateMarketShares()
+                 .CalculateMarketEquilibrium();
 
             // Print the results
             PrintResults(model, solution);

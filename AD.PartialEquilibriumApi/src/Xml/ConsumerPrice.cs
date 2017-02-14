@@ -34,48 +34,47 @@ namespace AD.PartialEquilibriumApi
         /// <param name="values">The values to which the ConsumerPrice attributes are set.</param>
         public static XElement SetConsumerPrices([NotNull] this XElement model, double[] values)
         {
-            // Set prices where markets are variables of the model.
             int index = values.Length;
-            foreach (XElement market in model.DescendantsAndSelf().Where(x => x.IsVariable() && !x.IsExogenous()).Reverse())
+
+            foreach (XElement market in model.DescendantsAndSelf().Reverse())
             {
                 double consumerPrice;
 
-                // If the market is basic, set price equal to the new value.
-                if (!market.HasElements)
+                double consumerPriceIndexComponents =
+                    market.Elements()
+                          .Sum(x => x.MarketShare() * Math.Pow(x.ConsumerPrice(), 1 - x.ElasticityOfSubstitution()));
+
+                double consumerPriceIndex =
+                    Math.Pow(consumerPriceIndexComponents, 1 / (1 - market.ElasticityOfSubstitution()));
+                
+                if (market.Parent == null)
+                {
+                    consumerPrice = consumerPriceIndex;
+                }
+                else if (market.IsVariable() && !market.HasElements)
                 {
                     consumerPrice = values[--index];
                 }
 
-                // If the market is not basic, set price equal to new price + price index.
+                else if (market.IsVariable() && market.HasElements)
+                {
+                    --index;
+                    consumerPrice = consumerPriceIndex;
+                }
+                else if (!market.IsVariable() && !market.HasElements)
+                {
+                    --index;
+                    consumerPrice = market.InitialPrice();
+                }
                 else
                 {
-                    double consumerPriceIndexComponents =
-                        market.Elements()
-                              .Sum(x => x.InitialMarketShare() * Math.Pow(x.ConsumerPrice(), 1 - x.ElasticityOfSubstitution()));
-
-                    double consumerPriceIndex =
-                        Math.Pow(consumerPriceIndexComponents, 1 / (1 - market.ElasticityOfSubstitution()));
-
-                    consumerPrice = values[--index] * 0.5 + consumerPriceIndex * 0.5;
-                    //    --index;
-                    //    consumerPrice = consumerPriceIndex;
+                    --index;
+                    consumerPrice = consumerPriceIndex;
                 }
-                market.SetAttributeValue(XConsumerPrice, consumerPrice);
-            }
-
-            //Set prices where the markets are not basic and not endogenous to the model.
-            foreach (XElement market in model.DescendantsAndSelf().Where(x => !x.IsVariable() && !x.IsExogenous()).Reverse())
-            {
-                double consumerPriceIndexComponents =
-                    market.Elements()
-                          .Sum(x => x.InitialMarketShare() * Math.Pow(x.ConsumerPrice(), 1 - x.ElasticityOfSubstitution()));
-
-                double consumerPrice =
-                    Math.Pow(consumerPriceIndexComponents, 1 / (1 - market.ElasticityOfSubstitution()));
 
                 market.SetAttributeValue(XConsumerPrice, consumerPrice);
             }
-            
+
             return model;
         }
 

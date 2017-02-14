@@ -15,15 +15,15 @@ namespace AD.PartialEquilibriumApi
         /// <summary>
         /// Gets the ProducerPrice attribute.
         /// </summary>
-        /// <param name="element">The source element.</param>
+        /// <param name="market">The source element.</param>
         /// <returns>The ConsumerPrice modified by the shock.</returns>
-        public static double ProducerPrice(this XElement element)
+        public static double ProducerPrice(this XElement market)
         {
-            if (element.Attribute(XProducerPrice) == null)
+            if (market.Attribute(XProducerPrice) == null)
             {
-                element.SetAttributeValue(XProducerPrice, element.InitialPrice());
+                market.SetAttributeValue(XProducerPrice, market.InitialPrice());
             }
-            return (double)element.Attribute(XProducerPrice);
+            return (double)market.Attribute(XProducerPrice);
         }
 
         /// <summary>
@@ -34,12 +34,12 @@ namespace AD.PartialEquilibriumApi
         /// <returns>A reference to the existing <see cref="XElement"/>. This is returned for use with fluent syntax calls.</returns>
         public static XElement ShockProducerPrices(this XElement model)
         {
-            foreach (XElement item in model.DescendantsAndSelf().Reverse())
+            foreach (XElement market in model.DescendantsAndSelf().Reverse())
             {
-                double consumerPrice = item.ConsumerPrice();
-                double shock = item.Shock();
+                double consumerPrice = market.ConsumerPrice();
+                double shock = market.Shock();
                 double shockedPrice = consumerPrice / (1 + shock);
-                item.SetAttributeValue(XProducerPrice, shockedPrice);
+                market.SetAttributeValue(XProducerPrice, shockedPrice);
             }
             return model;
         }

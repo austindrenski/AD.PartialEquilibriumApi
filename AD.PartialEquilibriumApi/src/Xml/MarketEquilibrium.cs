@@ -39,9 +39,10 @@ namespace AD.PartialEquilibriumApi
                 }
                 if (market.Parent == null)
                 {
-                    throw new ArgumentNullException("This error shouldn't be thrown. Something has gone wrong with the model state.");
+                    throw new ArgumentNullException("This error should not be thrown.");
                 }
-                double consumerConsumerPriceIndex = market.Parent.ConsumerPrice();
+
+                double consumerPriceIndex = market.Parent.ConsumerPrice();
                 double consumerPrice = market.ConsumerPrice();
                 double elasticityOfDemand = market.ElasticityOfDemand();
                 double elasticityOfSubstitution = market.ElasticityOfSubstitution();
@@ -51,7 +52,7 @@ namespace AD.PartialEquilibriumApi
                 double marketEquilibrium =
                     Math.Pow(producerPrice, elasticityOfSupply)
                     -
-                    Math.Pow(consumerConsumerPriceIndex, elasticityOfSubstitution + elasticityOfDemand)
+                    Math.Pow(consumerPriceIndex, elasticityOfSubstitution + elasticityOfDemand)
                     /
                     Math.Pow(consumerPrice, elasticityOfSubstitution);
 

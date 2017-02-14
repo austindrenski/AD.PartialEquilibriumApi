@@ -7,7 +7,7 @@ using JetBrains.Annotations;
 
 namespace AD.PartialEquilibriumApi.Example.TestModels
 {
-    public class Model2C : IModel
+    public class Model2D : IModel
     {
         [UsedImplicitly]
         public XmlFilePath Model()
@@ -54,16 +54,16 @@ namespace AD.PartialEquilibriumApi.Example.TestModels
                 writer.WriteLine("4,5,-1,1.0,0.50,0.00");// ....C0
                 writer.WriteLine("4,5,-1,1.0,0.50,0.00");// ......D0
                 writer.WriteLine("4,5,-1,1.0,0.50,0.00");// ......D1
-                writer.WriteLine("4,5,-1,1.0,0.50,0.00");// ....C1
-                writer.WriteLine("4,5,-1,1.0,0.50,0.05");// ......D2
-                writer.WriteLine("4,5,-1,1.0,0.50,0.05");// ......D3
+                writer.WriteLine("4,5,-1,1.0,0.50,0.05");// ....C1
+                writer.WriteLine("4,5,-1,1.0,0.50,0.00");// ......D2
+                writer.WriteLine("4,5,-1,1.0,0.50,0.00");// ......D3
                 writer.WriteLine("4,5,-1,1.0,0.50,0.00");// ..B1
                 writer.WriteLine("4,5,-1,1.0,0.50,0.00");// ....C2
                 writer.WriteLine("4,5,-1,1.0,0.50,0.00");// ......D4
                 writer.WriteLine("4,5,-1,1.0,0.50,0.00");// ......D5
-                writer.WriteLine("4,5,-1,1.0,0.50,0.00");// ....C3
-                writer.WriteLine("4,5,-1,1.0,0.50,0.05");// ......D6
-                writer.WriteLine("4,5,-1,1.0,0.50,0.05");// ......D7
+                writer.WriteLine("4,5,-1,1.0,0.50,0.05");// ....C3
+                writer.WriteLine("4,5,-1,1.0,0.50,0.00");// ......D6
+                writer.WriteLine("4,5,-1,1.0,0.50,0.00");// ......D7
             }
             return new DelimitedFilePath(csv, ',');
         }

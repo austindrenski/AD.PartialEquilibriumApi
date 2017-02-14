@@ -38,6 +38,12 @@ namespace AD.PartialEquilibriumApi.Example.TestModels
         }
 
         [UsedImplicitly]
+        public static IModel Model2D()
+        {
+            return new Model2D();
+        }
+
+        [UsedImplicitly]
         public static IModel Model3()
         {
             return new Model3();

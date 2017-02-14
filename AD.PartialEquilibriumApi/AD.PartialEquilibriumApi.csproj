@@ -64,7 +64,7 @@
     <Compile Include="src\Xml\ConsumerPrice.cs" />
     <Compile Include="src\Xml\ElasticityOfDemand.cs" />
     <Compile Include="src\Xml\ElasticityOfSupply.cs" />
-    <Compile Include="src\Xml\FinalMarketShare.cs" />
+    <Compile Include="src\Xml\MarketShare.cs" />
     <Compile Include="src\Xml\IsExogenous.cs" />
     <Compile Include="src\Xml\IsVariable.cs" />
     <Compile Include="src\Xml\MarketEquilibrium.cs" />
