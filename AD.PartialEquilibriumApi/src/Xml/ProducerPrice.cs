@@ -39,8 +39,6 @@ namespace AD.PartialEquilibriumApi
                 double consumerPrice = market.ConsumerPrice();
                 double shock = market.Shock();
                 double shockedPrice = consumerPrice / (1 + shock);
-                //market.SetAttributeValue("ConsumerPrice", shockedPrice);
-                //market.SetAttributeValue(XProducerPrice, consumerPrice);
                 market.SetAttributeValue(XProducerPrice, shockedPrice);
             }
             return model;

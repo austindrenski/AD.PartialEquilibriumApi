@@ -38,7 +38,6 @@ namespace AD.PartialEquilibriumApi
 
             foreach (XElement market in model.DescendantsAndSelf().Reverse())
             {
-                double consumerPrice;
 
                 double consumerPriceIndexComponents =
                     market.Elements()
@@ -46,26 +45,21 @@ namespace AD.PartialEquilibriumApi
 
                 double consumerPriceIndex =
                     Math.Pow(consumerPriceIndexComponents, 1 / (1 - market.ElasticityOfSubstitution()));
-                
+
+                if (double.IsInfinity(consumerPriceIndex))
+                {
+                    consumerPriceIndex = market.ConsumerPrice();
+                }
+
+                double consumerPrice;
+
                 if (market.IsVariable())
                 {
-                    consumerPrice = values[--index];
-
-                    //if (!double.IsInfinity(consumerPriceIndex))
-                    //{
-                    //    if (consumerPrice < consumerPriceIndex)
-                    //    {
-                    //        consumerPrice += consumerPriceIndex - consumerPrice;
-                    //    }
-                    //}
-                }
-                else if (market.HasElements)
-                {
-                    consumerPrice = consumerPriceIndex;
+                    consumerPrice = /*market.HasElements ? consumerPriceIndex :*/ values[--index];
                 }
                 else
                 {
-                    consumerPrice = market.InitialPrice();
+                    consumerPrice = consumerPriceIndex;
                 }
 
                 market.SetAttributeValue(XConsumerPrice, consumerPrice);
