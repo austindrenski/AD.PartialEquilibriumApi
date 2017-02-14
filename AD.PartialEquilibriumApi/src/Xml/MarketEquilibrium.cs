@@ -47,7 +47,7 @@ namespace AD.PartialEquilibriumApi
                 double elasticityOfSubstitution = market.ElasticityOfSubstitution();
                 double elasticityOfSupply = market.ElasticityOfSupply();
                 double producerPrice = market.ProducerPrice();
-                
+
                 double marketEquilibrium =
                     Math.Pow(producerPrice, elasticityOfSupply)
                     -

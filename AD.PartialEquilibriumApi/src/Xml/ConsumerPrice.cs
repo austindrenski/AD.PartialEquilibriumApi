@@ -36,7 +36,7 @@ namespace AD.PartialEquilibriumApi
         {
             // Set prices where markets are variables of the model.
             int index = values.Length;
-            foreach (XElement market in model.DescendantsAndSelf().Where(x => /*!x.HasElements & */x.IsVariable() && !x.IsExogenous()).Reverse())
+            foreach (XElement market in model.DescendantsAndSelf().Where(x => x.IsVariable() && !x.IsExogenous()).Reverse())
             {
                 double consumerPrice;
 
@@ -56,16 +56,15 @@ namespace AD.PartialEquilibriumApi
                     double consumerPriceIndex =
                         Math.Pow(consumerPriceIndexComponents, 1 / (1 - market.ElasticityOfSubstitution()));
 
-                    consumerPrice = values[--index] + consumerPriceIndex;
-                    //consumerPrice = Math.Pow(values[--index] + consumerPriceIndex, 1 - market.ElasticityOfSubstitution());
-                    //consumerPrice = Math.Pow(values[--index], 1 / (1 - market.ElasticityOfSubstitution()));
-                    //consumerPrice = Math.Pow(values[--index] + consumerPriceIndexComponents, 1 / (1 - market.ElasticityOfSubstitution()));
+                    consumerPrice = values[--index] * 0.5 + consumerPriceIndex * 0.5;
+                    //    --index;
+                    //    consumerPrice = consumerPriceIndex;
                 }
                 market.SetAttributeValue(XConsumerPrice, consumerPrice);
             }
 
             //Set prices where the markets are not basic and not endogenous to the model.
-            foreach (XElement market in model.DescendantsAndSelf().Where(x => x.HasElements && !x.IsVariable() && !x.IsExogenous()).Reverse())
+            foreach (XElement market in model.DescendantsAndSelf().Where(x => !x.IsVariable() && !x.IsExogenous()).Reverse())
             {
                 double consumerPriceIndexComponents =
                     market.Elements()
@@ -76,6 +75,7 @@ namespace AD.PartialEquilibriumApi
 
                 market.SetAttributeValue(XConsumerPrice, consumerPrice);
             }
+            
             return model;
         }
 

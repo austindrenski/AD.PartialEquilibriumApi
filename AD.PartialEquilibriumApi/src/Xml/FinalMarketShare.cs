@@ -22,7 +22,7 @@ namespace AD.PartialEquilibriumApi
         {
             if (market.Attribute(XFinalMarketShare) == null)
             {
-                market.CalculateFinalMarketShares();
+                return market.InitialMarketShare();
             }
             return (double)market.Attribute(XFinalMarketShare);
         }
