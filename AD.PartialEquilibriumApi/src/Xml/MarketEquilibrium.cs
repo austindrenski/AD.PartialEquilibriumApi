@@ -28,23 +28,17 @@ namespace AD.PartialEquilibriumApi
         /// Result = (producerPrice ^ elasticityOfSupply) - [(consumerConsumerPriceIndex ^ (elasticityOfSubstitution + elasticityOfDemand)) / (consumerPrice ^ elasticityOfSubstitution)]
         /// </summary>
         /// <returns>A reference to the existing <see cref="XElement"/>. This is returned for use with fluent syntax calls.</returns>
-        public static XElement CalculateMarketEquilibrium([NotNull] this XElement element)
+        public static XElement CalculateMarketEquilibrium([NotNull] this XElement model)
         {
-            foreach (XElement market in element.DescendantsAndSelf().Reverse())
+            foreach (XElement market in model.DescendantsAndSelf().Reverse())
             {
                 double consumerPriceIndexComponents =
-                    market.Elements()
-                          .Sum(x => x.MarketShare() * Math.Pow(x.ConsumerPrice(), 1 - x.ElasticityOfSubstitution()));
+                    market.Parent?
+                          .Elements()
+                          .Sum(x => x.MarketShare() * Math.Pow(x.ConsumerPrice(), 1 - x.ElasticityOfSubstitution())) ?? 1;
 
                 double consumerPriceIndex =
                     Math.Pow(consumerPriceIndexComponents, 1 / (1 - market.ElasticityOfSubstitution()));
-
-                if (double.IsInfinity(consumerPriceIndex))
-                {
-                    consumerPriceIndex = market.ConsumerPrice();
-                }
-                
-                //double consumerPriceIndex = market.Parent?.ConsumerPrice() ?? 1;
 
                 double consumerPrice = market.ConsumerPrice();
                 double elasticityOfDemand = market.ElasticityOfDemand();
@@ -60,17 +54,9 @@ namespace AD.PartialEquilibriumApi
                     Math.Pow(consumerPrice, elasticityOfSubstitution);
 
                 market.SetAttributeValue(XMarketEquilibrium, marketEquilibrium);
-
-                //if (market.HasElements)
-                //{
-                //    foreach (XElement input in market.Elements())
-                //    {
-                //        input.SetAttributeValue(XMarketEquilibrium, market.Elements().Sum(x => x.MarketEquilibrium()));
-                //    }
-                //}
             }
 
-            return element;
+            return model;
         }
     }
 }

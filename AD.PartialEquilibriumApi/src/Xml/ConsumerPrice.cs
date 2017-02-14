@@ -55,7 +55,14 @@ namespace AD.PartialEquilibriumApi
 
                 if (market.IsVariable())
                 {
-                    consumerPrice = /*market.HasElements ? consumerPriceIndex :*/ values[--index];
+                    if (market.HasElements)
+                    {
+                        consumerPrice = values[--index] * consumerPriceIndex;
+                    }
+                    else
+                    {
+                        consumerPrice = values[--index];
+                    }
                 }
                 else
                 {

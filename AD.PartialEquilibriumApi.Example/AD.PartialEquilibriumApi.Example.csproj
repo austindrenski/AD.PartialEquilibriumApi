@@ -62,6 +62,7 @@
     <Compile Include="src\TestModels\ExtensiveMarginModel0.cs" />
     <Compile Include="src\TestModels\IModel.cs" />
     <Compile Include="src\TestModels\Model0.cs" />
+    <Compile Include="src\TestModels\Model0B.cs" />
     <Compile Include="src\TestModels\Model1.cs" />
     <Compile Include="src\TestModels\Model2.cs" />
     <Compile Include="src\TestModels\Model2B.cs" />
