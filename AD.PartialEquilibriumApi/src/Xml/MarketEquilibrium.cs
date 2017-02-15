@@ -34,7 +34,7 @@ namespace AD.PartialEquilibriumApi
         /// <returns>A reference to the existing <see cref="XElement"/>. This is returned for use with fluent syntax calls.</returns>
         public static XElement CalculateMarketEquilibrium([NotNull] this XElement model)
         {
-            foreach (XElement market in model.DescendantsAndSelf().Reverse())
+            foreach (XElement market in model.DescendantsAndSelf())
             {
                 //if (market.HasElements)
                 //{
