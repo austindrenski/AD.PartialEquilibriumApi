@@ -54,14 +54,14 @@ namespace AD.PartialEquilibriumApi.Example.TestModels
                 writer.WriteLine("4,5,-1,1.0,0.50,0.00");// ....C0
                 writer.WriteLine("4,5,-1,1.0,0.50,0.00");// ......D0
                 writer.WriteLine("4,5,-1,1.0,0.50,0.00");// ......D1
-                writer.WriteLine("4,5,-1,1.0,0.50,0.15");// ....C1
+                writer.WriteLine("4,5,-1,1.0,0.50,0.00");// ....C1
                 writer.WriteLine("4,5,-1,1.0,0.50,0.00");// ......D2
                 writer.WriteLine("4,5,-1,1.0,0.50,0.00");// ......D3
                 writer.WriteLine("4,5,-1,1.0,0.50,0.00");// ..B1
-                writer.WriteLine("4,5,-1,1.0,0.50,0.00");// ....C2
+                writer.WriteLine("4,5,-1,1.0,0.50,0.05");// ....C2
                 writer.WriteLine("4,5,-1,1.0,0.50,0.00");// ......D4
                 writer.WriteLine("4,5,-1,1.0,0.50,0.00");// ......D5
-                writer.WriteLine("4,5,-1,1.0,0.50,0.15");// ....C3
+                writer.WriteLine("4,5,-1,1.0,0.50,0.05");// ....C3
                 writer.WriteLine("4,5,-1,1.0,0.50,0.00");// ......D6
                 writer.WriteLine("4,5,-1,1.0,0.50,0.00");// ......D7
             }
@@ -73,7 +73,7 @@ namespace AD.PartialEquilibriumApi.Example.TestModels
         {
             return new XName[]
             {
-                //"A0",
+                "A0",
                     "B0",
                         "C0",
                             "D0",
