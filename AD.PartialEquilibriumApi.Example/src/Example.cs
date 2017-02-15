@@ -11,17 +11,15 @@ namespace AD.PartialEquilibriumApi.Example
     {
         public static void Example1()
         {
-            TestModels.IModel modelFactory = TestModels.ModelFactory.Model2E();
+            TestModels.IModel modelFactory = TestModels.ModelFactory.Model2D();
             
             XmlFilePath structureFile = modelFactory.Model();
             DelimitedFilePath dataFile = modelFactory.Data();
-            XName[] variables = modelFactory.Variables();
 
             // Read in the model and the data.
             XElement model =
-                    XElement.Load(structureFile)
-                            .DefineAttributeData(dataFile)
-                            .SetIsVariable(variables);
+                XElement.Load(structureFile)
+                        .DefineAttributeData(dataFile);
 
             // Create the objective function.
             Func<double[], double> objectiveFunction =
@@ -42,8 +40,8 @@ namespace AD.PartialEquilibriumApi.Example
                     objectiveFunction: x => objectiveFunction(x),
                     lowerBound: 0,
                     upperBound: 10,
-                    dimensions: model.Descendants().Count(x => !x.HasElements),//variables.Length,
-                    iterations: 10000,
+                    dimensions: model.Descendants().Count(x => !x.HasElements),
+                    iterations: 15000,
                     seed: 0,
                     textWriter: Console.Out
                 );
@@ -57,14 +55,16 @@ namespace AD.PartialEquilibriumApi.Example
 
             // Apply the final solution
             model.SetConsumerPrices(solution.Vector)
-                    .ShockProducerPrices()
-                    .CalculateMarketShares()
-                    .CalculateMarketEquilibrium();
+                 .ShockProducerPrices()
+                 .CalculateMarketShares()
+                 .CalculateMarketEquilibrium();
 
             //// Repeat calculations for "adjustment periods"
             //for (int i = 0; i < 10; i++)
             //{
-            //    model.CalculateMarketShares()
+            //    model.SetConsumerPrices()
+            //         .ShockProducerPrices()
+            //         .CalculateMarketShares()
             //         .CalculateMarketEquilibrium();
             //}
 

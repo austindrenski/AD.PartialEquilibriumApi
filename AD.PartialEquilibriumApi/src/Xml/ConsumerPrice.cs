@@ -28,6 +28,16 @@ namespace AD.PartialEquilibriumApi
         }
 
         /// <summary>
+        /// Sets the values of the ConsumerPrice attributes to the current values of the ConsumerPrice attributes.
+        /// </summary>
+        /// <param name="model">An <see cref="XElement"/> describing a model.</param>
+        public static XElement SetConsumerPrices([NotNull] this XElement model)
+        {
+            double[] values = model.DescendantsAndSelf().Select(x => x.ConsumerPrice()).ToArray();
+            return model.SetConsumerPrices(values);
+        }
+
+        /// <summary>
         /// Sets the values of the ConsumerPrice attributes in provided an array of values in document-order.
         /// </summary>
         /// <param name="model">An <see cref="XElement"/> describing a model.</param>
@@ -46,7 +56,7 @@ namespace AD.PartialEquilibriumApi
                     Math.Pow(consumerPriceIndexComponents, 1 / (1 - market.ElasticityOfSubstitution()));
 
                 double consumerPrice = market.HasElements ? consumerPriceIndex : values[--index];
-              
+
                 market.SetAttributeValue(XConsumerPrice, consumerPrice);
             }
 

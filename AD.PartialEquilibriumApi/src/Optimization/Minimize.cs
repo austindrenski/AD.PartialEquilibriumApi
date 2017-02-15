@@ -51,13 +51,13 @@ namespace AD.PartialEquilibriumApi
                     if (contracted > simplex.Solutions[lastIndex])
                     {
                         simplex.Shrink();
-                        Array.Sort(simplex.Solutions);
                     }
                     else
                     {
                         simplex.Swap(contracted, lastIndex);
-                        Array.Sort(simplex.Solutions);
                     }
+
+                    Array.Sort(simplex.Solutions);
                     continue;
                 }
 

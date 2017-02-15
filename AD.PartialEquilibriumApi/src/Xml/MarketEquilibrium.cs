@@ -16,11 +16,15 @@ namespace AD.PartialEquilibriumApi
         /// <summary>
         /// Returns the value of the MarketEquilibrium attribute.
         /// </summary>
-        /// <param name="element">An <see cref="XElement"/> describing a market.</param>
+        /// <param name="market">An <see cref="XElement"/> describing a market.</param>
         /// <returns>The value of the MarketEquilibrium attribute.</returns>
-        public static double MarketEquilibrium([NotNull] this XElement element)
+        public static double MarketEquilibrium([NotNull] this XElement market)
         {
-            return (double)element.Attribute(XMarketEquilibrium);
+            if (market.Attribute(XMarketEquilibrium) == null)
+            {
+                return 0;
+            }
+            return (double)market.Attribute(XMarketEquilibrium);
         }
 
         /// <summary>
@@ -32,22 +36,28 @@ namespace AD.PartialEquilibriumApi
         {
             foreach (XElement market in model.DescendantsAndSelf().Reverse())
             {
-                if (market.HasElements)
-                {
-                    market.SetAttributeValue(XMarketEquilibrium, market.Elements().Sum(x => x.MarketEquilibrium()));
-                    continue;
-                }
+                //if (market.HasElements)
+                //{
+                //    market.SetAttributeValue(XMarketEquilibrium, market.Elements().Sum(x => x.MarketEquilibrium()));
+                //    continue;
+                //}
 
-                if (market.Parent == null)
-                {
-                    throw new ArgumentNullException("An error has occured with the model's state.");
-                }
+                //if (market.Parent == null)
+                //{
+                //    throw new ArgumentNullException("An error has occured with the model's state.");
+                //}
 
+                //if (market.HasElements && market.Shock() == 0)
+                //{
+                //    market.SetAttributeValue(XMarketEquilibrium, market.Elements().Sum(x => x.MarketEquilibrium()));
+                //    continue;
+                //}
+                
                 double consumerPriceIndexComponents =
-                    market.Parent?
-                          .Elements()
-                          .Sum(x => x.MarketShare() * Math.Pow(x.ConsumerPrice(), 1 - x.ElasticityOfSubstitution()))
-                    ?? market.MarketShare() * Math.Pow(market.ConsumerPrice(), 1 - market.ElasticityOfSubstitution());
+                market.Parent?
+                      .Elements()
+                      .Sum(x => x.MarketShare() * Math.Pow(x.ConsumerPrice(), 1 - x.ElasticityOfSubstitution()))
+                ?? market.MarketShare() * Math.Pow(market.ConsumerPrice(), 1 - market.ElasticityOfSubstitution());
 
                 double consumerPriceIndex =
                     Math.Pow(consumerPriceIndexComponents, 1 / (1 - market.ElasticityOfSubstitution()));

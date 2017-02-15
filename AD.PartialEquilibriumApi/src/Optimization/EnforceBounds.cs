@@ -18,8 +18,8 @@ namespace AD.PartialEquilibriumApi
         {
             for (int i = 0; i < simplex.Dimensions; i++)
             {
-                vector[i] = vector[i] < simplex.LowerBound ? simplex.LowerBound + 0.10 * (simplex.UpperBound - simplex.LowerBound) : vector[i];
-                vector[i] = vector[i] > simplex.UpperBound ? simplex.UpperBound - 0.10 * (simplex.UpperBound - simplex.LowerBound) : vector[i];
+                vector[i] = vector[i] < simplex.LowerBound ? simplex.LowerBound + 0.1 * (simplex.UpperBound - simplex.LowerBound) : vector[i];
+                vector[i] = vector[i] > simplex.UpperBound ? simplex.UpperBound - 0.1 * (simplex.UpperBound - simplex.LowerBound) : vector[i];
             }
             return vector;
         }

@@ -26,7 +26,7 @@ namespace AD.PartialEquilibriumApi
         public const double Expansion = 2.0;
 
         /// <summary>
-        /// Controls how quickly the simplex can shrink.
+        /// Controls how quickly the simplex can shrink. Recommended = 0.5.
         /// </summary>
         public const double Shrink = 0.5;
 
