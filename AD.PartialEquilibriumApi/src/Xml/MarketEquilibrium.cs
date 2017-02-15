@@ -32,10 +32,21 @@ namespace AD.PartialEquilibriumApi
         {
             foreach (XElement market in model.DescendantsAndSelf().Reverse())
             {
+                if (market.HasElements)
+                {
+                    market.SetAttributeValue(XMarketEquilibrium, market.Elements().Sum(x => x.MarketEquilibrium()));
+                    continue;
+                }
+
+                if (market.Parent == null)
+                {
+                    throw new ArgumentNullException("An error has occured with the model's state.");
+                }
+
                 double consumerPriceIndexComponents =
                     market.Parent?
                           .Elements()
-                          .Sum(x => x.MarketShare() * Math.Pow(x.ConsumerPrice(), 1 - x.ElasticityOfSubstitution())) 
+                          .Sum(x => x.MarketShare() * Math.Pow(x.ConsumerPrice(), 1 - x.ElasticityOfSubstitution()))
                     ?? market.MarketShare() * Math.Pow(market.ConsumerPrice(), 1 - market.ElasticityOfSubstitution());
 
                 double consumerPriceIndex =

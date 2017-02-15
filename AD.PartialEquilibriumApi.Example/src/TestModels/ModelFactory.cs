@@ -68,12 +68,6 @@ namespace AD.PartialEquilibriumApi.Example.TestModels
         }
 
         [UsedImplicitly]
-        public static IModel Model5()
-        {
-            return new Model5();
-        }
-
-        [UsedImplicitly]
         public static IModel ExtensiveMarginModel0()
         {
             return new ExtensiveMarginModel0();

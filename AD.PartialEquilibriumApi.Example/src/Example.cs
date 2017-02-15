@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
@@ -10,7 +11,7 @@ namespace AD.PartialEquilibriumApi.Example
     {
         public static void Example1()
         {
-            TestModels.IModel modelFactory = TestModels.ModelFactory.Model2D();
+            TestModels.IModel modelFactory = TestModels.ModelFactory.Model2E();
             
             XmlFilePath structureFile = modelFactory.Model();
             DelimitedFilePath dataFile = modelFactory.Data();
@@ -41,7 +42,7 @@ namespace AD.PartialEquilibriumApi.Example
                     objectiveFunction: x => objectiveFunction(x),
                     lowerBound: 0,
                     upperBound: 10,
-                    dimensions: variables.Length,
+                    dimensions: model.Descendants().Count(x => !x.HasElements),//variables.Length,
                     iterations: 10000,
                     seed: 0,
                     textWriter: Console.Out
@@ -53,11 +54,19 @@ namespace AD.PartialEquilibriumApi.Example
             // Find the minimum solution in parallel.
             //Solution solution = simplex.Minimize(10);
 
+
             // Apply the final solution
             model.SetConsumerPrices(solution.Vector)
-                 .ShockProducerPrices()
-                 .CalculateMarketShares()
-                 .CalculateMarketEquilibrium();
+                    .ShockProducerPrices()
+                    .CalculateMarketShares()
+                    .CalculateMarketEquilibrium();
+
+            //// Repeat calculations for "adjustment periods"
+            //for (int i = 0; i < 10; i++)
+            //{
+            //    model.CalculateMarketShares()
+            //         .CalculateMarketEquilibrium();
+            //}
 
             // Print the results
             PrintResults(model, solution);

@@ -20,6 +20,7 @@ namespace AD.PartialEquilibriumApi.Example.TestModels
                           <B0/>
                           <B1/>
                           <B2/>
+                          <B3/>
                       </A0>");
             }
             return new XmlFilePath(xml);
@@ -32,11 +33,11 @@ namespace AD.PartialEquilibriumApi.Example.TestModels
             using (StreamWriter writer = new StreamWriter(csv))
             {
                 writer.WriteLine("ElasticityOfSubstitution,ElasticityOfSupply,ElasticityOfDemand,InitialPrice,InitialMarketShare,Shock");
-                writer.WriteLine("4, 5, -1, 1.0, 1.000, 0.00");
-                writer.WriteLine("4, 5, -1, 1.0, 0.495, 0.00");
-                writer.WriteLine("4, 5, -1, 1.0, 0.495, 0.00");
-                writer.WriteLine("4, 5, -1, 1.0, 0.010, 0.90");
-
+                writer.WriteLine("4, 5, -1, 1.0, 1.00, 0.00");
+                writer.WriteLine("4, 5, -1, 1.0, 0.33, 0.00");
+                writer.WriteLine("4, 5, -1, 1.0, 0.33, 0.00");
+                writer.WriteLine("4, 5, -1, 1.0, 0.33, 0.00");
+                writer.WriteLine("4, 5, -1, 1.0, 0.01, -0.20");
             }
             return new DelimitedFilePath(csv, ',');
         }
@@ -46,10 +47,11 @@ namespace AD.PartialEquilibriumApi.Example.TestModels
         {
             return new XName[]
             {
-                //"A0",
+                "A0",
                     "B0",
                     "B1",
-                    "B2"
+                    "B2",
+                    "B3"
             };
         }
     }

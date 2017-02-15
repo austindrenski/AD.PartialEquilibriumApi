@@ -49,7 +49,7 @@ namespace AD.PartialEquilibriumApi.Example.TestModels
         {
             return new XName[]
             {
-                //"A0",
+                "A0",
                     "B0",
                     "B1",
                         "C0",
