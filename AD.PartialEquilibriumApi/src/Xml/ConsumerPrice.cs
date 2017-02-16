@@ -55,7 +55,7 @@ namespace AD.PartialEquilibriumApi
                 double consumerPriceIndex =
                     Math.Pow(consumerPriceIndexComponents, 1 / (1 - market.ElasticityOfSubstitution()));
 
-                double consumerPrice = market.HasElements ? consumerPriceIndex : values[--index];
+                double consumerPrice = market.HasElements ? values[--index] * consumerPriceIndex : values[--index];
 
                 market.SetAttributeValue(XConsumerPrice, consumerPrice);
             }
@@ -76,6 +76,7 @@ namespace AD.PartialEquilibriumApi
             }
 
             int index = 0;
+
             foreach (XElement market in model.DescendantsAndSelf().Where(x => x.IsExogenous()))
             {
                 market.SetAttributeValue(XConsumerPrice, values[index++]);

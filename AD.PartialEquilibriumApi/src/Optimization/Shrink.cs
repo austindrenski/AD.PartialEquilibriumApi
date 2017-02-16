@@ -16,18 +16,13 @@ namespace AD.PartialEquilibriumApi
         {
             int dimensions = simplex.Dimensions;
 
-            int vertices = simplex.Solutions.Length;
+            int vertices = dimensions + 1;
             
             for (int i = 1; i < vertices; i++)
             {
                 for (int j = 0; j < dimensions; j++)
                 {
-                    simplex.Solutions[i][j] = simplex[i][j] + simplex[0][j];
-                }
-                for (int j = 0; j < dimensions; j++)
-                {
-                    simplex.Solutions[i][j] *= 0.5;
-
+                    simplex.Solutions[i][j] = 0.5 * (simplex[i][j] + simplex[0][j]);
                 }
                 simplex.Solutions[i].Value = simplex.ObjectiveFunction(simplex[i].Vector);
             }

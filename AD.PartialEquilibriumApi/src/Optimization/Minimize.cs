@@ -16,11 +16,6 @@ namespace AD.PartialEquilibriumApi
         /// <returns>The solution that produces the minimum value.</returns>
         public static Solution Minimize(this Simplex simplex)
         {
-            if (simplex.Solutions.Length < simplex.Dimensions)
-            {
-                throw new ArgumentOutOfRangeException("The number of solutions in the simplex must be greater than or equal to the dimensions + 1");
-            }
-
             int lastVertex = simplex.Solutions.Length - 1;
 
             for (int i = 0; i < simplex.Iterations; i++)

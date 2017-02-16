@@ -11,7 +11,7 @@ namespace AD.PartialEquilibriumApi.Example
     {
         public static void Example1()
         {
-            TestModels.IModel modelFactory = TestModels.ModelFactory.Model2E();
+            TestModels.IModel modelFactory = TestModels.ModelFactory.Model2D();
             
             XmlFilePath structureFile = modelFactory.Model();
             DelimitedFilePath dataFile = modelFactory.Data();
@@ -40,8 +40,8 @@ namespace AD.PartialEquilibriumApi.Example
                     objectiveFunction: x => objectiveFunction(x),
                     lowerBound: 0,
                     upperBound: 10,
-                    dimensions: model.Descendants().Count(x => !x.HasElements),
-                    iterations: 100000,
+                    dimensions: model.DescendantsAndSelf().Count(),
+                    iterations: 300000,
                     seed: 0,
                     textWriter: Console.Out
                 );

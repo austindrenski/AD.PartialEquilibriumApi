@@ -59,8 +59,8 @@ namespace AD.PartialEquilibriumApi.Example.TestModels
                 writer.WriteLine("4,5,-1,1.0,0.50,0.00");// ......D3
                 writer.WriteLine("4,5,-1,1.0,0.50,0.00");// ..B1
                 writer.WriteLine("4,5,-1,1.0,0.50,0.00");// ....C2
-                writer.WriteLine("4,5,-1,1.0,0.50,0.05");// ......D4
-                writer.WriteLine("4,5,-1,1.0,0.50,0.05");// ......D5
+                writer.WriteLine("4,5,-1,1.0,0.50,0.00");// ......D4
+                writer.WriteLine("4,5,-1,1.0,0.50,0.00");// ......D5
                 writer.WriteLine("4,5,-1,1.0,0.50,0.00");// ....C3
                 writer.WriteLine("4,5,-1,1.0,0.50,0.05");// ......D6
                 writer.WriteLine("4,5,-1,1.0,0.50,0.05");// ......D7

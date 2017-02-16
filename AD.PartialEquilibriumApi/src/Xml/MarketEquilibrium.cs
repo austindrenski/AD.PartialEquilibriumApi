@@ -22,7 +22,7 @@ namespace AD.PartialEquilibriumApi
         {
             if (market.Attribute(XMarketEquilibrium) == null)
             {
-                return 0;
+                return 1;
             }
             return (double)market.Attribute(XMarketEquilibrium);
         }
@@ -57,10 +57,10 @@ namespace AD.PartialEquilibriumApi
                     Math.Pow(consumerPriceIndexComponents, 1 / (1 - market.ElasticityOfSubstitution()));
 
                 double consumerPrice = market.ConsumerPrice();
+                double producerPrice = market.ProducerPrice();
                 double elasticityOfDemand = market.ElasticityOfDemand();
                 double elasticityOfSubstitution = market.ElasticityOfSubstitution();
                 double elasticityOfSupply = market.ElasticityOfSupply();
-                double producerPrice = market.ProducerPrice();
 
                 double marketEquilibrium =
                     Math.Pow(producerPrice, elasticityOfSupply)

@@ -42,7 +42,7 @@ namespace AD.PartialEquilibriumApi
         public Solution[] Solutions { get; }
 
         /// <summary>
-        /// Indexed access to the vector of <see cref="Solution"/> objects..
+        /// Indexed access to the vector of <see cref="Solution"/> objects.
         /// </summary>
         /// <param name="index">The solution index.</param>
         public Solution this[int index]
