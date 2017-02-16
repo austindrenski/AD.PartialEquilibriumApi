@@ -27,7 +27,7 @@ namespace AD.PartialEquilibriumApi
                 reflected[i] = 2.0 * centroid[i] - simplex[dimensions][i];
             }
 
-            reflected = reflected.EnforceBounds(simplex);
+            reflected = simplex.EnforceBounds(reflected);
 
             return new Solution(simplex.ObjectiveFunction(reflected), reflected);
         }

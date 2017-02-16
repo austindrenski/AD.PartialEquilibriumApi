@@ -30,7 +30,7 @@ namespace AD.PartialEquilibriumApi
                 centroid[i] /= dimensions;
             }
 
-            centroid = centroid.EnforceBounds(simplex);
+            centroid = simplex.EnforceBounds(centroid);
 
             return new Solution(simplex.ObjectiveFunction(centroid), centroid);
         }
