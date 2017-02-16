@@ -25,7 +25,6 @@ namespace AD.PartialEquilibriumApi
                 simplex.TextWriter.WriteLineAsync($"> i = {$"{i}".PadLeft(simplex.Iterations.ToString().Length)}: {simplex.Solutions[0]}");
 
                 Array.Sort(simplex.Solutions);
-
                 Solution centroid = simplex.Centroid();
                 Solution reflected = simplex.Reflect(centroid);
 
