@@ -13,27 +13,24 @@ namespace AD.PartialEquilibriumApi
         /// the line from the worst vertex to its mirror across the plane of the remaining vertices.
         /// </summary>
         /// <param name="simplex">The source <see cref="Simplex"/>.</param>
-        /// <param name="index">The index of the solution to exclude when calculating the centroid.</param>
         /// <returns>The centroid solution.</returns>
-        public static Solution Centroid(this Simplex simplex, int index)
+        public static Solution Centroid(this Simplex simplex)
         {
-            double[] centroid = new double[simplex.Dimensions];
+            int dimensions = simplex.Dimensions;
 
-            for (int i = 0; i < simplex.Solutions.Length; i++)
+            double[] centroid = new double[dimensions];
+
+            for (int i = 0; i < dimensions; i++)
             {
-                if (i == index)
-                {
-                    continue;
-                }
-                for (int j = 0; j < simplex.Dimensions; j++)
+                for (int j = 0; j < dimensions; j++)
                 {
                     centroid[j] += simplex[i][j];
                 }
             }
 
-            for (int i = 0; i < simplex.Dimensions; i++)
+            for (int i = 0; i < dimensions; i++)
             {
-                centroid[i] /= simplex.Dimensions;
+                centroid[i] /= dimensions;
             }
 
             centroid = centroid.EnforceBounds(simplex);

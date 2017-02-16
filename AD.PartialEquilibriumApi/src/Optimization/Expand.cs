@@ -17,11 +17,13 @@ namespace AD.PartialEquilibriumApi
         /// <returns>The expanded solution.</returns>
         public static Solution Expand(this Simplex simplex, Solution centroid, Solution reflected)
         {
-            double[] expanded = new double[simplex.Dimensions];
+            int dimensions = simplex.Dimensions;
+
+            double[] expanded = new double[dimensions];
 
             for (int i = 0; i < simplex.Dimensions; i++)
             {
-                expanded[i] = (1 - Simplex.Expansion) * centroid[i] + Simplex.Expansion * reflected[i];
+                expanded[i] = -1.0 * centroid[i] + 2.0 * reflected[i];
             }
 
             expanded = expanded.EnforceBounds(simplex);

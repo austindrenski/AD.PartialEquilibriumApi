@@ -21,7 +21,7 @@ namespace AD.PartialEquilibriumApi
                 throw new ArgumentOutOfRangeException("The number of solutions in the simplex must be greater than or equal to the dimensions + 1");
             }
 
-            int lastIndex = simplex.Solutions.Length - 1;
+            int lastVertex = simplex.Solutions.Length - 1;
 
             for (int i = 0; i < simplex.Iterations; i++)
             {
@@ -29,28 +29,28 @@ namespace AD.PartialEquilibriumApi
 
                 Array.Sort(simplex.Solutions);
 
-                Solution centroid = simplex.Centroid(lastIndex);
-                Solution reflected = simplex.Reflect(centroid, lastIndex);
+                Solution centroid = simplex.Centroid();
+                Solution reflected = simplex.Reflect(centroid);
 
                 if (reflected < simplex.Solutions[0])
                 {
                     Solution expanded = simplex.Expand(centroid, reflected);
-                    simplex.Swap(expanded < simplex.Solutions[0] ? expanded : reflected, lastIndex);
+                    simplex.Swap(expanded < simplex.Solutions[0] ? expanded : reflected);
                     continue;
                 }
 
                 if (simplex.Solutions.Count(x => reflected < x) == 1)
                 {
-                    if (reflected <= simplex.Solutions[lastIndex])
+                    if (reflected <= simplex.Solutions[lastVertex])
                     {
-                        simplex.Swap(reflected, lastIndex);
+                        simplex.Swap(reflected);
                     }
 
                     Solution contracted = simplex.Contract(centroid);
 
-                    if (contracted < simplex.Solutions[lastIndex])
+                    if (contracted < simplex.Solutions[lastVertex])
                     {
-                        simplex.Swap(contracted, lastIndex);
+                        simplex.Swap(contracted);
                     }
                     else
                     {
@@ -59,7 +59,7 @@ namespace AD.PartialEquilibriumApi
                     continue;
                 }
 
-                simplex.Swap(reflected, lastIndex);
+                simplex.Swap(reflected);
             }
 
             return simplex.Solutions[0];

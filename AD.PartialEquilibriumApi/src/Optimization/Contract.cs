@@ -17,11 +17,18 @@ namespace AD.PartialEquilibriumApi
         /// <returns>The current worst solution moved in the direction of the centroid.</returns>
         public static Solution Contract(this Simplex simplex, Solution centroid)
         {
-            double[] contracted = new double[simplex.Dimensions];
+            int dimensions = simplex.Dimensions;
 
-            for (int i = 0; i < simplex.Dimensions; i++)
+            double[] contracted = new double[dimensions];
+
+            for (int i = 0; i < dimensions; i++)
             {
-                contracted[i] = (1 - Simplex.Contraction) * centroid[i] + Simplex.Contraction * simplex[simplex.Solutions.Length - 1][i];
+                contracted[i] = centroid[i] + simplex[dimensions][i];
+            }
+
+            for (int i = 0; i < dimensions; i++)
+            {
+                contracted[i] *= 0.5;
             }
 
             contracted = contracted.EnforceBounds(simplex);

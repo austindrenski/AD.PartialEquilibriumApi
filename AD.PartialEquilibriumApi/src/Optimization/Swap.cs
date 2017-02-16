@@ -13,15 +13,16 @@ namespace AD.PartialEquilibriumApi
         /// </summary>
         /// <param name="simplex">The source <see cref="Simplex"/>.</param>
         /// <param name="solution">The replacement solution.</param>
-        /// <param name="index">The index of the current solution to be replaced.</param>
-        public static void Swap(this Simplex simplex, Solution solution, int index)
+        public static void Swap(this Simplex simplex, Solution solution)
         {
-            for (int i = 0; i < simplex.Dimensions; i++)
+            int dimensions = simplex.Dimensions;
+
+            for (int i = 0; i < dimensions; i++)
             {
-                simplex.Solutions[index][i] = solution[i];
+                simplex.Solutions[dimensions][i] = solution[i];
             }
 
-            simplex.Solutions[index].Value = simplex.ObjectiveFunction(simplex.Solutions[index].Vector);
+            simplex.Solutions[dimensions].Value = simplex.ObjectiveFunction(simplex.Solutions[dimensions].Vector);
         }
     }
 }

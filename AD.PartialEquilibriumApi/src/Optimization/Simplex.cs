@@ -9,27 +9,7 @@ namespace AD.PartialEquilibriumApi
     /// </summary>
     [PublicAPI]
     public class Simplex
-    {
-        /// <summary>
-        /// The alpha constant. Recommended = 1.0.
-        /// </summary>
-        public const double Reflection = 1.0;
-
-        /// <summary>
-        /// The beta constant. Recommend = 0.5.
-        /// </summary>
-        public const double Contraction = 0.5;
-
-        /// <summary>
-        /// The gamma constant. Recommended = 2.0.
-        /// </summary>
-        public const double Expansion = 2.0;
-
-        /// <summary>
-        /// Controls how quickly the simplex can shrink. Recommended = 0.5.
-        /// </summary>
-        public const double Shrink = 0.5;
-
+    {      
         /// <summary>
         /// The numerical precision used for floating poing comparisons. Initially set equal to 1e-15.
         /// Increasing the numerical precision may help when the search space is complex, or corner solutions may exist.

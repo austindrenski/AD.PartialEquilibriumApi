@@ -14,11 +14,20 @@ namespace AD.PartialEquilibriumApi
         /// <param name="simplex">The source <see cref="Simplex"/>.</param>
         public static void Shrink(this Simplex simplex)
         {
-            for (int i = 1; i < simplex.Solutions.Length; i++)
+            int dimensions = simplex.Dimensions;
+
+            int vertices = simplex.Solutions.Length;
+            
+            for (int i = 1; i < vertices; i++)
             {
-                for (int j = 0; j < simplex.Dimensions; j++)
+                for (int j = 0; j < dimensions; j++)
                 {
-                    simplex.Solutions[i][j] = Simplex.Shrink * (simplex[i][j] + simplex[0][j]);
+                    simplex.Solutions[i][j] = simplex[i][j] + simplex[0][j];
+                }
+                for (int j = 0; j < dimensions; j++)
+                {
+                    simplex.Solutions[i][j] *= 0.5;
+
                 }
                 simplex.Solutions[i].Value = simplex.ObjectiveFunction(simplex[i].Vector);
             }

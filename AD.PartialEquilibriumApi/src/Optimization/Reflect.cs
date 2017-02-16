@@ -14,15 +14,16 @@ namespace AD.PartialEquilibriumApi
         /// </summary>
         /// <param name="simplex">The source <see cref="Simplex"/>.</param>
         /// <param name="centroid">The centroid calculated for this simplex.</param>
-        /// <param name="index">The index of the point to be reflected.</param>
         /// <returns>The reflected solution.</returns>
-        public static Solution Reflect(this Simplex simplex, Solution centroid, int index)
+        public static Solution Reflect(this Simplex simplex, Solution centroid)
         {
-            double[] reflected = new double[simplex.Dimensions];
+            int dimensions = simplex.Dimensions;
 
-            for (int i = 0; i < simplex.Dimensions; i++)
+            double[] reflected = new double[dimensions];
+
+            for (int i = 0; i < dimensions; i++)
             {
-                reflected[i] = 2.0 * centroid[i] - simplex[index][i];
+                reflected[i] = 2.0 * centroid[i] - simplex[dimensions][i];
             }
 
             reflected = reflected.EnforceBounds(simplex);
