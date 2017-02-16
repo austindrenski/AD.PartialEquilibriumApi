@@ -22,7 +22,7 @@ namespace AD.PartialEquilibriumApi
 
             double[] expanded = new double[dimensions];
 
-            for (int i = 0; i < simplex.Dimensions; i++)
+            for (int i = 0; i < dimensions; i++)
             {
                 expanded[i] = 2.0 * (reflected[i] - centroid[i]);
             }

@@ -9,23 +9,23 @@ namespace AD.PartialEquilibriumApi
     public static class ShrinkExtensions
     {
         /// <summary>
-        /// Moves each vertex from its current position to the position of the best vertex.
+        /// Shrinks the solution from its current position to the position of the best vertex by half.
         /// </summary>
         /// <param name="simplex">The source <see cref="Simplex"/>.</param>
-        public static void Shrink(this Simplex simplex)
+        /// <param name="solution">The solution to shrink toward the best solution in the <see cref="Simplex"/>.</param>
+        [Pure]
+        public static Solution Shrink(this Simplex simplex, Solution solution)
         {
             int dimensions = simplex.Dimensions;
 
-            int vertices = dimensions + 1;
+            double[] result = new double[dimensions];
 
-            for (int i = 1; i < vertices; i++)
+            for (int i = 0; i < dimensions; i++)
             {
-                for (int j = 0; j < dimensions; j++)
-                {
-                    simplex.Solutions[i][j] = 0.5 * (simplex[i][j] + simplex[0][j]);
-                }
-                simplex.Solutions[i].Value = simplex.ObjectiveFunction(simplex[i].Vector);
+                result[i] = 0.5 * (solution[i] + simplex[0][i]);
             }
+
+            return new Solution(simplex.ObjectiveFunction(result), result);
         }
     }
 }

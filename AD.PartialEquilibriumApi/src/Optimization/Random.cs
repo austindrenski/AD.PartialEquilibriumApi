@@ -13,11 +13,14 @@ namespace AD.PartialEquilibriumApi
         /// </summary>
         /// <param name="simplex">The source <see cref="Simplex"/>.</param>
         /// <returns>The random solution.</returns>
+        [Pure]
         public static Solution Random(this Simplex simplex)
         {
-            double[] random = new double[simplex.Dimensions];
+            int dimensions = simplex.Dimensions;
 
-            for (int i = 0; i < simplex.Dimensions; i++)
+            double[] random = new double[dimensions];
+
+            for (int i = 0; i < dimensions; i++)
             {
                 random[i] = (simplex.UpperBound - simplex.LowerBound) * simplex.RandomGenerator.NextDouble() + simplex.LowerBound;
             }
