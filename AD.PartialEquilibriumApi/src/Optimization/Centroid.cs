@@ -14,6 +14,7 @@ namespace AD.PartialEquilibriumApi
         /// </summary>
         /// <param name="simplex">The source <see cref="Simplex"/>.</param>
         /// <returns>The centroid solution.</returns>
+        [Pure]
         public static Solution Centroid(this Simplex simplex)
         {
             int dimensions = simplex.Dimensions;
@@ -24,12 +25,8 @@ namespace AD.PartialEquilibriumApi
             {
                 for (int j = 0; j < dimensions; j++)
                 {
-                    centroid[j] += simplex[i][j];
+                    centroid[i] += simplex[j][i];
                 }
-            }
-
-            for (int i = 0; i < dimensions; i++)
-            {
                 centroid[i] /= dimensions;
             }
 

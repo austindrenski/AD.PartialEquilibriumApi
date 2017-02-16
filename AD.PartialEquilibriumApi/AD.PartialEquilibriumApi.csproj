@@ -77,7 +77,6 @@
     <Compile Include="src\Optimization\EnforceBounds.cs" />
     <Compile Include="src\Optimization\Expand.cs" />
     <Compile Include="src\Optimization\Reflect.cs" />
-    <Compile Include="src\Optimization\Swap.cs" />
     <Compile Include="src\Optimization\Shrink.cs" />
     <Compile Include="src\Optimization\Simplex.cs" />
     <Compile Include="src\Optimization\Solution.cs" />

@@ -51,6 +51,10 @@ namespace AD.PartialEquilibriumApi
             {
                 return Solutions[index];
             }
+            set
+            {
+                Solutions[index] = value;
+            }
         }
 
         /// <summary>

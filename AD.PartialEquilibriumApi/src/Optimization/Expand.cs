@@ -15,6 +15,7 @@ namespace AD.PartialEquilibriumApi
         /// <param name="centroid">The centroid solution calculated on the <see cref="Simplex"/>.</param>
         /// <param name="reflected">The reflected solution calculated on the <see cref="Simplex"/>.</param>
         /// <returns>The expanded solution.</returns>
+        [Pure]
         public static Solution Expand(this Simplex simplex, Solution centroid, Solution reflected)
         {
             int dimensions = simplex.Dimensions;

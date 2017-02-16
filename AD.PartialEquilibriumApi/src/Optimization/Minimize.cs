@@ -20,7 +20,7 @@ namespace AD.PartialEquilibriumApi
 
             for (int i = 0; i < simplex.Iterations; i++)
             {
-                simplex.TextWriter.WriteLineAsync($"> i = {$"{i}".PadLeft(simplex.Iterations.ToString().Length)}: {simplex.Solutions[0]}");
+                //simplex.TextWriter.WriteLineAsync($"> i = {$"{i}".PadLeft(simplex.Iterations.ToString().Length)}: {simplex.Solutions[0]}");
 
                 Array.Sort(simplex.Solutions);
 
@@ -30,7 +30,7 @@ namespace AD.PartialEquilibriumApi
                 if (reflected < simplex.Solutions[0])
                 {
                     Solution expanded = simplex.Expand(centroid, reflected);
-                    simplex.Swap(expanded < simplex.Solutions[0] ? expanded : reflected);
+                    simplex[lastVertex] = expanded < simplex.Solutions[0] ? expanded : reflected;
                     continue;
                 }
 
@@ -38,14 +38,14 @@ namespace AD.PartialEquilibriumApi
                 {
                     if (reflected <= simplex.Solutions[lastVertex])
                     {
-                        simplex.Swap(reflected);
+                        simplex[lastVertex] = reflected;
                     }
 
                     Solution contracted = simplex.Contract(centroid);
 
                     if (contracted < simplex.Solutions[lastVertex])
                     {
-                        simplex.Swap(contracted);
+                        simplex[lastVertex] = contracted;
                     }
                     else
                     {
@@ -53,8 +53,7 @@ namespace AD.PartialEquilibriumApi
                     }
                     continue;
                 }
-
-                simplex.Swap(reflected);
+                simplex[lastVertex] = reflected;
             }
 
             return simplex.Solutions[0];

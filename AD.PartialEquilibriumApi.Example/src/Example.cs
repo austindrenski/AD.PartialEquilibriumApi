@@ -41,7 +41,7 @@ namespace AD.PartialEquilibriumApi.Example
                     lowerBound: 0,
                     upperBound: 10,
                     dimensions: model.DescendantsAndSelf().Count(),
-                    iterations: 300000,
+                    iterations: 25000,
                     seed: 0,
                     textWriter: Console.Out
                 );

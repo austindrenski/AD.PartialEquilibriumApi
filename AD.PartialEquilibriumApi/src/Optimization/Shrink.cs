@@ -17,7 +17,7 @@ namespace AD.PartialEquilibriumApi
             int dimensions = simplex.Dimensions;
 
             int vertices = dimensions + 1;
-            
+
             for (int i = 1; i < vertices; i++)
             {
                 for (int j = 0; j < dimensions; j++)

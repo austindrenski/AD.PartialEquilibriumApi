@@ -15,6 +15,7 @@ namespace AD.PartialEquilibriumApi
         /// <param name="centroid">The centroid calculated on the simplex.</param>
         /// <param name="simplex">The source <see cref="Simplex"/>.</param>
         /// <returns>The current worst solution moved in the direction of the centroid.</returns>
+        [Pure]
         public static Solution Contract(this Simplex simplex, Solution centroid)
         {
             int dimensions = simplex.Dimensions;
