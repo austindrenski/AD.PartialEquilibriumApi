@@ -22,6 +22,18 @@ namespace AD.PartialEquilibriumApi
             }
 
             simplex.Solutions[index].Value = simplex.ObjectiveFunction(simplex.Solutions[index].Vector);
+
+            for (int i = 0; i < simplex.Solutions.Length; i++)
+            {
+                if (i == index)
+                {
+                    simplex.Solutions[index].Age = 0;
+                }
+                else
+                {
+                    simplex.Solutions[i].Age++;
+                }
+            }
         }
     }
 }

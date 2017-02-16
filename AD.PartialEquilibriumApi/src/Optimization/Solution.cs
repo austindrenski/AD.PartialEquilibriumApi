@@ -14,6 +14,11 @@ namespace AD.PartialEquilibriumApi
         private const double Tolerance = 1e-15;
 
         /// <summary>
+        /// The number of iterations since this solution was changed.
+        /// </summary>
+        public int Age { get; set; }
+
+        /// <summary>
         /// Returns the argument vector. An indexer is provided for set operations.
         /// </summary>
         public double[] Vector { get; }
@@ -46,6 +51,7 @@ namespace AD.PartialEquilibriumApi
         /// <param name="vector">A vector of arguments to be passed to the function.</param>
         public Solution(double value, IReadOnlyList<double> vector)
         {
+            Age = 0;
             Vector = new double[vector.Count];
             for (int i = 0; i < vector.Count; i++)
             {

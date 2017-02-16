@@ -18,7 +18,7 @@ namespace AD.PartialEquilibriumApi
             {
                 for (int j = 0; j < simplex.Dimensions; j++)
                 {
-                    simplex.Solutions[i][j] = Simplex.Shrink * simplex[i][j] + simplex[0][j];
+                    simplex.Solutions[i][j] = Simplex.Shrink * (simplex[i][j] + simplex[0][j]);
                 }
                 simplex.Solutions[i].Value = simplex.ObjectiveFunction(simplex[i].Vector);
             }

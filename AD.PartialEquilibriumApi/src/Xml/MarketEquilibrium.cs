@@ -36,11 +36,11 @@ namespace AD.PartialEquilibriumApi
         {
             foreach (XElement market in model.DescendantsAndSelf().Reverse())
             {
-                if (market.HasElements)
-                {
-                    market.SetAttributeValue(XMarketEquilibrium, market.Elements().Sum(x => x.MarketEquilibrium()));
-                    continue;
-                }
+                //if (market.HasElements)
+                //{
+                //    market.SetAttributeValue(XMarketEquilibrium, market.Elements().Sum(x => x.MarketEquilibrium()));
+                //    continue;
+                //}
 
                 //if (market.Parent == null)
                 //{
