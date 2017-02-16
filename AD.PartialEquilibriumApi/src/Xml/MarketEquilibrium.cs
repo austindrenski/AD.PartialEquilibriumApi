@@ -48,10 +48,10 @@ namespace AD.PartialEquilibriumApi
                 //}
 
                 double consumerPriceIndexComponents =
-                market.Parent?
-                      .Elements()
-                      .Sum(x => x.MarketShare() * Math.Pow(x.ConsumerPrice(), 1 - x.ElasticityOfSubstitution()))
-                ?? market.MarketShare() * Math.Pow(market.ConsumerPrice(), 1 - market.ElasticityOfSubstitution());
+                    market.Parent?
+                        .Elements()
+                        .Sum(x => x.MarketShare() * Math.Pow(x.ConsumerPrice(), 1 - x.ElasticityOfSubstitution()))
+                    ?? market.MarketShare() * Math.Pow(market.ConsumerPrice(), 1 - market.ElasticityOfSubstitution());
 
                 double consumerPriceIndex =
                     Math.Pow(consumerPriceIndexComponents, 1 / (1 - market.ElasticityOfSubstitution()));

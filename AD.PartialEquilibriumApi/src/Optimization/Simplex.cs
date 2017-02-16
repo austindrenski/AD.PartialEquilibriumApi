@@ -120,8 +120,7 @@ namespace AD.PartialEquilibriumApi
             ObjectiveFunction = objectiveFunction;
             LowerBound = lowerBound;
             UpperBound = upperBound;
-            Solutions = new Solution[dimensions * 3];
-
+            Solutions = new Solution[dimensions + 1];
             for (int i = 0; i < Solutions.Length; i++)
             {
                 Solutions[i] = this.Random();
