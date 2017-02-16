@@ -34,25 +34,19 @@ namespace AD.PartialEquilibriumApi
         /// <returns>A reference to the existing <see cref="XElement"/>. This is returned for use with fluent syntax calls.</returns>
         public static XElement CalculateMarketEquilibrium([NotNull] this XElement model)
         {
-            foreach (XElement market in model.DescendantsAndSelf())
+            foreach (XElement market in model.DescendantsAndSelf().Reverse())
             {
-                //if (market.HasElements)
-                //{
-                //    market.SetAttributeValue(XMarketEquilibrium, market.Elements().Sum(x => x.MarketEquilibrium()));
-                //    continue;
-                //}
+                if (market.HasElements)
+                {
+                    market.SetAttributeValue(XMarketEquilibrium, market.Elements().Sum(x => x.MarketEquilibrium()));
+                    continue;
+                }
 
                 //if (market.Parent == null)
                 //{
                 //    throw new ArgumentNullException("An error has occured with the model's state.");
                 //}
 
-                //if (market.HasElements && market.Shock() == 0)
-                //{
-                //    market.SetAttributeValue(XMarketEquilibrium, market.Elements().Sum(x => x.MarketEquilibrium()));
-                //    continue;
-                //}
-                
                 double consumerPriceIndexComponents =
                 market.Parent?
                       .Elements()
