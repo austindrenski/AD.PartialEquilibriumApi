@@ -70,7 +70,7 @@ namespace AD.PartialEquilibriumApi
         /// <summary>
         /// Returns an <see cref="IEnumerable"/>  copy of the internal <see cref="Solution"/> collection.
         /// </summary>
-        public IEnumerable<Solution> ParticleCollection
+        public IEnumerable<Solution> SolutionCollection
         {
             get { return _solutions; }
         }
@@ -145,7 +145,7 @@ namespace AD.PartialEquilibriumApi
         /// <returns>An enumerator that can be used to iterate through the <see cref="Solution"/> collection.</returns>
         public IEnumerator<Solution> GetEnumerator()
         {
-            return ((IEnumerable<Solution>)_solutions).GetEnumerator();
+            return SolutionCollection.GetEnumerator();
         }
 
         /// <summary>

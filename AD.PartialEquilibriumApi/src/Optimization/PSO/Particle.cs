@@ -78,8 +78,13 @@ namespace AD.PartialEquilibriumApi.PSO
         /// </summary>
         /// <param name="value">The function value at the current vector.</param>
         /// <param name="vector">The current vector.</param>
-        public void Update(double value, double[] vector)
+        /// <param name="velocity">The velocity at the current vector.</param>
+        public void Update(double value, double[] vector, double[] velocity)
         {
+            for (int i = 0; i < vector.Length; i++)
+            {
+                Velocity[i] = velocity[i];
+            }
             Value = value;
             for (int i = 0; i < vector.Length; i++)
             {

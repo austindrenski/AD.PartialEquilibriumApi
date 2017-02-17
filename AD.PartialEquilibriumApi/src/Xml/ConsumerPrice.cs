@@ -55,7 +55,7 @@ namespace AD.PartialEquilibriumApi
                 double consumerPriceIndex =
                     Math.Pow(consumerPriceIndexComponents, 1 / (1 - market.ElasticityOfSubstitution()));
 
-                double consumerPrice = market.HasElements ? values[--index] * consumerPriceIndex : values[--index];
+                double consumerPrice = market.HasElements ? /*values[--index] **/ consumerPriceIndex : values[--index];
 
                 market.SetAttributeValue(XConsumerPrice, consumerPrice);
             }

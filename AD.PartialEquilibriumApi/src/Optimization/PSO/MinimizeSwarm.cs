@@ -18,7 +18,7 @@ namespace AD.PartialEquilibriumApi.PSO
         /// <summary>
         /// The weight applied to the previous velocity.
         /// </summary>
-        private const double Inertia = 1e-01;
+        private const double Inertia = 1e-10;
 
         /// <summary>
         /// The weight applied to the errror from the particle minimum.
@@ -66,51 +66,75 @@ namespace AD.PartialEquilibriumApi.PSO
                     double death = swarm.RandomGenerator.NextDouble();
 
                     // new velocity, v(t+1) = [w * v(t)] + [c1 * r1 * (l(t) - x(t))] + [c2 * r2 * (g(t) - x(t))]
+                    double[] velocity = new double[dimensions];
                     for (int j = 0; j < dimensions; j++)
                     {
                         double r1 = swarm.RandomGenerator.NextDouble();
                         double r2 = swarm.RandomGenerator.NextDouble();
-                        swarm[i].Velocity[j] =
-                            Inertia * swarm[i].Velocity[j]
+                        velocity[j] = Inertia * swarm[i].Velocity[j]
                             +
                             LocalWeight * r1 * (swarm[i].BestVector[j] - swarm[i][j])
                             +
                             GlobalWeight * r2 * (bestGlobalPosition[j] - swarm[i][j]);
+                        //swarm[i].Velocity[j] =
+                        //    Inertia * swarm[i].Velocity[j]
+                        //    +
+                        //    LocalWeight * r1 * (swarm[i].BestVector[j] - swarm[i][j])
+                        //    +
+                        //    GlobalWeight * r2 * (bestGlobalPosition[j] - swarm[i][j]);
                     }
-
+                    
                     // new position, x(t+1) = x(t) + v(t+1)
+                    double[] newPosition = new double[dimensions];
                     for (int j = 0; j < dimensions; j++)
                     {
-                        swarm[i].Vector[j] += swarm[i].Velocity[j];
-                        if (swarm[i][j] < lowerBound)
+                        newPosition[j] += velocity[j];
+                        //swarm[i].Vector[j] += swarm[i].Velocity[j];
+                        //if (newPosition[j] < lowerBound)
+                        //{
+                        //    newPosition[j] = lowerBound;
+                        //    //swarm[i].Vector[j] = lowerBound;
+                        //    death = 0;
+                        //}
+                        //if (newPosition[j] > upperBound)
+                        //{
+                        //    newPosition[j] = upperBound;
+                        //    //swarm[i].Vector[j] = upperBound;
+                        //    death = 0;
+                        //}
+                        if (newPosition[j] < lowerBound)
                         {
-                            swarm[i].Vector[j] = lowerBound;
+                            newPosition[j] = swarm.LowerBound + 1e-01 * (swarm.UpperBound - swarm.LowerBound);
                             death = 0;
                         }
-                        if (swarm[i][j] > upperBound)
+                        if (newPosition[j] > upperBound)
                         {
-                            swarm[i].Vector[j] = upperBound;
+                            newPosition[j] = swarm.UpperBound - 1e-01 * (swarm.UpperBound - swarm.LowerBound);
                             death = 0;
                         }
                     }
-
+                    
                     // update new cost, F(x(t+1))
-                    swarm[i].Update(swarm.ObjectiveFunction(swarm[i].Vector), swarm[i].Vector);
+                    swarm[i].Update(swarm.ObjectiveFunction(newPosition), newPosition, velocity);
                     if (bestGlobalCost - swarm[i].BestValue > Tolerance)
                     {
                         bestGlobalPosition = swarm[i].BestVector;
                         bestGlobalCost = swarm[i].BestValue;
                     }
-                    if (death > 0.05)
+                    if (death > 5e-02)
                     {
                         continue;
                     }
+                    double[] randomPosition = new double[dimensions];
+                    double[] randomVelocity = new double[dimensions];
                     for (int j = 0; j < dimensions; j++)
                     {
-                        swarm[i].Vector[j] = (upperBound - lowerBound) * swarm.RandomGenerator.NextDouble() + lowerBound;
-                        swarm[i].Velocity[j] *= 0.05;
+                        randomPosition[j] = (upperBound - lowerBound) * swarm.RandomGenerator.NextDouble() + lowerBound;
+                        //swarm[i].Vector[j] = (upperBound - lowerBound) * swarm.RandomGenerator.NextDouble() + lowerBound;
+                        //swarm[i].Velocity[j] *= 0.05;
+                        randomVelocity[j] = 5e-02 * swarm[i].Velocity[j];
                     }
-                    swarm[i].Update(swarm.ObjectiveFunction(swarm[i].Vector), swarm[i].Vector);
+                    swarm[i].Update(swarm.ObjectiveFunction(randomPosition), randomPosition, randomVelocity);
                 }
 
                 //

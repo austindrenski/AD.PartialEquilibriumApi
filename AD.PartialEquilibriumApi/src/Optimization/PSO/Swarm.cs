@@ -145,7 +145,7 @@ namespace AD.PartialEquilibriumApi.PSO
         /// <returns>An enumerator that can be used to iterate through the <see cref="Particle"/> collection.</returns>
         public IEnumerator<Particle> GetEnumerator()
         {
-            return ((IEnumerable<Particle>)_particles).GetEnumerator();
+            return ParticleCollection.GetEnumerator();
         }
 
         /// <summary>
