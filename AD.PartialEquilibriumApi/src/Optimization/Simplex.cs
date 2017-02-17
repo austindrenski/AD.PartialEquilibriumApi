@@ -13,12 +13,6 @@ namespace AD.PartialEquilibriumApi
     public class Simplex : IEnumerable<Solution>
     {
         /// <summary>
-        /// The numerical precision used for floating poing comparisons. Initially set equal to 1e-15.
-        /// Increasing the numerical precision may help when the search space is complex, or corner solutions may exist.
-        /// </summary>
-        public double Precision { get; set; } = 1e-15;
-
-        /// <summary>
         /// The dimensions of the simplex. Equal to the length of the argument vectors.
         /// </summary>
         public int Dimensions { get; }

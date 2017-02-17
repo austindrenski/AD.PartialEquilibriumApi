@@ -27,14 +27,14 @@ namespace AD.PartialEquilibriumApi
                 {
                     result[i] = 
                         vector[i] < simplex.LowerBound 
-                        ? simplex.LowerBound + simplex.Precision + 1e-01 * (simplex.UpperBound - simplex.LowerBound) 
+                        ? simplex.LowerBound + 1e-01 * (simplex.UpperBound - simplex.LowerBound) 
                         : vector[i];
                 }
                 else
                 {
                     result[i] = 
                         vector[i] > simplex.UpperBound 
-                        ? simplex.UpperBound - simplex.Precision - 1e-01 * (simplex.UpperBound - simplex.LowerBound) 
+                        ? simplex.UpperBound - 1e-01 * (simplex.UpperBound - simplex.LowerBound) 
                         : vector[i];
                 }
             }
