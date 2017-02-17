@@ -25,7 +25,7 @@ namespace AD.PartialEquilibriumApi
         /// <summary>
         /// The number of solutions in the <see cref="Simplex"/>.
         /// </summary>
-        public int SolutionCount { get; }
+        public int Solutions { get; }
 
         /// <summary>
         /// The lower bound of the search space.
@@ -100,7 +100,7 @@ namespace AD.PartialEquilibriumApi
             LowerBound = lowerBound;
             UpperBound = upperBound;
             _solutions = new Solution[dimensions + 1];
-            SolutionCount = _solutions.Length;
+            Solutions = _solutions.Length;
             for (int i = 0; i < _solutions.Length; i++)
             {
                 _solutions[i] = this.Random();

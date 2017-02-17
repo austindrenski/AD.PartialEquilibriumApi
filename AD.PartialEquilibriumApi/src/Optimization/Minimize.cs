@@ -16,7 +16,7 @@ namespace AD.PartialEquilibriumApi
         public static Solution Minimize(this Simplex simplex)
         {
             int iterations = simplex.Iterations;
-            int numberOfSolutions = simplex.SolutionCount;
+            int numberOfSolutions = simplex.Solutions;
             int lastVertex = numberOfSolutions - 1;
 
             for (int i = 0; i < iterations; i++)
