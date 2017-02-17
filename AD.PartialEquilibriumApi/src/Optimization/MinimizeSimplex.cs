@@ -7,7 +7,7 @@ namespace AD.PartialEquilibriumApi
     /// Extension methods for minimization using a <see cref="Simplex"/> object.
     /// </summary>
     [PublicAPI]
-    public static class MinimizeExtensions
+    public static class MinimizeSimplexExtensions
     {
         /// <summary>
         /// Solves for the minimum value solution.
@@ -21,7 +21,7 @@ namespace AD.PartialEquilibriumApi
 
             for (int i = 0; i < iterations; i++)
             {
-                //simplex.TextWriter.WriteLineAsync($"> i = {$"{i}".PadLeft(simplex.Iterations.ToString().Length)}: {simplex[0]}");
+                simplex.TextWriter.WriteLineAsync($"> i = {$"{i}".PadLeft(simplex.Iterations.ToString().Length)}: {simplex[0]}");
 
                 simplex.Sort();
                 Solution centroid = simplex.Centroid();

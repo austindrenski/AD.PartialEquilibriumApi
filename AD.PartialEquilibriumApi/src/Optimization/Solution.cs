@@ -14,11 +14,6 @@ namespace AD.PartialEquilibriumApi
         private const double Tolerance = 1e-15;
 
         /// <summary>
-        /// The number of iterations since this solution was changed.
-        /// </summary>
-        public int Age { get; set; }
-
-        /// <summary>
         /// The function result.
         /// </summary>
         public double Value { get; }
@@ -44,7 +39,6 @@ namespace AD.PartialEquilibriumApi
         /// <param name="vector">A vector of arguments to be passed to the function.</param>
         public Solution(double value, IReadOnlyList<double> vector)
         {
-            Age = 0;
             Vector = new double[vector.Count];
             for (int i = 0; i < vector.Count; i++)
             {
@@ -62,16 +56,23 @@ namespace AD.PartialEquilibriumApi
         }
 
         /// <summary>
-        /// Compares <see cref="Solution"/> objects based on the values.
+        /// True if both <see cref="Solution"/> objects have the same value.
         /// </summary>
-        /// <param name="other">The solution to which the comparison is made.</param>
-        public int CompareTo(Solution other)
+        public static bool operator ==(Solution left, Solution right)
         {
-            return Value.CompareTo(other.Value);
+            return Math.Abs(left.Value - right.Value) < Tolerance;
         }
 
         /// <summary>
-        /// True if the value of the left solution is less than the value of the right solution.
+        /// True if both <see cref="Solution"/> objects do not have the same value.
+        /// </summary>
+        public static bool operator !=(Solution left, Solution right)
+        {
+            return Math.Abs(left.Value - right.Value) > Tolerance;
+        }
+
+        /// <summary>
+        /// True if the left value is less than the right value.
         /// </summary>
         public static bool operator <(Solution left, Solution right)
         {
@@ -79,7 +80,7 @@ namespace AD.PartialEquilibriumApi
         }
 
         /// <summary>
-        /// True if the value of the left solution is greater than the value of the right solution.
+        /// True if the left value is greater than the right value.
         /// </summary>
         public static bool operator >(Solution left, Solution right)
         {
@@ -87,7 +88,7 @@ namespace AD.PartialEquilibriumApi
         }
 
         /// <summary>
-        /// True if the value of the left solution is less than or equal to the value of the right solution.
+        /// True if the left value is less than or equal to the right value.
         /// </summary>
         public static bool operator <=(Solution left, Solution right)
         {
@@ -95,7 +96,7 @@ namespace AD.PartialEquilibriumApi
         }
 
         /// <summary>
-        /// True if the value of the left solution is greater than or equal to the value of the right solution.
+        /// True if the left value is greater than or equal to the right value.
         /// </summary>
         public static bool operator >=(Solution left, Solution right)
         {
@@ -103,7 +104,23 @@ namespace AD.PartialEquilibriumApi
         }
 
         /// <summary>
-        /// True if two solutions have the same Vector and Value.
+        /// Compares <see cref="Solution"/> objects based on the values.
+        /// </summary>
+        public int CompareTo(Solution other)
+        {
+            return Value.CompareTo(other.Value);
+        }
+
+        /// <summary>
+        /// Compares <see cref="Solution"/> objects based on the values.
+        /// </summary>
+        int IComparable<Solution>.CompareTo(Solution other)
+        {
+            return CompareTo(other);
+        }
+
+        /// <summary>
+        /// True if two <see cref="Solution"/> objects have the same Vector and Value.
         /// </summary>
         public bool Equals(Solution other)
         {
@@ -114,7 +131,7 @@ namespace AD.PartialEquilibriumApi
             bool vectorsEqual = true;
             for (int i = 0; i < Vector.Length; i++)
             {
-                if (Math.Abs(Vector[i] - other.Vector[i]) > double.Epsilon)
+                if (Math.Abs(Vector[i] - other.Vector[i]) > Tolerance)
                 {
                     vectorsEqual = false;
                 }
@@ -123,15 +140,19 @@ namespace AD.PartialEquilibriumApi
         }
 
         /// <summary>
-        /// True if two solutions have the same Vector and Value.
+        /// True if two <see cref="Solution"/> objects have the same Vector and Value.
         /// </summary>
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
-            {
-                return false;
-            }
             return obj is Solution && Equals((Solution) obj);
+        }
+
+        /// <summary>
+        /// True if two <see cref="Solution"/> objects have the same Vector and Value.
+        /// </summary>
+        bool IEquatable<Solution>.Equals(Solution other)
+        {
+            return Equals(other);
         }
 
         /// <summary>

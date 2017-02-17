@@ -4,6 +4,7 @@ using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 using AD.IO;
+using AD.PartialEquilibriumApi.PSO;
 
 namespace AD.PartialEquilibriumApi.Example
 {
@@ -34,45 +35,57 @@ namespace AD.PartialEquilibriumApi.Example
                     return ObjectiveFunctionFactory.SumOfSquares(localModel);
                 };
 
-            // Set up the simplex solver.
-            Simplex simplex =
-                new Simplex(
+            //// Set up the simplex solver.
+            //Simplex simplex =
+            //    new Simplex(
+            //        objectiveFunction: x => objectiveFunction(x),
+            //        lowerBound: 0,
+            //        upperBound: 10,
+            //        dimensions: model.DescendantsAndSelf().Count(),
+            //        iterations: 25000,
+            //        seed: 0,
+            //        textWriter: Console.Out
+            //    );
+
+            //// Find the minimum solution.
+            //Solution solution = simplex.Minimize();
+
+            //// Apply the final solution
+            //model.SetConsumerPrices(solution.Vector)
+            //     .ShockProducerPrices()
+            //     .CalculateMarketShares()
+            //     .CalculateMarketEquilibrium();
+
+            //// Print the results
+            //PrintResults(model, solution);
+            
+            // Set up the swarm solver.
+            Swarm swarm =
+                new Swarm(
                     objectiveFunction: x => objectiveFunction(x),
                     lowerBound: 0,
                     upperBound: 10,
                     dimensions: model.DescendantsAndSelf().Count(),
                     iterations: 25000,
+                    particles: model.DescendantsAndSelf().Count() + 1,
                     seed: 0,
                     textWriter: Console.Out
                 );
 
             // Find the minimum solution.
-            Solution solution = simplex.Minimize();
-
-            // Find the minimum solution in parallel.
-            //Solution solution = simplex.Minimize(10);
-
+            Particle particle = swarm.Minimize();
 
             // Apply the final solution
-            model.SetConsumerPrices(solution.Vector)
+            model.SetConsumerPrices(particle.Vector)
                  .ShockProducerPrices()
                  .CalculateMarketShares()
                  .CalculateMarketEquilibrium();
 
-            //// Repeat calculations for "adjustment periods"
-            //for (int i = 0; i < 10; i++)
-            //{
-            //    model.SetConsumerPrices()
-            //         .ShockProducerPrices()
-            //         .CalculateMarketShares()
-            //         .CalculateMarketEquilibrium();
-            //}
-
             // Print the results
-            PrintResults(model, solution);
+            PrintResults(model, particle);
         }
 
-        private static void PrintResults(XNode model, Solution solution)
+        private static void PrintResults(XNode model, object solution)
         {
             Console.WriteLine("-----------------------------------------------------------------------------------------");
             XmlWriterSettings settings = new XmlWriterSettings
@@ -88,7 +101,7 @@ namespace AD.PartialEquilibriumApi.Example
             }
             Console.WriteLine();
             Console.WriteLine();
-            Console.WriteLine($"Final solution (standard): {solution}.");
+            Console.WriteLine($"Final solution: {solution}.");
             Console.WriteLine();
             Console.WriteLine("-----------------------------------------------------------------------------------------");
             Console.ReadLine();

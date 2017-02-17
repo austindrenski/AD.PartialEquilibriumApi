@@ -13,6 +13,21 @@ namespace AD.PartialEquilibriumApi
     public class Simplex : IEnumerable<Solution>
     {
         /// <summary>
+        /// The solutions that currently define the <see cref="Simplex"/>.
+        /// </summary>
+        private readonly Solution[] _solutions;
+
+        /// <summary>
+        /// Indexed access to the vector of <see cref="Solution"/> objects.
+        /// </summary>
+        /// <param name="index">The solution index.</param>
+        public Solution this[int index]
+        {
+            get { return _solutions[index]; }
+            set { _solutions[index] = value; }
+        }
+
+        /// <summary>
         /// The dimensions of the simplex. Equal to the length of the argument vectors.
         /// </summary>
         public int Dimensions { get; }
@@ -38,26 +53,6 @@ namespace AD.PartialEquilibriumApi
         public double UpperBound { get; }
 
         /// <summary>
-        /// The solutions that currently define the <see cref="Simplex"/>.
-        /// </summary>
-        private readonly Solution[] _solutions;
-
-        /// <summary>
-        /// Indexed access to the vector of <see cref="Solution"/> objects.
-        /// </summary>
-        /// <param name="index">The solution index.</param>
-        public Solution this[int index]
-        {
-            get { return _solutions[index]; }
-            set { _solutions[index] = value; }
-        }
-
-        /// <summary>
-        /// The objective function.
-        /// </summary>
-        public Func<double[], double> ObjectiveFunction { get; }
-
-        /// <summary>
         /// Random number generator.
         /// </summary>
         public Random RandomGenerator { get; }
@@ -65,10 +60,23 @@ namespace AD.PartialEquilibriumApi
         /// <summary>
         /// Set this property to the standard output for progress reporting.
         /// </summary>
-        public TextWriter TextWriter { get; set; }
+        public TextWriter TextWriter { get; }
 
         /// <summary>
-        /// Creates a simplex with the given parameters.
+        /// The objective function.
+        /// </summary>
+        public Func<double[], double> ObjectiveFunction { get; }
+
+        /// <summary>
+        /// Returns an <see cref="IEnumerable"/>  copy of the internal <see cref="Solution"/> collection.
+        /// </summary>
+        public IEnumerable<Solution> ParticleCollection
+        {
+            get { return _solutions; }
+        }
+
+        /// <summary>
+        /// Creates a <see cref="Simplex"/> with the given parameters.
         /// </summary>
         /// <param name="objectiveFunction">The function to minimize.</param>
         /// <param name="lowerBound">The lower bound of the search space. Must be less than or equal to the upper bound.</param>
@@ -109,7 +117,7 @@ namespace AD.PartialEquilibriumApi
         }
 
         /// <summary>
-        /// Creates a simplex with the given parameters.
+        /// Creates a <see cref="Simplex"/> with the given parameters.
         /// </summary>
         /// <param name="objectiveFunction">The function to minimize.</param>
         /// <param name="lowerBound">The lower bound of the search space. Must be less than or equal to the upper bound.</param>
@@ -132,17 +140,21 @@ namespace AD.PartialEquilibriumApi
         }
 
         /// <summary>
-        /// Returns an enumerator that iterates through the collection.
+        /// Returns an enumerator that iterates through the <see cref="Solution"/> collection.
         /// </summary>
-        /// <returns>An enumerator that can be used to iterate through the collection.</returns>
+        /// <returns>An enumerator that can be used to iterate through the <see cref="Solution"/> collection.</returns>
         public IEnumerator<Solution> GetEnumerator()
         {
             return ((IEnumerable<Solution>)_solutions).GetEnumerator();
         }
 
+        /// <summary>
+        /// Returns an enumerator that iterates through the <see cref="Solution"/> collection.
+        /// </summary>
+        /// <returns>An enumerator that can be used to iterate through the <see cref="Solution"/> collection.</returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return _solutions.GetEnumerator();
+            return GetEnumerator();
         }
     }
 }

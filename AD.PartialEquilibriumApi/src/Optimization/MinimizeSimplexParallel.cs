@@ -10,7 +10,7 @@ namespace AD.PartialEquilibriumApi
     /// Extension methods to run <see cref="Simplex"/> operations in parallel.
     /// </summary>
     [PublicAPI]
-    public static class MinimizeParallelExtensions
+    public static class MinimizeSimplexParallelExtensions
     {
         /// <summary>
         /// Solves for the minimum value solution in parallel loops.
