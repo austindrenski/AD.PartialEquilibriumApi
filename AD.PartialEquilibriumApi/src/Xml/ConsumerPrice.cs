@@ -62,27 +62,5 @@ namespace AD.PartialEquilibriumApi
 
             return model;
         }
-
-        /// <summary>
-        /// Sets the price if the market is marked exogenous.
-        /// </summary>
-        /// <param name="model">The model to search.</param>
-        /// <param name="values">The prices to be set.</param>
-        public static XElement SetExogenousPrices(this XElement model, params double[] values)
-        {
-            if (values == null)
-            {
-                return model;
-            }
-
-            int index = 0;
-
-            foreach (XElement market in model.DescendantsAndSelf().Where(x => x.IsExogenous()))
-            {
-                market.SetAttributeValue(XConsumerPrice, values[index++]);
-            }
-
-            return model;
-        }
     }
 }
