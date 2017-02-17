@@ -1,7 +1,7 @@
 ﻿using System;
 using JetBrains.Annotations;
 
-namespace AD.PartialEquilibriumApi.Optimization
+namespace AD.PartialEquilibriumApi.PSO
 {
     /// <summary>
     /// 

@@ -1,10 +1,17 @@
-﻿namespace AD.PartialEquilibriumApi.Optimization
+﻿using System;
+using System.Collections.Generic;
+using JetBrains.Annotations;
+
+namespace AD.PartialEquilibriumApi.PSO
 {
     /// <summary>
     /// This class initializes a single Particle object.
     /// </summary>
-    public struct Particle
+    [PublicAPI]
+    public struct Particle : IEquatable<Particle>, IComparable<Particle>
     {
+        private const double Tolerance = 1e-15;
+
         /// <summary>
         /// The Particle's value at the current position.
         /// </summary>
@@ -36,13 +43,34 @@
         /// <param name="position">The current position.</param>
         /// <param name="cost">The value of the current position.</param>
         /// <param name="velocity">The current adjustment vector.</param>
-        internal Particle(double cost, double[] position, double[] velocity)
+        internal Particle(double cost, IReadOnlyList<double> position, IReadOnlyList<double> velocity)
         {
-            BestCost = cost;
-            BestPosition = position;
+            if (position.Count != velocity.Count)
+            {
+                throw new ArgumentOutOfRangeException("Position and velocity vectors must be equal length.");
+            }
+            int length = position.Count;
             Cost = cost;
-            Position = position;
-            Velocity = velocity;
+            BestCost = cost;
+            Position = new double[length];
+            BestPosition = new double[length];
+            Velocity = new double[length];
+            for (int i = 0; i < length; i++)
+            {
+                Position[i] = position[i];
+                BestPosition[i] = position[i];
+                Velocity[i] = velocity[i];
+            }
+        }
+
+        public bool Equals(Particle other)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int CompareTo(Particle other)
+        {
+            throw new NotImplementedException();
         }
     }
 }

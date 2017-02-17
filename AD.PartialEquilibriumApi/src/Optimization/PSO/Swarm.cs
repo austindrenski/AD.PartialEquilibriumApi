@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 
-namespace AD.PartialEquilibriumApi.Optimization
+namespace AD.PartialEquilibriumApi.PSO
 {
     /// <summary>
     /// This class holds a collection of <see cref="Particle"/> objects.
     /// </summary>
+    [PublicAPI]
     public class Swarm
     {
         /// <summary>
@@ -60,6 +62,22 @@ namespace AD.PartialEquilibriumApi.Optimization
         public Particle[] Particles { get; internal set; }
 
         /// <summary>
+        /// Indexed access to the vector of <see cref="Particle"/> objects.
+        /// </summary>
+        /// <param name="index">The particle index.</param>
+        public Particle this[int index]
+        {
+            get
+            {
+                return Particles[index];
+            }
+            set
+            {
+                Particles[index] = value;
+            }
+        }
+
+        /// <summary>
         /// The number of particles in the swarm.
         /// </summary>
         public int NumberOfParticles
@@ -73,7 +91,7 @@ namespace AD.PartialEquilibriumApi.Optimization
         /// <summary>
         /// The count of iterations to perform without improvement prior to exiting.
         /// </summary>
-        public int MaximumIterations { get; set; }
+        public int MaximumIterations { get; }
 
         /// <summary>
         /// The objective function to minimize.
@@ -83,17 +101,20 @@ namespace AD.PartialEquilibriumApi.Optimization
         /// <summary>
         /// Generates random numbers.
         /// </summary>
-        private Random _randomNumberGenerator;
+        public Random RandomGenerator { get; }
 
         /// <summary>
         /// Initializes a swarm with the specified number of particles.
         /// </summary>
+        /// <param name="seed"></param>
         /// <param name="count">The number of particles to create.</param>
         /// <param name="variableCount">The length of the variable vector in objectiveFunction</param>
+        /// <param name="upperBound"></param>
         /// <param name="objectiveFunction"></param>
+        /// <param name="lowerBound"></param>
         public Swarm(int seed, int count, int variableCount, double lowerBound, double upperBound, Func<double[], double> objectiveFunction)
         {
-            _randomNumberGenerator = new Random(seed);
+            RandomGenerator = new Random(seed);
             Particles = new Particle[count];
             ObjectiveFunction = objectiveFunction;
             for (int i = 0; i < count; i++)
@@ -102,7 +123,7 @@ namespace AD.PartialEquilibriumApi.Optimization
                 double[] randomVelocity = new double[variableCount];
                 for (int j = 0; j < variableCount; j++)
                 {
-                    randomPosition[j] = (upperBound - lowerBound) * _randomNumberGenerator.NextDouble() + lowerBound;
+                    randomPosition[j] = (upperBound - lowerBound) * RandomGenerator.NextDouble() + lowerBound;
                     randomVelocity[j] = 1e-5 * randomPosition[j];
                 }
                 double cost = ObjectiveFunction(randomPosition);
@@ -115,7 +136,7 @@ namespace AD.PartialEquilibriumApi.Optimization
         /// </summary>
         public void Optimize(int objectiveVariableCount, double lowerBound, double upperBound)
         {
-            Particles = OptimizationFactory.ParticleSwarmOptimization(_randomNumberGenerator, this, ObjectiveFunction, objectiveVariableCount, NumberOfParticles, MaximumIterations, lowerBound, upperBound);
+            Particles = OptimizationFactory.ParticleSwarmOptimization(RandomGenerator, this, ObjectiveFunction, objectiveVariableCount, NumberOfParticles, MaximumIterations, lowerBound, upperBound);
         }
     }
 }

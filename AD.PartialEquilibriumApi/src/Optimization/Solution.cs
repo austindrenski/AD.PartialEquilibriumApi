@@ -19,6 +19,11 @@ namespace AD.PartialEquilibriumApi
         public int Age { get; set; }
 
         /// <summary>
+        /// The function result.
+        /// </summary>
+        public double Value { get; }
+
+        /// <summary>
         /// Returns the argument vector. An indexer is provided for set operations.
         /// </summary>
         public double[] Vector { get; }
@@ -29,20 +34,8 @@ namespace AD.PartialEquilibriumApi
         /// <param name="index">The vector element index.</param>
         public double this[int index]
         {
-            get
-            {
-                return Vector[index];
-            }
-            set
-            {
-                Vector[index] = value;
-            }
+            get { return Vector[index]; }
         }
-
-        /// <summary>
-        /// The function result.
-        /// </summary>
-        public double Value { get; set; }
 
         /// <summary>
         /// Creates a solution given an argument vector and value.
@@ -138,7 +131,7 @@ namespace AD.PartialEquilibriumApi
             {
                 return false;
             }
-            return obj is Solution && Equals((Solution)obj);
+            return obj is Solution && Equals((Solution) obj);
         }
 
         /// <summary>

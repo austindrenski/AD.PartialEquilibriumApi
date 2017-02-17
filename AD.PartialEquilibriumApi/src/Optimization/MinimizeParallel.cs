@@ -42,7 +42,7 @@ namespace AD.PartialEquilibriumApi
                 simplex.TextWriter.WriteLine($"Parallel result: {localSimplex[0]}");
             }
 
-            return concurrentBag.Min(x => x.Solutions[0]);
+            return concurrentBag.Min(x => x[0]);
         }
     }
 }

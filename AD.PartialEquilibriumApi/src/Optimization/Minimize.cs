@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using JetBrains.Annotations;
 
 namespace AD.PartialEquilibriumApi
@@ -17,14 +16,14 @@ namespace AD.PartialEquilibriumApi
         public static Solution Minimize(this Simplex simplex)
         {
             int iterations = simplex.Iterations;
-            int numberOfSolutions = simplex.Solutions.Length;
+            int numberOfSolutions = simplex.SolutionCount;
             int lastVertex = numberOfSolutions - 1;
 
             for (int i = 0; i < iterations; i++)
             {
-                simplex.TextWriter.WriteLineAsync($"> i = {$"{i}".PadLeft(simplex.Iterations.ToString().Length)}: {simplex.Solutions[0]}");
+                //simplex.TextWriter.WriteLineAsync($"> i = {$"{i}".PadLeft(simplex.Iterations.ToString().Length)}: {simplex[0]}");
 
-                Array.Sort(simplex.Solutions);
+                simplex.Sort();
                 Solution centroid = simplex.Centroid();
                 Solution reflected = simplex.Reflect(centroid);
 
@@ -35,7 +34,7 @@ namespace AD.PartialEquilibriumApi
                     continue;
                 }
 
-                if (simplex.Solutions.Count(x => reflected < x) != 1)
+                if (simplex.Count(x => reflected < x) != 1)
                 {
                     simplex[lastVertex] = reflected;
                     continue;

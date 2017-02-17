@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using JetBrains.Annotations;
 
@@ -8,8 +10,8 @@ namespace AD.PartialEquilibriumApi
     /// This class implements a Nelder-Mead style simplex algorithm to minimize an objective function.
     /// </summary>
     [PublicAPI]
-    public class Simplex
-    {      
+    public class Simplex : IEnumerable<Solution>
+    {
         /// <summary>
         /// The numerical precision used for floating poing comparisons. Initially set equal to 1e-15.
         /// Increasing the numerical precision may help when the search space is complex, or corner solutions may exist.
@@ -27,6 +29,11 @@ namespace AD.PartialEquilibriumApi
         public int Iterations { get; }
 
         /// <summary>
+        /// The number of solutions in the <see cref="Simplex"/>.
+        /// </summary>
+        public int SolutionCount { get; }
+
+        /// <summary>
         /// The lower bound of the search space.
         /// </summary>
         public double LowerBound { get; }
@@ -39,7 +46,7 @@ namespace AD.PartialEquilibriumApi
         /// <summary>
         /// The solutions that currently define the <see cref="Simplex"/>.
         /// </summary>
-        public Solution[] Solutions { get; }
+        private readonly Solution[] _solutions;
 
         /// <summary>
         /// Indexed access to the vector of <see cref="Solution"/> objects.
@@ -47,14 +54,8 @@ namespace AD.PartialEquilibriumApi
         /// <param name="index">The solution index.</param>
         public Solution this[int index]
         {
-            get
-            {
-                return Solutions[index];
-            }
-            set
-            {
-                Solutions[index] = value;
-            }
+            get { return _solutions[index]; }
+            set { _solutions[index] = value; }
         }
 
         /// <summary>
@@ -98,19 +99,19 @@ namespace AD.PartialEquilibriumApi
                 throw new ArgumentOutOfRangeException("The iteration count must be greater than zero.");
             }
             TextWriter = textWriter ?? new StringWriter();
-            RandomGenerator = seed == null ? new Random() : new Random((int)seed);
+            RandomGenerator = seed == null ? new Random() : new Random((int) seed);
             Dimensions = dimensions;
             Iterations = iterations;
             ObjectiveFunction = objectiveFunction;
             LowerBound = lowerBound;
             UpperBound = upperBound;
-            Solutions = new Solution[dimensions + 1];
-            for (int i = 0; i < Solutions.Length; i++)
+            _solutions = new Solution[dimensions + 1];
+            SolutionCount = _solutions.Length;
+            for (int i = 0; i < _solutions.Length; i++)
             {
-                Solutions[i] = this.Random();
+                _solutions[i] = this.Random();
             }
-
-            Array.Sort(Solutions);
+            Array.Sort(_solutions);
         }
 
         /// <summary>
@@ -126,6 +127,28 @@ namespace AD.PartialEquilibriumApi
         public Simplex(Func<double[], double> objectiveFunction, double lowerBound, double upperBound, int dimensions, int? seed = null, TextWriter textWriter = null)
             : this(objectiveFunction, lowerBound, upperBound, dimensions, dimensions * 1000, seed, textWriter)
         {
+        }
+
+        /// <summary>
+        /// Sorts the <see cref="Solution"/> objects in the <see cref="Simplex"/> using the <see cref="IComparable{T}"/> generic interface implementation.
+        /// </summary>
+        public void Sort()
+        {
+            Array.Sort(_solutions);
+        }
+
+        /// <summary>
+        /// Returns an enumerator that iterates through the collection.
+        /// </summary>
+        /// <returns>An enumerator that can be used to iterate through the collection.</returns>
+        public IEnumerator<Solution> GetEnumerator()
+        {
+            return ((IEnumerable<Solution>)_solutions).GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return _solutions.GetEnumerator();
         }
     }
 }
