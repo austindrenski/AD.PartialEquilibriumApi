@@ -33,7 +33,7 @@ namespace AD.PartialEquilibriumApi
         }
 
         /// <summary>
-        /// Creates a solution given an argument vector and value.
+        /// Creates a <see cref="Solution"/> given an argument vector and value.
         /// </summary>
         /// <param name="value">The value of this solution.</param>
         /// <param name="vector">A vector of arguments to be passed to the function.</param>
@@ -45,6 +45,20 @@ namespace AD.PartialEquilibriumApi
                 Vector[i] = vector[i];
             }
             Value = value;
+        }
+
+        /// <summary>
+        /// Creates a <see cref="Solution"/> given an existing <see cref="Solution"/>.
+        /// </summary>
+        /// <param name="other">An existing <see cref="Solution"/> to be copied.</param>
+        public Solution(Solution other)
+        {
+            Vector = new double[other.Vector.Length];
+            for (int i = 0; i < other.Vector.Length; i++)
+            {
+                Vector[i] = other[i];
+            }
+            Value = other.Value;
         }
 
         /// <summary>

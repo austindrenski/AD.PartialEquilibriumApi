@@ -59,6 +59,11 @@
   <ItemGroup>
     <Compile Include="src\Optimization\MinimizeSimplex.cs" />
     <Compile Include="src\Optimization\MinimizeSimplexParallel.cs" />
+    <Compile Include="src\Optimization\PSO\Position.cs" />
+    <Compile Include="src\Optimization\PSO\RandomSolution.cs" />
+    <Compile Include="src\Optimization\PSO\RandomVelocity.cs" />
+    <Compile Include="src\Optimization\PSO\Survival.cs" />
+    <Compile Include="src\Optimization\PSO\Velocity.cs" />
     <Compile Include="src\Optimization\Random.cs" />
     <Compile Include="src\Visualization\OrganizationalChart.cs" />
     <Compile Include="src\Xml\ConsumerPrice.cs" />

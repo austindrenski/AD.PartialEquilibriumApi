@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using JetBrains.Annotations;
 
 namespace AD.PartialEquilibriumApi.PSO
@@ -9,43 +8,29 @@ namespace AD.PartialEquilibriumApi.PSO
     /// This class initializes a single Particle object.
     /// </summary>
     [PublicAPI]
-    public struct Particle : IEquatable<Particle>, IComparable<Particle>
+    public struct Particle
     {
         private const double Tolerance = 1e-15;
 
         /// <summary>
-        /// The Particle's value at the current vector.
+        /// The current solution of this <see cref="Particle"/>.
         /// </summary>
-        public double Value { get; private set; }
+        public Solution Current { get; private set; }
 
         /// <summary>
-        /// The Particle's current vector
+        /// The best solution found by this <see cref="Particle"/>.
         /// </summary>
-        public double[] Vector { get; }
+        public Solution Best { get; private set; }
 
         /// <summary>
-        /// The Particle's value at the current best vector.
-        /// </summary>
-        public double BestValue { get; private set; }
-        
-        /// <summary>
-        /// The Particle's best vector at present.
-        /// </summary>
-        public double[] BestVector { get; }
-
-        /// <summary>
-        /// The Particle's current adjustment vector.
+        /// The current adjustment vector.
         /// </summary>
         public double[] Velocity { get; }
 
         /// <summary>
-        /// Indexed access to the current vector.
+        /// The likelihood that the particle will survive the current iteration.
         /// </summary>
-        /// <param name="index">The vector element index.</param>
-        public double this[int index]
-        {
-            get { return Vector[index]; }
-        }
+        public double Survival { get; set; }
 
         /// <summary>
         /// A <see cref="Particle"/> object for use in Particle Swarm Optimization.
@@ -53,52 +38,75 @@ namespace AD.PartialEquilibriumApi.PSO
         /// <param name="vector">The current vector.</param>
         /// <param name="value">The value of the current vector.</param>
         /// <param name="velocity">The current adjustment vector.</param>
-        internal Particle(double value, IReadOnlyList<double> vector, IReadOnlyList<double> velocity)
+        public Particle(double value, IReadOnlyList<double> vector, IReadOnlyList<double> velocity)
         {
             if (vector.Count != velocity.Count)
             {
                 throw new ArgumentOutOfRangeException("Position and velocity vectors must be equal length.");
             }
-            int length = vector.Count;
-            Value = value;
-            BestValue = value;
-            Vector = new double[length];
-            BestVector = new double[length];
-            Velocity = new double[length];
-            for (int i = 0; i < length; i++)
+            Current = new Solution(value, vector);
+            Best = new Solution(value, vector);
+            Velocity = new double[vector.Count];
+            for (int i = 0; i < vector.Count; i++)
             {
-                Vector[i] = vector[i];
-                BestVector[i] = vector[i];
+                Velocity[i] = velocity[i];
+            }
+            Survival = 1.0;
+        }
+
+        /// <summary>
+        /// A <see cref="Particle"/> object for use in Particle Swarm Optimization.
+        /// </summary>
+        /// <param name="solution"></param>
+        /// <param name="velocity">The current adjustment vector.</param>
+        public Particle(Solution solution, IReadOnlyList<double> velocity)
+        {
+            if (solution.Vector.Length != velocity.Count)
+            {
+                throw new ArgumentOutOfRangeException("Position and velocity vectors must be equal length.");
+            }
+            Current = new Solution(solution);
+            Best = new Solution(solution);
+            Velocity = new double[velocity.Count];
+            for (int i = 0; i < velocity.Count; i++)
+            {
+                Velocity[i] = velocity[i];
+            }
+            Survival = 1.0;
+        }
+
+        /// <summary>
+        /// Updates the <see cref="Particle"/> with the new current solution.
+        /// </summary>
+        /// <param name="solution">The new current solution.</param>
+        public void SetCurrent(Solution solution)
+        {
+            Current = new Solution(solution);
+            if (solution.Value < Best.Value)
+            {
+                Best = new Solution(solution);
+            }
+        }
+
+        /// <summary>
+        /// Updates the <see cref="Particle"/> with the new velocity.
+        /// </summary>
+        /// <param name="velocity">The velocity at the current vector.</param>
+        public void SetVelocity(double[] velocity)
+        {
+            for (int i = 0; i < velocity.Length; i++)
+            {
                 Velocity[i] = velocity[i];
             }
         }
 
         /// <summary>
-        /// Updates the <see cref="Particle"/> with the new value and vector information.
+        /// Updates the <see cref="Particle"/> with the new velocity.
         /// </summary>
-        /// <param name="value">The function value at the current vector.</param>
-        /// <param name="vector">The current vector.</param>
-        /// <param name="velocity">The velocity at the current vector.</param>
-        public void Update(double value, double[] vector, double[] velocity)
+        /// <param name="swarm">The <see cref="Swarm"/> to which the <see cref="Particle"/> belongs.</param>
+        public void SetSurvival(Swarm swarm)
         {
-            for (int i = 0; i < vector.Length; i++)
-            {
-                Velocity[i] = velocity[i];
-            }
-            Value = value;
-            for (int i = 0; i < vector.Length; i++)
-            {
-                Vector[i] = vector[i];
-            }
-            if (BestValue < value)
-            {
-                return;
-            }
-            BestValue = value;
-            for (int i = 0; i < vector.Length; i++)
-            {
-                BestVector[i] = vector[i];
-            }
+            Survival = swarm.RandomGenerator.NextDouble();
         }
 
         /// <summary>
@@ -106,119 +114,7 @@ namespace AD.PartialEquilibriumApi.PSO
         /// </summary>
         public override string ToString()
         {
-            return $"[ {string.Join(", ", BestVector.Select(x => $"{x:0.0000e00}"))} ] = {BestValue:0.0000e00}";
-        }
-
-        /// <summary>
-        /// True if both <see cref="Particle"/> objects have the same value.
-        /// </summary>
-        public static bool operator ==(Particle left, Particle right)
-        {
-            return left.Equals(right);
-        }
-
-        /// <summary>
-        /// True if both <see cref="Particle"/> objects do not have the same value.
-        /// </summary>
-        public static bool operator !=(Particle left, Particle right)
-        {
-            return !left.Equals(right);
-        }
-
-        /// <summary>
-        /// True if the left value is less than the right value.
-        /// </summary>
-        public static bool operator <(Particle left, Particle right)
-        {
-            return left.Value - right.Value < Tolerance;
-        }
-
-        /// <summary>
-        /// True if the left value is greater than the right value.
-        /// </summary>
-        public static bool operator >(Particle left, Particle right)
-        {
-            return left.Value - right.Value > Tolerance;
-        }
-
-        /// <summary>
-        /// True if the left value is less than or equal to the right value.
-        /// </summary>
-        public static bool operator <=(Particle left, Particle right)
-        {
-            return left.Value - right.Value <= Tolerance;
-        }
-
-        /// <summary>
-        /// True if the left value is greater than or equal to the right value.
-        /// </summary>
-        public static bool operator >=(Particle left, Particle right)
-        {
-            return left.Value - right.Value >= Tolerance;
-        }
-
-        /// <summary>
-        /// Compares <see cref="Particle"/> objects based on the best value.
-        /// </summary>
-        public int CompareTo(Particle other)
-        {
-            return BestValue.CompareTo(other.BestValue);
-        }
-
-        /// <summary>
-        /// Compares <see cref="Particle"/> objects based on the best value.
-        /// </summary>
-        int IComparable<Particle>.CompareTo(Particle other)
-        {
-            return CompareTo(other);
-        }
-
-        /// <summary>
-        /// True if two <see cref="Particle"/> objects have the same current vector and value.
-        /// </summary>
-        public bool Equals(Particle other)
-        {
-            if (Vector.Length != other.Vector.Length)
-            {
-                return false;
-            }
-            bool vectorsEqual = true;
-            for (int i = 0; i < Vector.Length; i++)
-            {
-                if (Math.Abs(Vector[i] - other.Vector[i]) > Tolerance)
-                {
-                    vectorsEqual = false;
-                }
-            }
-            return vectorsEqual && Value.Equals(other.Value);
-        }
-
-        /// <summary>
-        /// True if two <see cref="Particle"/> objects have the same current vector and value.
-        /// </summary>
-        public override bool Equals(object obj)
-        {
-            return obj is Particle && Equals((Particle)obj);
-        }
-
-        /// <summary>
-        /// True if two <see cref="Particle"/> objects have the same current vector and value.
-        /// </summary>
-        bool IEquatable<Particle>.Equals(Particle other)
-        {
-            return Equals(other);
-        }
-
-        /// <summary>
-        /// Returns the hash code for this instance.
-        /// </summary>
-        /// <returns>A 32-bit signed integer that is the hash code for this instance.</returns>
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                return (Value.GetHashCode() * 397) ^ (Vector?.GetHashCode() ?? 0);
-            }
+            return Best.ToString();
         }
     }
 }

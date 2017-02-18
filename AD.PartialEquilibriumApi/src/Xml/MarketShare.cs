@@ -43,7 +43,9 @@ namespace AD.PartialEquilibriumApi
                 double totalExpenditure = 
                     market.Parent?
                           .Elements()
-                          .Sum(x => x.MarketShare() * Math.Pow(x.ConsumerPrice(), 1 - x.ElasticityOfSubstitution())) ?? expenditure;
+                          .Sum(x => x.MarketShare() * Math.Pow(x.ConsumerPrice(), 1 - x.ElasticityOfSubstitution())) 
+                    ??
+                    market.MarketShare() * Math.Pow(market.ConsumerPrice(), 1 - market.ElasticityOfSubstitution());
 
                 double marketShare = 
                     expenditure / totalExpenditure;

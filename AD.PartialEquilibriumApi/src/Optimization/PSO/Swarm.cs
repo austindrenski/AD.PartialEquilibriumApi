@@ -28,6 +28,16 @@ namespace AD.PartialEquilibriumApi.PSO
         }
 
         /// <summary>
+        /// The best solution found by any <see cref="Particle"/> in the <see cref="Swarm"/>.
+        /// </summary>
+        public Solution GlobalBest { get; set; }
+
+        /// <summary>
+        /// The best solution along the path from any position of any <see cref="Particle"/> to the best solution found by the <see cref="Swarm"/>.
+        /// </summary>
+        public Solution VirtualBest { get; set; }
+
+        /// <summary>
         /// The count of variables in the objective function.
         /// </summary>
         public int Dimensions { get; }
@@ -103,6 +113,8 @@ namespace AD.PartialEquilibriumApi.PSO
             }
             TextWriter = textWriter ?? new StringWriter();
             RandomGenerator = seed == null ? new Random() : new Random((int)seed);
+            GlobalBest = new Solution(double.MaxValue, new double[dimensions]);
+            VirtualBest = new Solution(double.MaxValue, new double[dimensions]);
             Dimensions = dimensions;
             Iterations = iterations;
             Particles = particles;
@@ -121,6 +133,12 @@ namespace AD.PartialEquilibriumApi.PSO
                 }
                 double value = ObjectiveFunction(randomVector);
                 _particles[i] = new Particle(value, randomVector, randomVelocity);
+                if (GlobalBest.Value < _particles[i].Best.Value)
+                {
+                    continue;
+                }
+                GlobalBest = new Solution(_particles[i].Best);
+                VirtualBest = new Solution(_particles[i].Best);
             }
         }
 
