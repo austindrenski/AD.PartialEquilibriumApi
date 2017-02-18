@@ -42,19 +42,15 @@ namespace AD.PartialEquilibriumApi
                 //    continue;
                 //}
 
-                //if (market.Parent == null)
-                //{
-                //    throw new ArgumentNullException("An error has occured with the model's state.");
-                //}
-
-                double consumerPriceIndexComponents =
+                double priceIndexComponents =
                     market.Parent?
-                        .Elements()
-                        .Sum(x => x.MarketShare() * Math.Pow(x.ConsumerPrice(), 1 - x.ElasticityOfSubstitution()))
-                    ?? market.MarketShare() * Math.Pow(market.ConsumerPrice(), 1 - market.ElasticityOfSubstitution());
+                          .Elements()
+                          .Sum(x => x.MarketShare() * Math.Pow(x.ConsumerPrice(), 1 - x.ElasticityOfSubstitution()))
+                    ?? 
+                    market.MarketShare() * Math.Pow(market.ConsumerPrice(), 1 - market.ElasticityOfSubstitution());
 
-                double consumerPriceIndex =
-                    Math.Pow(consumerPriceIndexComponents, 1 / (1 - market.ElasticityOfSubstitution()));
+                double priceIndex =
+                    Math.Pow(priceIndexComponents, 1 / (1 - market.ElasticityOfSubstitution()));
 
                 double consumerPrice = market.ConsumerPrice();
                 double producerPrice = market.ProducerPrice();
@@ -65,7 +61,7 @@ namespace AD.PartialEquilibriumApi
                 double marketEquilibrium =
                     Math.Pow(producerPrice, elasticityOfSupply)
                     -
-                    Math.Pow(consumerPriceIndex, elasticityOfSubstitution + elasticityOfDemand)
+                    Math.Pow(priceIndex, elasticityOfSubstitution + elasticityOfDemand)
                     /
                     Math.Pow(consumerPrice, elasticityOfSubstitution);
 
