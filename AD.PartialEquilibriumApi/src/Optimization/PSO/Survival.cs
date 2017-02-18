@@ -17,7 +17,7 @@ namespace AD.PartialEquilibriumApi.PSO
         [Pure]
         public static Particle Survival(this Swarm swarm, Particle particle)
         { 
-            if (particle.Survival < 5e-02)
+            if (particle.Survival < 1e-01)
             {
                 return particle;
             }

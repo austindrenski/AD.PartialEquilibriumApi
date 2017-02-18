@@ -64,10 +64,10 @@ namespace AD.PartialEquilibriumApi.Example
                 new PSO.Swarm(
                     objectiveFunction: x => objectiveFunction(x),
                     lowerBound: 0,
-                    upperBound: 10,
-                    dimensions: model.DescendantsAndSelf().Count(),
-                    iterations: 2500,
-                    particles: model.DescendantsAndSelf().Count() + 1,
+                    upperBound: 5,
+                    dimensions: model.DescendantsAndSelf().Count(x => !x.HasElements),
+                    iterations: 25000,
+                    particles: model.DescendantsAndSelf().Count(x => !x.HasElements) * 2,
                     seed: 0,
                     textWriter: Console.Out
                 );
