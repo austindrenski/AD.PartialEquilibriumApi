@@ -57,6 +57,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="src\Matrix\DotProduct.cs" />
     <Compile Include="src\Optimization\MinimizeSimplex.cs" />
     <Compile Include="src\Optimization\MinimizeSimplexParallel.cs" />
     <Compile Include="src\Optimization\PSO\Position.cs" />

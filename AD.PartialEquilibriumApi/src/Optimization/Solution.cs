@@ -51,14 +51,8 @@ namespace AD.PartialEquilibriumApi
         /// Creates a <see cref="Solution"/> given an existing <see cref="Solution"/>.
         /// </summary>
         /// <param name="other">An existing <see cref="Solution"/> to be copied.</param>
-        public Solution(Solution other)
+        public Solution(Solution other) : this(other.Value, other.Vector)
         {
-            Vector = new double[other.Vector.Length];
-            for (int i = 0; i < other.Vector.Length; i++)
-            {
-                Vector[i] = other[i];
-            }
-            Value = other.Value;
         }
 
         /// <summary>
