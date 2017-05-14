@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Xml.Linq;
+using AD.PartialEquilibriumApi.Xml;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AD.PartialEquilibriumApi.Tests

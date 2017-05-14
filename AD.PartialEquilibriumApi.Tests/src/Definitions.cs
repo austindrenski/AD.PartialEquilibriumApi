@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Xml.Linq;
 using AD.IO;
+using AD.PartialEquilibriumApi.Xml;
 
 namespace AD.PartialEquilibriumApi.Tests
 {
