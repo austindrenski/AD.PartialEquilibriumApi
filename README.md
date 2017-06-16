@@ -2,6 +2,7 @@
 C# framework for programming Partial Equilibrium models.
 
 [![DOI](https://zenodo.org/badge/80772157.svg)](https://zenodo.org/badge/latestdoi/80772157)
+![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/austindrenski/AD.PartialEquilibriumApi?svg=true)
 
 ## Install from NuGet:
 ```Powershell
